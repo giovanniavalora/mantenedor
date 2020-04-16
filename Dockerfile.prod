@@ -1,36 +1,71 @@
-# pull official base image
-FROM node:12-alpine
+# # pull official base image
+# FROM node:12-alpine
 
+# RUN apk update && apk add python make g++ && rm -rf /var/cache/apk/*
+
+# # set work directory
+# RUN mkdir -p /src/mantenedor/
+# WORKDIR /src/mantenedor
+
+# # install dependencies
+# # RUN apk update && apk upgrade
+
+# RUN npm install
+# RUN npm install -g node-gyp
+
+# # --no-cache: download package index on-the-fly, no need to cleanup afterwards
+# # --virtual: bundle packages, remove whole bundle at once, when done
+# # RUN apk --no-cache --virtual build-dependencies add \
+# #     python \
+# #     make \
+# #     g++ \
+# #     && npm install \
+# #     && apk del build-dependencies
+
+# # copy project
+# COPY . /src/mantenedor/
+
+# # EXPOSE 3000
+# RUN npm run build
+# RUN npm run start
+# ENV HOST 0.0.0.0
+
+
+
+FROM node:12-alpine AS BUILD_IMAGE
+
+# couchbase sdk requirements
+# RUN apk update && apk add yarn curl bash python g++ make && rm -rf /var/cache/apk/*
 RUN apk update && apk add python make g++ && rm -rf /var/cache/apk/*
 
-# set work directory
-RUN mkdir -p /src/mantenedor/
-WORKDIR /src/mantenedor
+RUN mkdir -p /usr/src/mantenedor/
+WORKDIR /usr/src/mantenedor
+# WORKDIR /usr/src/app
 
+COPY package.json yarn.lock ./
 
 # install dependencies
-# RUN apk update && apk upgrade
+RUN yarn --frozen-lockfile
 
-RUN npm install
-RUN npm install -g node-gyp
+COPY . .
 
-# --no-cache: download package index on-the-fly, no need to cleanup afterwards
-# --virtual: bundle packages, remove whole bundle at once, when done
-# RUN apk --no-cache --virtual build-dependencies add \
-#     python \
-#     make \
-#     g++ \
-#     && npm install \
-#     && apk del build-dependencies
+# lint & test
+RUN yarn lint & yarn test
 
+# build application
+RUN yarn build
 
+# remove development dependencies
+RUN npm prune --production
 
-# copy project
-COPY . /src/mantenedor/
+FROM node:12-alpine
 
+WORKDIR /usr/src/mantenedor
 
+# copy from build image
+COPY --from=BUILD_IMAGE /usr/src/app/dist ./dist
+COPY --from=BUILD_IMAGE /usr/src/app/node_modules ./node_modules
 
-# EXPOSE 3000
-RUN npm run build
-RUN npm run start
-ENV HOST 0.0.0.0
+EXPOSE 3030
+
+CMD [ "node", "./dist/Main.js" ]
