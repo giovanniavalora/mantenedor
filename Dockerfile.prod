@@ -7,16 +7,19 @@ WORKDIR /src/mantenedor
 
 
 # install dependencies
-# RUN apk update && apk upgrade
+RUN apk update && apk upgrade
+RUN sudo apk add python make g++
+RUN npm install
+RUN npm install -g node-gyp
 
 # --no-cache: download package index on-the-fly, no need to cleanup afterwards
 # --virtual: bundle packages, remove whole bundle at once, when done
-RUN apk --no-cache --virtual build-dependencies add \
-    python \
-    make \
-    g++ \
-    && npm install \
-    && apk del build-dependencies
+# RUN apk --no-cache --virtual build-dependencies add \
+#     python \
+#     make \
+#     g++ \
+#     && npm install \
+#     && apk del build-dependencies
 
 
 

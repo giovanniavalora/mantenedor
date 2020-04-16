@@ -1,4 +1,4 @@
-cd /home/ohl/controlCamionesApi/apimobile
+cd /home/ohl/controlCamionesApi/mantenedor
 git checkout develop
 git pull https://github.com/giovanniavalora/mantenedor.git develop
 cd /home/ohl/controlCamionesApi/
