@@ -1,12 +1,12 @@
 # pull official base image
-FROM node:13.12.0-alpine
+FROM node:13.12.0
 
 # set work directory
 RUN mkdir -p /src/mantenedor/
 WORKDIR /src/mantenedor
 
 # install dependencies
-RUN apk update && apk upgrade
+# RUN apk update && apk upgrade
 
 # copy project
 COPY . /src/mantenedor/
