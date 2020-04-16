@@ -1,6 +1,8 @@
 # pull official base image
 FROM node:13.12.0-alpine
 
+RUN apk update && apk add python make g++ && rm -rf /var/cache/apk/*
+
 # set work directory
 RUN mkdir -p /src/mantenedor/
 WORKDIR /src/mantenedor
@@ -10,15 +12,17 @@ RUN apk update && apk upgrade
 
 # copy project
 COPY . /src/mantenedor/
+RUN npm install
+# RUN npm install -g node-gyp
 
-# --no-cache: download package index on-the-fly, no need to cleanup afterwards
-# --virtual: bundle packages, remove whole bundle at once, when done
-RUN apk --no-cache --virtual build-dependencies add \
-    python \
-    make \
-    g++ \
-    && npm install \
-    && apk del build-dependencies
+# # --no-cache: download package index on-the-fly, no need to cleanup afterwards
+# # --virtual: bundle packages, remove whole bundle at once, when done
+# RUN apk --no-cache --virtual build-dependencies add \
+#     python \
+#     make \
+#     g++ \
+#     && npm install \
+#     && apk del build-dependencies
 
 # EXPOSE 3000
 RUN npm run build
