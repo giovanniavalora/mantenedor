@@ -1,71 +1,26 @@
 # pull official base image
-FROM node:12
-
-# RUN apk update && apk add python make g++ && rm -rf /var/cache/apk/*
+FROM node:13.12.0-alpine
 
 # set work directory
 RUN mkdir -p /src/mantenedor/
 WORKDIR /src/mantenedor
 
 # install dependencies
-# RUN apk update && apk upgrade
-
-RUN npm install
-RUN npm install -g node-gyp
-
-# --no-cache: download package index on-the-fly, no need to cleanup afterwards
-# --virtual: bundle packages, remove whole bundle at once, when done
-# RUN apk --no-cache --virtual build-dependencies add \
-#     python \
-#     make \
-#     g++ \
-#     && npm install \
-#     && apk del build-dependencies
+RUN apk update && apk upgrade
 
 # copy project
 COPY . /src/mantenedor/
+
+# --no-cache: download package index on-the-fly, no need to cleanup afterwards
+# --virtual: bundle packages, remove whole bundle at once, when done
+RUN apk --no-cache --virtual build-dependencies add \
+    python \
+    make \
+    g++ \
+    && npm install \
+    && apk del build-dependencies
 
 # EXPOSE 3000
 RUN npm run build
 RUN npm run start
 ENV HOST 0.0.0.0
-
-
-
-# FROM node:12-alpine AS BUILD_IMAGE
-
-# # couchbase sdk requirements
-# # RUN apk update && apk add yarn curl bash python g++ make && rm -rf /var/cache/apk/*
-# RUN apk update && apk add python make g++ && rm -rf /var/cache/apk/*
-
-# RUN mkdir -p /usr/src/mantenedor/
-# WORKDIR /usr/src/mantenedor
-# # WORKDIR /usr/src/app
-
-# COPY package.json yarn.lock ./
-
-# # install dependencies
-# RUN yarn --frozen-lockfile
-
-# COPY . .
-
-# # lint & test
-# RUN yarn lint & yarn test
-
-# # build application
-# RUN yarn build
-
-# # remove development dependencies
-# RUN npm prune --production
-
-# FROM node:12-alpine
-
-# WORKDIR /usr/src/mantenedor
-
-# # copy from build image
-# COPY --from=BUILD_IMAGE /usr/src/app/dist ./dist
-# COPY --from=BUILD_IMAGE /usr/src/app/node_modules ./node_modules
-
-# EXPOSE 3030
-
-# CMD [ "node", "./dist/Main.js" ]
