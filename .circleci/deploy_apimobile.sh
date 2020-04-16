@@ -1,6 +1,6 @@
 cd /home/ohl/controlCamionesApi/apimobile
 git checkout develop
-git pull
+git pull https://github.com/giovanniavalora/mantenedor.git develop
 cd /home/ohl/controlCamionesApi/
 # docker-compose -f docker-compose.prod.yml stop web
 # docker-compose -f docker-compose.prod.yml build web
