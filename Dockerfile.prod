@@ -25,5 +25,5 @@ RUN apk --no-cache --update --virtual build-dependencies add \
 # RUN npm install -g node-gyp
 
 # EXPOSE 3000
-RUN npm run start
+RUN npm run build
 ENV HOST 0.0.0.0
