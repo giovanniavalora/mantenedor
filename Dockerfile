@@ -12,5 +12,6 @@ WORKDIR /src/mantenedor
 COPY . /src/mantenedor/
 RUN npm install
 EXPOSE 3000
-CMD npm run dev
+RUN npm run build
+RUN npm run dev
 ENV HOST 0.0.0.0
