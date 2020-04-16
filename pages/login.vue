@@ -1,9 +1,11 @@
 <template>
   <v-app>
     <v-card width="400" class="mx-auto mt-5">
+
       <v-card-title class="pb-0 justify-center" >
         Inicio de sesión
       </v-card-title>
+
       <v-card-text>
         <v-form>
           <v-text-field 
@@ -19,10 +21,13 @@
           />
         </v-form>
       </v-card-text>
+
       <v-divider></v-divider>
+
       <v-card-actions class="justify-center">
         <v-btn color="info">Login</v-btn>
       </v-card-actions>
+      
     </v-card>
   </v-app>
 </template>
