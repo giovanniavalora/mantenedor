@@ -1,11 +1,12 @@
 <template>
-  <v-app dark>
+  <v-app light>
     <v-navigation-drawer
       v-model="drawer"
       :mini-variant="miniVariant"
       :clipped="clipped"
       fixed
       app
+      color = "#00428D"
     >
       <v-list>
         <v-list-item
@@ -16,10 +17,10 @@
           exact
         >
           <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
+            <v-icon id="layout-text">{{ item.icon }}</v-icon>
           </v-list-item-action>
 
-          <v-list-item-content>
+          <v-list-item-content id="layout-text">
             <v-list-item-title v-text="item.title" />
           </v-list-item-content>
           
@@ -31,17 +32,19 @@
       :clipped-left="clipped"
       fixed
       app
+      color = "#00428D"
     >
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+      <v-app-bar-nav-icon id="layout-text" @click.stop="drawer = !drawer" />
 
       <v-btn
         icon
         @click.stop="miniVariant = !miniVariant"
+        id="layout-text"
       >
         <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>
       </v-btn>
 
-<!-- 
+      <!-- 
       <v-btn
         icon
         @click.stop="clipped = !clipped"
@@ -58,10 +61,25 @@
       </v-btn> -->
 
 
-      <v-toolbar-title v-text="title" />
-      <v-spacer />
+      <v-toolbar-title id="layout-text" v-text="title" />
+      <v-spacer /><!-- <v-spacer></v-spacer> -->
+      <!-- <v-btn color="Primary" dark text >Cerrar Sesión</v-btn>
+      <a class="button is-primary" @click="logout">
+        Bienvenido {{user}} 😄
+      </a> -->
 
-<!--       
+      <div v-if="$store.state.auth">
+        
+        <v-btn color="Primary" dark text @click="logout">{{user}}<br>Cerrar Sesión</v-btn>
+      </div>
+      <p v-else>
+        Please
+        <NuxtLink to="/login">
+          login
+        </NuxtLink>.
+      </p>
+
+      <!--       
       <v-btn
         icon
         @click.stop="rightDrawer = !rightDrawer"
@@ -78,7 +96,7 @@
       </v-container>
     </v-content>
 
-<!-- 
+    <!-- 
     <v-navigation-drawer
       v-model="rightDrawer"
       :right="right"
@@ -109,6 +127,8 @@
 </template>
 
 <script>
+const Cookie = process.client ? require('js-cookie') : undefined
+
 export default {
   data () {
     return {
@@ -138,25 +158,50 @@ export default {
         },
         {
           icon: 'mdi-chart-bubble',
-          title: 'SubContratistas',
+          title: 'Subcontratistas',
           to: '/subcontratistas'
         },
         {
           icon: 'mdi-dump-truck',
-          title: 'Camiones',
-          to: '/camiones'
+          title: 'Flota',
+          to: '/flota'
         },
-        {
-          icon: 'mdi-qrcode',
-          title: 'CódigosQR',
-          to: '/codigosqr'
-        }
+        // {
+        //   icon: 'mdi-qrcode',
+        //   title: 'CódigosQR',
+        //   to: '/codigosqr'
+        // }
       ],
       miniVariant: true,
       right: true,
       rightDrawer: false,
       title: 'Plataforma Control Camiones'
     }
-  }
+  },
+  methods: {
+    logout () {
+      Cookie.remove('auth')
+      this.$store.commit('setAuth', null)
+      this.$router.replace({ path: '/login' })
+    }
+  },
+  computed: {
+    user: function(){
+      return this.$store.state.auth['User'];
+    }
+  },
 }
 </script>
+
+<style>
+
+
+    h1 {
+      color: #00428D;
+    }
+    #layout-text{
+      color: azure;
+    }
+
+
+</style>

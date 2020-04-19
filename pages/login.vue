@@ -1,6 +1,9 @@
 <template>
   <v-app>
-    <v-card width="400" class="mx-auto mt-5">
+    <!-- <a class="button is-primary" @click="logout">
+      Bienvenido {{user}} 😄
+    </a> -->
+    <v-card width="400" class="mx-auto mt-12">
 
       <v-card-title class="pb-0 justify-center" >
         Inicio de sesión
@@ -9,10 +12,12 @@
       <v-card-text>
         <v-form>
           <v-text-field 
+            v-model="loginRut" 
             label="RUT" 
             prepend-icon="mdi-account-circle"
           />
           <v-text-field 
+            v-model="loginPassword"
             :type="showPassword? 'text' : 'password'" 
             label="Contraseña"
             prepend-icon="mdi-lock"
@@ -25,31 +30,65 @@
       <v-divider></v-divider>
 
       <v-card-actions class="justify-center">
-        <v-btn color="info">Login</v-btn>
+        <v-btn color="primary" @click="login">Ingresar</v-btn>
       </v-card-actions>
       
     </v-card>
   </v-app>
 </template>
 
+
+
+
+
+
 <script>
+const Cookie = process.client ? require('js-cookie') : undefined
+
 export default {
   layout: 'login',
-  head:{
-      title: 'Login',
-      meta: [
-          {
-              hid: 'description',
-              name: 'description',
-              content: 'Login para acceder la Plataforma Control de Camiones'
-          }
-      ]
-  },
+  middleware: 'notAuthenticated',
   data () {
     return {
-      showPassword: false
+      showPassword: false,
+
+      loginRut: '2.222.222-2',
+      loginPassword: '87654321'
     }
+  },
+  methods: {
+    login() {
+      console.log("login")
+      return this.$axios.post("/login/",{
+          rut: this.loginRut,
+          password: this.loginPassword
+        })
+        .then(res => {
+          if(res.data.data.token){
+            console.log("token: ",res.data.data.token)
+            // this.$store.commit("saveToken", res.data.data.token)
+            // this.$store.commit('saveUser', this.loginRut)
+            const auth = {
+              User: this.loginRut,
+              Token: res.data.data.token
+            }
+            // Reiniciamos los campos
+            this.loginRut = ''
+            this.loginPassword = ''
+            this.$store.commit('setAuth', auth) // mutating to store for client rendering
+            Cookie.set('auth', auth) // saving token in cookie for server rendering
+            this.$router.push('/')
+          }
+        })
+        .catch(error => {
+          alert(Object.values(error.response.data))
+        });
+    }
+
   }
-  
 }
 </script>
+
+
+
+
