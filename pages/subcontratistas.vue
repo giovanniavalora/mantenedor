@@ -160,10 +160,11 @@ export default {
       const index = this.subcontratistas.indexOf(item)
       console.log("index: ",index)
       let id = item.id
-      confirm('¿Desea eliminar item?') && this.subcontratistas.splice(index, 1)
-      axios.delete(`http://localhost:5000/api/v1/Subcontratista/${id}/`)
-      .catch(error => {
-          alert(Object.values(error.response.data))
+      result = confirm('¿Desea eliminar item?') && this.subcontratistas.splice(index, 1)
+      if (result)
+        axios.delete(`http://157.245.237.33:5000/api/v1/Subcontratista/${id}/`)
+        .catch(error => {
+            alert(Object.values(error.response.data))
         });
     },
 
@@ -183,7 +184,7 @@ export default {
         console.log("edit")
         console.log("id: ",this.editedItem['id'])
         this.editedItem['proyecto']=1
-        axios.put(`http://localhost:5000/api/v1/Subcontratista/${this.editedItem['id']}/`,this.editedItem)
+        axios.put(`http://157.245.237.33:5000/api/v1/Subcontratista/${this.editedItem['id']}/`,this.editedItem)
         .catch(error => {
           alert(Object.values(error.response.data))
         });
@@ -192,7 +193,7 @@ export default {
         this.subcontratistas.push(this.editedItem)
         this.editedItem['proyecto']=1
         console.log("save this.editedItem",this.editedItem)
-        axios.post('http://localhost:5000/api/v1/Subcontratista/',this.editedItem)
+        axios.post('http://157.245.237.33:5000/api/v1/Subcontratista/',this.editedItem)
         .catch(error => {
           alert(Object.values(error.response.data))
         });
@@ -203,7 +204,7 @@ export default {
 
   async created(){
     try {
-      const res = await axios.get('http://localhost:5000/api/v1/Subcontratista/')
+      const res = await axios.get('http://157.245.237.33:5000/api/v1/Subcontratista/')
       // console.log(res.data)
       this.subcontratistas = res.data;
     } catch (error) {
