@@ -52,8 +52,8 @@ export default {
     return {
       showPassword: false,
 
-      loginRut: '2.222.222-2',
-      loginPassword: '87654321'
+      loginRut: '',
+      loginPassword: ''
     }
   },
   methods: {
