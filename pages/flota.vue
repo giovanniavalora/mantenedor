@@ -193,7 +193,7 @@ export default {
       let id = item.id
       var result = confirm('¿Desea eliminar item?') && this.camiones.splice(index, 1)
       if (result)
-        axios.delete(`http://localhost:5000/api/v1/Camion/${id}/`)
+        axios.delete(`http://157.245.237.33:5000/api/v1/Camion/${id}/`)
     },
 
     close () {
@@ -208,7 +208,7 @@ export default {
 
     save () {
       if (this.editedIndex > -1) {
-        axios.put(`http://localhost:5000/api/v1/Camion/${this.editedItem['id']}/`,this.editedItem)
+        axios.put(`http://157.245.237.33:5000/api/v1/Camion/${this.editedItem['id']}/`,this.editedItem)
         .then(res => {
           if(res.data)
             Object.assign(this.camiones[this.editedIndex], this.editedItem)
@@ -218,7 +218,7 @@ export default {
         });
        
       } else {
-        axios.post('http://localhost:5000/api/v1/Camion/',this.editedItem)
+        axios.post('http://157.245.237.33:5000/api/v1/Camion/',this.editedItem)
         .then(res => {
           if(res.data){
             this.camiones.push(this.editedItem)
@@ -234,7 +234,7 @@ export default {
 
   async created(){
     try {
-      const res = await axios.get('http://localhost:5000/api/v1/Camion/')
+      const res = await axios.get('http://157.245.237.33:5000/api/v1/Camion/')
       // console.log(res.data)
       this.camiones = res.data;
     } catch (error) {
