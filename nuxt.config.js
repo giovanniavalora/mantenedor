@@ -30,6 +30,7 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
+    // '@plugins/vuetify.js'
   ],
   /*
   ** Nuxt.js dev-modules
@@ -49,6 +50,7 @@ export default {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
+    baseURL: "http://localhost:5000/api/v1" 
   },
   /*
   ** vuetify module configuration
@@ -57,19 +59,31 @@ export default {
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
     theme: {
-      dark: true,
+      dark: false,
       themes: {
-        dark: {
-          primary: colors.blue.darken2,
-          accent: colors.grey.darken3,
-          secondary: colors.amber.darken3,
+        light: {
+          primary: colors.blue.lighten2,
+          accent: colors.grey.lighten3,
+          secondary: colors.amber.lighten3,
           info: colors.teal.lighten1,
           warning: colors.amber.base,
           error: colors.deepOrange.accent4,
           success: colors.green.accent3
+        },
+        dark: {
+          primary: colors.blue.darken2,
+          accent: colors.blue.darken3,
+          secondary: colors.blue.darken3,
+          info: colors.blue.lighten1,
+          warning: colors.amber.base,
+          error: colors.deepOrange.accent4,
+          success: colors.deepOrange.accent3
         }
       }
-    }
+    },
+    options: {
+      customProperties: true,
+    },
   },
   /*
   ** Build configuration

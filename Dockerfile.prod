@@ -10,10 +10,15 @@ WORKDIR /src/mantenedor
 
 # copy project
 COPY . /src/mantenedor/
+RUN npm update
 RUN npm install
+# RUN npm run build
+# RUN npm run start
+# RUN npm install js-cookie --save
+# RUN npm install cookieparser --save
 EXPOSE 3000
-CMD npm run dev
 ENV HOST 0.0.0.0
+
 
 
 
