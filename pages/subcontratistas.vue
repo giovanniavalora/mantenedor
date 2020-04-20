@@ -154,7 +154,7 @@ export default {
       this.editedIndex = this.subcontratistas.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialog = true
-      console.log("editItem() - editedIndex:",this.editedIndex)
+      console.log("editItem()",this.editedItem)
     },
 
     deleteItem (item) {
