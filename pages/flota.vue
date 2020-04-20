@@ -204,7 +204,6 @@ export default {
         this.editedItem = Object.assign({}, this.defaultItem)
         this.editedIndex = -1
       }, 300),
-      console.log("close() - editedIndex:",this.editedIndex)
       this.dialog = false
     },
 
@@ -212,10 +211,10 @@ export default {
       if (this.editedIndex > -1) {
         this.$axios.put(`/Camion/${this.editedItem['id']}/`,this.editedItem)
         .then(res => {
-          if(res.data){
-            this.editedItem['id']=res.data['id']
-            Object.assign(this.camiones[this.editedIndex], this.editedItem)
-          }
+          console.log("edit re.data:",res.data)
+          this.editedItem['id']=res.data['id']
+          Object.assign(this.camiones[this.editedIndex], this.editedItem)
+          
         })
         .catch(error => {
           alert(Object.values(error.response.data))
@@ -225,6 +224,7 @@ export default {
         console.log("this.editedItem",this.editedItem)
         this.$axios.post('/Camion/',this.editedItem)
         .then(res => {
+          console.log("new re.data:",res.data)
           if(res.data){
             this.editedItem['id']=res.data['id']
             this.camiones.push(this.editedItem)

@@ -173,7 +173,6 @@ export default {
         this.editedItem = Object.assign({}, this.defaultItem)
         this.editedIndex = -1
       }, 300),
-      console.log("close() - editedIndex:",this.editedIndex)
       this.dialog = false
     },
 
@@ -182,7 +181,9 @@ export default {
         this.editedItem['proyecto']=1
         this.$axios.put(`/Subcontratista/${this.editedItem['id']}/`,this.editedItem)
         .then(res => {
+          console.log("edit res:",res)
           if(res.data){
+            console.log("edit res.data:",res.data)
             this.editedItem['id']=res.data['id']
             Object.assign(this.subcontratistas[this.editedIndex], this.editedItem)
           }
@@ -194,6 +195,7 @@ export default {
         this.editedItem['proyecto']=1
         this.$axios.post('/Subcontratista/',this.editedItem)
         .then(res => {
+          console.log("new re.data:",res.data)
           if(res.data){
             this.editedItem['id']=res.data['id']
             this.subcontratistas.push(this.editedItem)
