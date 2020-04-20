@@ -181,6 +181,7 @@ export default {
       if (this.editedIndex > -1) {
         console.log("edit 0:",this.editedItem)
         this.editedItem.proyecto = '1'
+        Object.assign(this.subcontratistas[this.editedIndex], this.editedItem)
         this.$axios.put(`/Subcontratista/${this.editedItem.id}/`,this.editedItem)
         .then(res => {
           console.log("edit res:",res)
@@ -189,7 +190,7 @@ export default {
             this.editedItem['id']=res.data.id
             console.log("edit 2:",this.editedItem['id'])
             console.log("edit 3:",this.subcontratistas)
-            Object.assign(this.subcontratistas[this.editedIndex], this.editedItem)
+            // Object.assign(this.subcontratistas[this.editedIndex], this.editedItem)
             console.log("edit 4:",this.editedIndex)
           }
         })
@@ -198,12 +199,13 @@ export default {
         });
       } else {
         this.editedItem['proyecto']=1
+        this.subcontratistas.push(this.editedItem)
         this.$axios.post('/Subcontratista/',this.editedItem)
         .then(res => {
           console.log("new re.data:",res.data)
           if(res.data){
             // this.editedItem['id']=res.data['id']
-            this.subcontratistas.push(this.editedItem)
+            // this.subcontratistas.push(this.editedItem)
           }
         })
         .catch(error => {
