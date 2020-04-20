@@ -180,8 +180,8 @@ export default {
     save () {
       if (this.editedIndex > -1) {
         console.log("edit 0:",this.editedItem)
-        this.editedItem['proyecto']=1
-        this.$axios.put(`/Subcontratista/${this.editedItem['id']}/`,this.editedItem)
+        this.editedItem.proyecto = '1'
+        this.$axios.put(`/Subcontratista/${this.editedItem.id}/`,this.editedItem)
         .then(res => {
           console.log("edit res:",res)
           if(res.data){
