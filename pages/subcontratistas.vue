@@ -120,6 +120,7 @@ export default {
       subcontratistas: [],
       editedIndex: -1,
       editedItem: {
+        id: '',
         razon_social: '',
         nombre_subcontratista: '',
         rut: '',
@@ -127,7 +128,7 @@ export default {
         apellido_contacto: '',
         telefono_contacto: '',
         email_contacto: '',
-        proyecto: 2
+        proyecto: ''
       }
     }
   },
@@ -183,8 +184,9 @@ export default {
         .then(res => {
           console.log("edit res:",res)
           if(res.data){
-            console.log("edit res.data:",res.data)
-            this.editedItem['id']=res.data['id']
+            console.log("edit antes:",this.editedItem['id'])
+            this.editedItem['id']=res.data.id
+            console.log("edit despues",this.editedItem['id'])
             Object.assign(this.subcontratistas[this.editedIndex], this.editedItem)
           }
         })
@@ -197,7 +199,7 @@ export default {
         .then(res => {
           console.log("new re.data:",res.data)
           if(res.data){
-            this.editedItem['id']=res.data['id']
+            // this.editedItem['id']=res.data['id']
             this.subcontratistas.push(this.editedItem)
           }
         })

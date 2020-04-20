@@ -147,6 +147,7 @@ export default {
       camiones: [],
       editedIndex: -1,
       editedItem: {
+        id: '',
         patente_camion: "",
         marca_camion: "",
         modelo_camion: "",
