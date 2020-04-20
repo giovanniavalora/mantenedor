@@ -179,17 +179,18 @@ export default {
 
     save () {
       if (this.editedIndex > -1) {
+        console.log("edit 0:",this.editedItem)
         this.editedItem['proyecto']=1
         this.$axios.put(`/Subcontratista/${this.editedItem['id']}/`,this.editedItem)
         .then(res => {
           console.log("edit res:",res)
           if(res.data){
-            console.log("edit antes:",this.editedItem)
+            console.log("edit 1:",this.editedItem)
             this.editedItem['id']=res.data.id
-            console.log("edit despues",this.editedItem['id'])
-            console.log("edit antes:",this.subcontratistas)
+            console.log("edit 2:",this.editedItem['id'])
+            console.log("edit 3:",this.subcontratistas)
             Object.assign(this.subcontratistas[this.editedIndex], this.editedItem)
-            console.log("edit antes:",this.editedIndex)
+            console.log("edit 4:",this.editedIndex)
           }
         })
         .catch(error => {
