@@ -184,10 +184,12 @@ export default {
         .then(res => {
           console.log("edit res:",res)
           if(res.data){
-            console.log("edit antes:",this.editedItem['id'])
+            console.log("edit antes:",this.editedItem)
             this.editedItem['id']=res.data.id
             console.log("edit despues",this.editedItem['id'])
+            console.log("edit antes:",this.subcontratistas)
             Object.assign(this.subcontratistas[this.editedIndex], this.editedItem)
+            console.log("edit antes:",this.editedIndex)
           }
         })
         .catch(error => {
