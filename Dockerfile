@@ -5,9 +5,6 @@ FROM node:13.12.0
 RUN mkdir -p /src/mantenedor/
 WORKDIR /src/mantenedor
 
-# install dependencies
-# RUN apk update && apk upgrade
-
 # copy project
 COPY . /src/mantenedor/
 RUN npm install

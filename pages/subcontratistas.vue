@@ -158,11 +158,10 @@ export default {
 
     deleteItem (item) {
       const index = this.subcontratistas.indexOf(item)
-      console.log("index: ",index)
       let id = item.id
-      result = confirm('¿Desea eliminar item?') && this.subcontratistas.splice(index, 1)
+      var result = confirm('¿Desea eliminar item?') && this.subcontratistas.splice(index, 1)
       if (result)
-        axios.delete(`http://157.245.237.33:5000/api/v1/Subcontratista/${id}/`)
+        this.$axios.delete(`/Subcontratista/${id}/`)
         .catch(error => {
             alert(Object.values(error.response.data))
         });
@@ -180,20 +179,26 @@ export default {
 
     save () {
       if (this.editedIndex > -1) {
-        Object.assign(this.subcontratistas[this.editedIndex], this.editedItem)
-        console.log("edit")
-        console.log("id: ",this.editedItem['id'])
         this.editedItem['proyecto']=1
-        axios.put(`http://157.245.237.33:5000/api/v1/Subcontratista/${this.editedItem['id']}/`,this.editedItem)
+        this.$axios.put(`/Subcontratista/${this.editedItem['id']}/`,this.editedItem)
+        .then(res => {
+          if(res.data){
+            this.editedItem['id']=res.data['id']
+            Object.assign(this.subcontratistas[this.editedIndex], this.editedItem)
+          }
+        })
         .catch(error => {
           alert(Object.values(error.response.data))
         });
       } else {
-        console.log("save this.subcontratista",this.subcontratistas)
-        this.subcontratistas.push(this.editedItem)
         this.editedItem['proyecto']=1
-        console.log("save this.editedItem",this.editedItem)
-        axios.post('http://157.245.237.33:5000/api/v1/Subcontratista/',this.editedItem)
+        this.$axios.post('/Subcontratista/',this.editedItem)
+        .then(res => {
+          if(res.data){
+            this.editedItem['id']=res.data['id']
+            this.subcontratistas.push(this.editedItem)
+          }
+        })
         .catch(error => {
           alert(Object.values(error.response.data))
         });
@@ -204,18 +209,12 @@ export default {
 
   async created(){
     try {
-      const res = await axios.get('http://157.245.237.33:5000/api/v1/Subcontratista/')
-      // console.log(res.data)
+      const res = await this.$axios.get('/Subcontratista/')
+      console.log("get all subcontratistas",res.data)
       this.subcontratistas = res.data;
     } catch (error) {
       console.log(error)
     }
-  // asyncData({$axios}){
-  //     const res = await $axios.get('/Subcontratista/')
-  //     this.subcontratistas = res.data;
-  // }
-    
-    
   }
 
 }
