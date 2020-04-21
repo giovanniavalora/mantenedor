@@ -10,6 +10,10 @@
                 :headers="headers"
                 :items="camiones"
                 :items-per-page="10"
+                :footer-props="{
+                  itemsPerPageAllText: 'Todo',
+                  itemsPerPageText: 'Filas por página'
+                }"
                 sort-by="nombre_subcontratista"
                 class="elevation-1"
               >
@@ -78,11 +82,53 @@
             
                         <v-card-actions>
                           <v-spacer></v-spacer>
-                          <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
-                          <v-btn color="blue darken-1" text @click="save">Save</v-btn>
+                          <v-btn color="blue darken-1" text @click="close">Cancelar</v-btn>
+                          <v-btn color="blue darken-1" text @click="save">Guardar</v-btn>
                         </v-card-actions>
                       </v-card>
                     </v-dialog>
+
+                    <v-dialog v-model="dialogqr" fullscreen hide-overlay transition="dialog-bottom-transition">
+                    <!-- <v-dialog v-model="dialogqr" hide-overlay transition="dialog-bottom-transition"> -->
+                      <v-card id="imprimirQR">
+                        <v-toolbar dark color="primary">
+                          <v-btn icon dark @click="dialogqr = false">
+                            <v-icon>mdi-close</v-icon>
+                          </v-btn>
+                          <v-toolbar-title>Codigo QR</v-toolbar-title>
+                          <v-spacer></v-spacer>
+                          <v-toolbar-items>
+                            <v-btn dark text @click="printqr">Imprimir</v-btn>
+                          </v-toolbar-items>
+                        </v-toolbar>
+                        <!-- <v-card-title>
+                          <span class="headline">Código QR</span>
+                        </v-card-title> -->
+                        <v-card-text class="text-center mt-12">
+                          <v-container id="qrcamion" fluid>
+                            <div>
+                              <qrcode-vue :value="qrvalue" :size="size" level="H"></qrcode-vue>
+                            </div>
+                            <div><h1>
+                              <br><br>{{datosCamionQR.patente_camion}} <br><br>
+                            </h1></div>
+                            <div><h1>
+                              {{datosCamionQR.marca_camion}}<br><br>
+                            </h1></div>
+                            <div><h1>
+                              {{datosCamionQR.modelo_camion}}<br><br>
+                            </h1></div>
+                            
+                          </v-container>
+                        </v-card-text>
+                        <!-- <v-card-actions>
+                          <v-spacer></v-spacer>
+                          <v-btn color="blue darken-1" text @click="dialogqr=false">Cancelar</v-btn>
+                          <v-btn id="btnPrint" color="blue darken-1" text @click="printqr">Imprimir</v-btn>
+                        </v-card-actions> -->
+                      </v-card>
+                    </v-dialog>
+
                   </v-toolbar>
                 </template>
 
@@ -90,6 +136,7 @@
                   <v-icon
                     small
                     class="mr-2"
+                    @click="getDatosCamionQR(item)"
                   >
                     mdi-qrcode
                   </v-icon>
@@ -123,11 +170,28 @@
 
 <script>
 import axios from 'axios';
+import QrcodeVue from 'qrcode.vue'
+
 export default {
   middleware: 'authenticated',
   data(){
     return {
       dialog: false,
+      dialogqr: false,
+
+      qrvalue: 'holi',
+      size: 500,
+      datosCamionQR: {
+        id: '',
+        patente_camion: "",
+        marca_camion: "",
+        modelo_camion: "",
+      },
+
+      textfootertable:{
+        text: 'todo'
+      },
+
       headers: [
         {
           text: 'Subcontratista',
@@ -163,11 +227,9 @@ export default {
       }
     }
   },
-  // fetch ({ store, redirect }) {
-  //   if (!store.state.user) {
-  //     return redirect('/')
-  //   }
-  // },
+  components: {
+    QrcodeVue,
+  },
   computed: {
     formTitle () {
       return this.editedIndex === -1 ? 'Agregar Nuevo Camión' : 'Editar Camión'
@@ -181,6 +243,28 @@ export default {
   },
 
   methods: {
+    printqr() {
+
+      const elem = document.getElementById("imprimirQR")
+      var domClone = elem.cloneNode(true);
+      var $printSection = document.getElementById("printSection");
+      if (!$printSection) {
+          var $printSection = document.createElement("div");
+          $printSection.id = "printSection";
+          document.body.appendChild($printSection);
+      }
+      $printSection.innerHTML = "";
+      $printSection.appendChild(domClone);
+      window.print();
+      this.dialogqr=false
+
+    },
+    getDatosCamionQR (item) {
+      console.log("datosCamionQR: ",item)
+      this.datosCamionQR = Object.assign({}, item)
+      this.dialogqr=true
+    },
+
     editItem (item) {
       this.editedIndex = this.camiones.indexOf(item)
       this.editedItem = Object.assign({}, item)
@@ -261,4 +345,30 @@ export default {
 </script>
 
 <style>
+
+/* @media screen {
+    #printSection {
+        display: none;
+    }
+}
+@media print {
+    body * {
+        visibility:hidden;
+    }
+    .no-print {
+        display: none;
+    }
+    .v-toolbar {
+      padding: 0 !important;
+    }
+    #printSection, #printSection * {
+        visibility:visible;
+    }
+    #printSection {
+        position:absolute;
+        left:0;
+        top:0;
+    }
+} */
+
 </style>

@@ -10,6 +10,10 @@
                 :headers="headers"
                 :items="subcontratistas"
                 :items-per-page="10"
+                :footer-props="{
+                  itemsPerPageAllText: 'Todo',
+                  itemsPerPageText: 'Filas por página'
+                }"
                 sort-by="nombre_subcontratista"
                 class="elevation-1"
               >
