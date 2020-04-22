@@ -2,7 +2,7 @@
   <v-layout>
     <v-flex>
 
-      <h1 class="text-center">Túnel Hibrido</h1>
+      <h1 class="text-center">{{nombreProyecto}}</h1>
     
       <div class="container mt-5">
           <v-app>
@@ -120,7 +120,6 @@ export default {
         { text: 'Email de contacto', value: 'email_contacto' },
         { text: 'Actions', value: 'actions', sortable: false }
       ],
-      nombreproyecto: '',
       subcontratistas: [],
       editedIndex: -1,
       editedItem: {
@@ -145,6 +144,12 @@ export default {
     formTitle () {
       return this.editedIndex === -1 ? 'Agregar Nuevo Subcontratista' : 'Editar Subcontratista'
     },
+    idProyecto () {
+      return this.$store.state.auth['Proyecto'].id;
+    },
+    nombreProyecto () {
+      return this.$store.state.auth['Proyecto'].nombre_proyecto;
+    }
   },
 
   watch: {
@@ -158,7 +163,6 @@ export default {
       this.editedIndex = this.subcontratistas.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialog = true
-      console.log("editItem()",this.editedItem)
     },
 
     deleteItem (item) {
@@ -181,28 +185,28 @@ export default {
       this.dialog = false
     },
 
+
+
     save () {
       if (this.editedIndex > -1) {
         console.log("edit 0:",this.editedItem)
-        this.editedItem.proyecto = '1'
+        this.editedItem.proyecto = this.idProyecto
+        console.log("edit idP:", this.idProyecto)
+
         Object.assign(this.subcontratistas[this.editedIndex], this.editedItem)
         this.$axios.put(`/Subcontratista/${this.editedItem.id}/`,this.editedItem)
         .then(res => {
-          console.log("edit res:",res)
           if(res.data){
-            console.log("edit 1:",this.editedItem)
+            console.log("edit 2:",this.editedItem)
             this.editedItem['id']=res.data.id
-            console.log("edit 2:",this.editedItem['id'])
-            console.log("edit 3:",this.subcontratistas)
-            // Object.assign(this.subcontratistas[this.editedIndex], this.editedItem)
-            console.log("edit 4:",this.editedIndex)
+            console.log("edit 3:",this.editedItem['id'])
           }
         })
         .catch(error => {
           alert(Object.values(error.response.data))
         });
       } else {
-        this.editedItem['proyecto']=1
+        this.editedItem.proyecto = this.idProyecto
         this.subcontratistas.push(this.editedItem)
         this.$axios.post('/Subcontratista/',this.editedItem)
         .then(res => {

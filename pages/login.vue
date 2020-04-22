@@ -12,8 +12,8 @@
       <v-card-text>
         <v-form>
           <v-text-field 
-            v-model="loginRut" 
-            label="RUT" 
+            v-model="loginEmail" 
+            label="Email" 
             prepend-icon="mdi-account-circle"
           />
           <v-text-field 
@@ -44,7 +44,7 @@
 
 <script>
 const Cookie = process.client ? require('js-cookie') : undefined
-
+import axios from 'axios';
 export default {
   layout: 'login',
   middleware: 'notAuthenticated',
@@ -52,32 +52,36 @@ export default {
     return {
       showPassword: false,
 
-      loginRut: '',
-      loginPassword: ''
+      loginEmail: 'giovanni.aravena@avalora.com',
+      loginPassword: '87654321'
     }
   },
   methods: {
     login() {
       console.log("login")
       return this.$axios.post("/login/",{
-          rut: this.loginRut,
+          email: this.loginEmail,
           password: this.loginPassword
         })
         .then(res => {
           if(res.data.data.token){
-            console.log("token: ",res.data.data.token)
-            // this.$store.commit("saveToken", res.data.data.token)
-            // this.$store.commit('saveUser', this.loginRut)
-            const auth = {
-              User: this.loginRut,
-              Token: res.data.data.token
-            }
-            // Reiniciamos los campos
-            this.loginRut = ''
-            this.loginPassword = ''
-            this.$store.commit('setAuth', auth) // mutating to store for client rendering
-            Cookie.set('auth', auth) // saving token in cookie for server rendering
-            this.$router.push('/')
+
+            this.$axios.get(`/Proyecto/${res.data.data.info.proyecto}/`)
+            .then(proyecto => {
+              // console.log("dataproyecto: ",proyecto.data)
+              const auth = {
+                Email: this.loginEmail,
+                Info: res.data.data.info,
+                Proyecto: proyecto.data,
+                Token: res.data.data.token
+              }
+              // Reiniciamos los campos
+              this.loginEmail = ''
+              this.loginPassword = ''
+              this.$store.commit('setAuth', auth) // mutating to store for client rendering
+              Cookie.set('auth', auth) // saving token in cookie for server rendering
+              this.$router.push('/')
+              })
           }
         })
         .catch(error => {
@@ -85,7 +89,7 @@ export default {
         });
     }
 
-  }
+  },
 }
 </script>
 

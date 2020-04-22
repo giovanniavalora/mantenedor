@@ -138,8 +138,8 @@ export default {
       items: [
         {
           icon: 'mdi-apps',
-          title: 'Reporte',
-          to: '/'
+          title: 'Proyecto',
+          to: '/proyecto'
         },
         {
           icon: 'mdi-cube-send',
@@ -166,13 +166,18 @@ export default {
           title: 'Flota',
           to: '/flota'
         },
+        {
+          icon: 'mdi-calendar',
+          title: 'Reporte',
+          to: '/'
+        },
         // {
         //   icon: 'mdi-qrcode',
         //   title: 'CódigosQR',
         //   to: '/codigosqr'
         // }
       ],
-      miniVariant: true,
+      miniVariant: false,
       right: true,
       rightDrawer: false,
       title: 'Plataforma Control Camiones'
@@ -187,7 +192,7 @@ export default {
   },
   computed: {
     user: function(){
-      return this.$store.state.auth['User'];
+      return this.$store.state.auth['Info'].nombre;
     }
   },
 }

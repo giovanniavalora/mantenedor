@@ -2,7 +2,7 @@
   <v-layout>
     <v-flex>
 
-      <h1 class="text-center">Túnel Hibrido</h1>
+      <h1 class="text-center">{{nombreProyecto}}</h1>
     
       <div class="container mt-5">
           <v-app>
@@ -98,7 +98,7 @@
                           <v-toolbar-title>Codigo QR</v-toolbar-title>
                           <v-spacer></v-spacer>
                           <v-toolbar-items>
-                            <v-btn dark text @click="printqr">Imprimir</v-btn>
+                            <v-btn dark text @click="imprimirqr">Imprimir</v-btn>
                           </v-toolbar-items>
                         </v-toolbar>
                         <!-- <v-card-title>
@@ -124,7 +124,7 @@
                         <!-- <v-card-actions>
                           <v-spacer></v-spacer>
                           <v-btn color="blue darken-1" text @click="dialogqr=false">Cancelar</v-btn>
-                          <v-btn id="btnPrint" color="blue darken-1" text @click="printqr">Imprimir</v-btn>
+                          <v-btn id="btnPrint" color="blue darken-1" text @click="imprimirqr">Imprimir</v-btn>
                         </v-card-actions> -->
                       </v-card>
                     </v-dialog>
@@ -179,8 +179,8 @@ export default {
       dialog: false,
       dialogqr: false,
 
-      qrvalue: 'holi',
-      size: 500,
+      qrvalue: '',
+      size: 300,
       datosCamionQR: {
         id: '',
         patente_camion: "",
@@ -234,6 +234,9 @@ export default {
     formTitle () {
       return this.editedIndex === -1 ? 'Agregar Nuevo Camión' : 'Editar Camión'
     },
+    nombreProyecto () {
+      return this.$store.state.auth['Proyecto'].nombre_proyecto;
+    }
   },
 
   watch: {
@@ -243,8 +246,8 @@ export default {
   },
 
   methods: {
-    printqr() {
-
+    imprimirqr() {
+      console.log("fui llamado")
       const elem = document.getElementById("imprimirQR")
       var domClone = elem.cloneNode(true);
       var $printSection = document.getElementById("printSection");
@@ -259,17 +262,30 @@ export default {
       this.dialogqr=false
 
     },
+
     getDatosCamionQR (item) {
       console.log("datosCamionQR: ",item)
+      this.$axios.get(`/CodigoQRCamion/${item.id}`)
+      .then(res => {
+        console.log("id_codigoqr_activo:",res.data.data.id_codigoqr_activo)
+        this.qrvalue = String(res.data.data.id_codigoqr_activo)
+        // this.editedItem['id']=res.data['id']
+        // Object.assign(this.camiones[this.editedIndex], this.editedItem)
+      })
+      .catch(error => {
+        this.qrvalue = 'error'
+        alert(Object.values(error.response.data))
+      });
       this.datosCamionQR = Object.assign({}, item)
       this.dialogqr=true
     },
+
 
     editItem (item) {
       this.editedIndex = this.camiones.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialog = true
-      console.log("editItem() - editedIndex:",this.editedIndex)
+      console.log("editedIndex:",this.editedIndex)
     },
 
     deleteItem (item) {
@@ -284,13 +300,14 @@ export default {
     },
 
     close () {
-      
       setTimeout(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
         this.editedIndex = -1
       }, 300),
       this.dialog = false
     },
+
+
 
     save () {
       if (this.editedIndex > -1) {
