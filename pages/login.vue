@@ -85,11 +85,45 @@ export default {
           }
         })
         .catch(error => {
-          alert(Object.values(error.response.data))
+          console.log(error.response.data)
         });
     }
 
   },
+  // methods: {
+  //   login() {
+  //     console.log("login")
+  //     return this.$axios.post("/login/",{
+  //         email: this.loginEmail,
+  //         password: this.loginPassword
+  //       })
+  //       .then(res => {
+  //         if(res.data.data.token){
+
+  //           this.$axios.get(`/Proyecto/${res.data.data.info.proyecto}/`)
+  //           .then(proyecto => {
+  //             // console.log("dataproyecto: ",proyecto.data)
+  //             const auth = {
+  //               Email: this.loginEmail,
+  //               Info: res.data.data.info,
+  //               Proyecto: proyecto.data,
+  //               Token: res.data.data.token
+  //             }
+  //             // Reiniciamos los campos
+  //             this.loginEmail = ''
+  //             this.loginPassword = ''
+  //             this.$store.commit('setAuth', auth) // mutating to store for client rendering
+  //             Cookie.set('auth', auth) // saving token in cookie for server rendering
+  //             this.$router.push('/')
+  //             })
+  //         }
+  //       })
+  //       .catch(error => {
+  //         alert(Object.values(error.response.data))
+  //       });
+  //   }
+
+  // },
 }
 </script>
 
