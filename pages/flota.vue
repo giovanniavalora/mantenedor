@@ -14,7 +14,7 @@
                   itemsPerPageAllText: 'Todo',
                   itemsPerPageText: 'Filas por página'
                 }"
-                sort-by="nombre_subcontratista"
+                sort-by="subcontratista"
                 class="elevation-1"
               >
                 <template v-slot:top>
@@ -27,7 +27,7 @@
                     ></v-divider>
                     <v-spacer></v-spacer>
 
-                    <v-dialog v-model="dialog" max-width="900px">
+                    <v-dialog v-model="dialog" persistent max-width="900px">
                       <template v-slot:activator="{ on }">
                         <v-btn color="primary" dark class="mb-2" v-on="on">Agregar Nuevo</v-btn>
                       </template>
@@ -41,19 +41,25 @@
                           <v-container>
                             <v-row>
                               <v-col cols="12" sm="6" md="4">
-                                <v-text-field v-model="editedItem.patente_camion" label="Patente"></v-text-field>
+                                <v-text-field v-model="editedItem.patente_camion" label="Patente" required></v-text-field>
                               </v-col>
                               <v-col cols="12" sm="6" md="4">
-                                <v-text-field v-model="editedItem.marca_camion" label="Marca"></v-text-field>
+                                <v-text-field v-model="editedItem.marca_camion" label="Marca" required></v-text-field>
                               </v-col>
                               <v-col cols="12" sm="6" md="4">
-                                <v-text-field v-model="editedItem.modelo_camion" label="Modelo"></v-text-field>
+                                <v-text-field v-model="editedItem.modelo_camion" label="Modelo" required></v-text-field>
                               </v-col>
                               <v-col cols="12" sm="6" md="4">
-                                <v-text-field v-model="editedItem.capacidad_camion" label="Capacidad"></v-text-field>
+                                <v-text-field v-model="editedItem.capacidad_camion" label="Capacidad" required></v-text-field>
                               </v-col>
                               <v-col cols="12" sm="6" md="4">
-                                <v-text-field v-model="editedItem.unidad_medida" label="Unidad de medida"></v-text-field>
+                                <v-select
+                                  v-model="editedItem.unidad_medida"
+                                  :items="['m3', 'ton']"
+                                  label="Unidad de medida"
+                                  required
+                                ></v-select>
+                                <!-- <v-text-field v-model="editedItem.unidad_medida" label="Unidad de medida"></v-text-field> -->
                               </v-col>
                               <v-col cols="12" sm="6" md="4">
                                 <v-text-field v-model="editedItem.numero_ejes" label="Número de ejes"></v-text-field>
@@ -74,7 +80,17 @@
                                 <v-text-field v-model="editedItem.telefono_conductor_principal" label="Teléfono conductor principal"></v-text-field>
                               </v-col>
                               <v-col cols="12" sm="6" md="4">
-                                <v-text-field v-model="editedItem.subcontratista" label="Subcontratista"></v-text-field>
+                                <v-select
+                                  v-model="editedItem.subcontratista"
+                                  :items= camiones
+                                  item-text="nom_subcontratista" 
+                                  item-value="subcontratista" 
+                                  single-line 
+                                  auto 
+                                  label="Subcontratista"
+                                  required
+                                ></v-select>
+                                <!-- <v-text-field v-model="editedItem.subcontratista" label="Subcontratista"></v-text-field> -->
                               </v-col>
                             </v-row>
                           </v-container>
@@ -197,7 +213,7 @@ export default {
           text: 'Subcontratista',
           align: 'start',
           sortable: false,
-          value: 'subcontratista',
+          value: 'nom_subcontratista',
         },
         { text: 'Patente', value: 'patente_camion' },
         { text: 'Marca', value: 'marca_camion' },
@@ -207,7 +223,7 @@ export default {
         { text: 'Nombre conductor', value: 'nombre_conductor_principal' },
         { text: 'Actions', value: 'actions', sortable: false }
       ],
-      nombreproyecto: '',
+      // subcontratistas: [],
       camiones: [],
       editedIndex: -1,
       editedItem: {
@@ -223,7 +239,8 @@ export default {
         numero_ejes: "",
         unidad_medida: "",
         color_camion: "",
-        subcontratista: ""
+        subcontratista: "",
+        nom_subcontratista: "", //no es propio del modelo, se agrega en el front
       }
     }
   },
@@ -247,7 +264,6 @@ export default {
 
   methods: {
     imprimirqr() {
-      console.log("fui llamado")
       const elem = document.getElementById("imprimirQR")
       var domClone = elem.cloneNode(true);
       var $printSection = document.getElementById("printSection");
@@ -285,7 +301,6 @@ export default {
       this.editedIndex = this.camiones.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialog = true
-      console.log("editedIndex:",this.editedIndex)
     },
 
     deleteItem (item) {
@@ -311,13 +326,12 @@ export default {
 
     save () {
       if (this.editedIndex > -1) {
+        // console.log(this.camiones.find(x => x.id === this.editedItem.id).nom_subcontratista)
+        // this.editedItem.nom_subcontratista = this.camiones.find(x => x.id === this.editedItem.id).nom_subcontratista
         Object.assign(this.camiones[this.editedIndex], this.editedItem)
         this.$axios.put(`/Camion/${this.editedItem['id']}/`,this.editedItem)
         .then(res => {
           console.log("edit re.data:",res.data)
-          // this.editedItem['id']=res.data['id']
-          // Object.assign(this.camiones[this.editedIndex], this.editedItem)
-          
         })
         .catch(error => {
           alert(Object.values(error.response.data))
@@ -344,19 +358,30 @@ export default {
   async created(){
     try {
       // const res = await axios.get('http://157.245.237.33:5000/api/v1/Camion/')
-      const res = await this.$axios.get('/Camion/')
-      // console.log(res.data)
-      this.camiones = res.data;
+      const rescamion = await this.$axios.get('/Camion/')
+      this.camiones = rescamion.data;
+
+      /** Para mostrar el nombre de los Subcontratista en la tabla (no se obtiene en la consulta anterior) **/
+      const resp_subcontratistas = await this.$axios.get('/Subcontratista/')
+      // this.subcontratistas = resp_subcontratistas.data;
+      for (var x in rescamion.data){
+        var sub = rescamion.data[x].subcontratista
+        var subcon = resp_subcontratistas.data.find(x => x.id === sub)
+        this.camiones[x].nom_subcontratista = subcon.nombre_subcontratista
+      }
+      this.close() //para actualizar
+
     } catch (error) {
       console.log(error)
     }
+  }
   // asyncData({$axios}){
   //     const res = await $axios.get('/camion/')
   //     this.camiones = res.data;
   // }
     
     
-  }
+  
 
 }
 </script>
