@@ -189,6 +189,7 @@ import axios from 'axios';
 import QrcodeVue from 'qrcode.vue'
 
 export default {
+  layout: 'login',
   middleware: 'authenticated',
   data(){
     return {
