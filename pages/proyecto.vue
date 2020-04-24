@@ -10,7 +10,7 @@
           >
             <v-row>
               
-              <v-col cols="12" sm="12" md="4">
+              <v-col cols="12" sm="12" >
                 <v-text-field
                   v-model="centro_de_coste"
                   :counter="20"
@@ -20,7 +20,7 @@
                 ></v-text-field>
               </v-col>
 
-              <v-col cols="12" sm="6" md="4">
+              <v-col cols="12" sm="12">
                 <v-text-field
                   v-model="nombre_proyecto"
                   :counter="100"
@@ -30,7 +30,7 @@
                 ></v-text-field>
               </v-col>
 
-              <v-col cols="12" sm="6" md="4">
+              <v-col cols="12" sm="12">
                 <v-select
                   v-model="select"
                   :items="items"
