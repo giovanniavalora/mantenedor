@@ -283,8 +283,8 @@ export default {
       console.log("datosCamionQR: ",item)
       this.$axios.get(`/CodigoQRCamion/${item.id}`)
       .then(res => {
-        console.log("id_codigoqr_activo:",res.data.data.id_codigoqr_activo)
-        this.qrvalue = String(res.data.data.id_codigoqr_activo)
+        console.log("codigoqr_activo:",res.data.data.codigoqr_activo)
+        this.qrvalue = '{id_qr:'+String(res.data.data.codigoqr_activo.id)+', id_camion:'+String(res.data.data.codigoqr_activo.camion)+'}'
         // this.editedItem['id']=res.data['id']
         // Object.assign(this.camiones[this.editedIndex], this.editedItem)
       })
