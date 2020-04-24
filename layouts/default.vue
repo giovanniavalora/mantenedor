@@ -136,11 +136,11 @@ export default {
       drawer: true,
       fixed: false,
       items: [
-        // {
-        //   icon: 'mdi-apps',
-        //   title: 'Proyecto',
-        //   to: '/proyecto'
-        // },
+        {
+          icon: 'mdi-apps',
+          title: 'Proyecto',
+          to: '/proyecto'
+        },
         {
           icon: 'mdi-cube-send',
           title: 'Despachadores',
