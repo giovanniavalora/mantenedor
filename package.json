@@ -14,8 +14,11 @@
     "@nuxtjs/axios": "^5.3.6",
     "cookieparser": "^0.1.0",
     "js-cookie": "^2.2.1",
+    "leaflet": "^1.6.0",
     "nuxt": "^2.0.0",
-    "qrcode.vue": "^1.7.0"
+    "nuxt-leaflet": "0.0.21",
+    "qrcode.vue": "^1.7.0",
+    "vue2-leaflet": "^2.5.2"
   },
   "devDependencies": {
     "@nuxtjs/vuetify": "^1.0.0"

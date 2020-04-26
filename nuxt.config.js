@@ -14,7 +14,7 @@ export default {
       { hid: 'description', name: 'description', content: process.env.npm_package_description || '' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
     ]
   },
   /*
@@ -31,6 +31,7 @@ export default {
   */
   plugins: [
     // '@plugins/vuetify.js'
+    // {src: '~/plugins/vue-leaflet', ssr: false },
   ],
   /*
   ** Nuxt.js dev-modules
@@ -44,14 +45,15 @@ export default {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
+    ['nuxt-leaflet', { /* module options */ }],
   ],
   /*
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
-    baseURL: "http://157.245.237.33:5000/api/v1"
-    // baseURL: "http://localhost:5000/api/v1" 
+    // baseURL: "http://157.245.237.33:5000/api/v1"
+    baseURL: "http://localhost:5000/api/v1" 
   },
   /*
   ** vuetify module configuration
