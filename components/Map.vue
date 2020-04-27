@@ -1,15 +1,14 @@
 <template>
-<div>
-  <div id="map-wrap" v-if="browser">
-    <no-ssr>
-        <v-map :zoom=4
-            :center="[markers[0].lat, markers[0].lng]">
-        <v-tilelayer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></v-tilelayer>
-        <v-marker v-for="marker in markers" :key="marker.id" :lat-lng="[marker.lat, marker.lng]"></v-marker>
-        </v-map>
-    </no-ssr>
-  </div>
+
+<div id="map-wrap" style="height: 80vh">
+ <no-ssr>
+   <l-map :zoom=16 :center="[markers[0].lat, markers[0].lng]">
+     <l-tile-layer url="http://{s}.tile.osm.org/{z}/{x}/{y}.png"></l-tile-layer>
+     <l-marker v-for="marker in markers" :key="marker.id" :lat-lng="[marker.lat, marker.lng]" draggable="True"></l-marker>
+   </l-map>
+ </no-ssr>
 </div>
+
 </template>
 
 <script>
@@ -19,8 +18,8 @@
       return {
         browser: process.browser,
         markers: [ 
-          {id: 1, lat: 55.8350812, lng: 8.1634942 },
-          {id: 2, lat: 47.413220, lng: -1.229482 }
+          {id: 1, lat: -33.4350812, lng: -70.6826942 },
+          {id: 2, lat: -33.4353220, lng: -70.6838581 }
         ]
       }
     }

@@ -5,10 +5,10 @@
     <section class="hero is-primary is-absolute">
       <div class="hero-body">
         <div class="container">
-          <h1 class="title">nuxt-leaflet</h1>
-          <h2 class="subtitle">
-            yarn add nuxt-leaflet
-      </h2>
+            <h1 class="title">nuxt-leaflet</h1>
+            <h2 class="subtitle">
+                yarn add nuxt-leaflet
+            </h2>
         </div>
       </div>
     </section>
