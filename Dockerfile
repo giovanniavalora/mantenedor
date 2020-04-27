@@ -8,6 +8,7 @@ WORKDIR /src/mantenedor
 # copy project
 COPY . /src/mantenedor/
 RUN npm install
+RUN npm run build
 EXPOSE 3000
 # RUN npm run dev
 ENV HOST 0.0.0.0
