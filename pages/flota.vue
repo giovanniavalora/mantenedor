@@ -264,17 +264,17 @@ export default {
 
   methods: {
     imprimirqr() {
-      const elem = document.getElementById("imprimirQR")
-      var domClone = elem.cloneNode(true);
-      var $printSection = document.getElementById("printSection");
-      if (!$printSection) {
-          var $printSection = document.createElement("div");
-          $printSection.id = "printSection";
-          document.body.appendChild($printSection);
-      }
-      $printSection.innerHTML = "";
-      $printSection.appendChild(domClone);
-      window.print();
+      // const elem = document.getElementById("imprimirQR")
+      // var domClone = elem.cloneNode(true);
+      // var $printSection = document.getElementById("printSection");
+      // if (!$printSection) {
+      //     var $printSection = document.createElement("div");
+      //     $printSection.id = "printSection";
+      //     document.body.appendChild($printSection);
+      // }
+      // $printSection.innerHTML = "";
+      // $printSection.appendChild(domClone);
+      print() // window.print();
       this.dialogqr=false
 
     },
@@ -284,7 +284,7 @@ export default {
       this.$axios.get(`/CodigoQRCamion/${item.id}`)
       .then(res => {
         console.log("codigoqr_activo:",res.data.data.codigoqr_activo)
-        this.qrvalue = '{id_qr:'+String(res.data.data.codigoqr_activo.id)+', id_camion:'+String(res.data.data.codigoqr_activo.camion)+'}'
+        this.qrvalue = '{\"id_qr\":'+String(res.data.data.codigoqr_activo.id)+', \"id_camion\":'+String(res.data.data.codigoqr_activo.camion)+'}'
         // this.editedItem['id']=res.data['id']
         // Object.assign(this.camiones[this.editedIndex], this.editedItem)
       })

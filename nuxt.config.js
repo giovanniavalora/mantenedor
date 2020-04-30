@@ -46,6 +46,7 @@ export default {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     'nuxt-leaflet',
+    'portal-vue/nuxt'
     // ['nuxt-leaflet', {ssr:false}],
   ],
   /*

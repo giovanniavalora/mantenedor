@@ -3,8 +3,17 @@
     <v-flex>
 
       <h1 class="text-center">{{nombreProyecto}}</h1>
+      
     
       <div class="container mt-5">
+          <!-- <portal to="mapita"> -->
+            <!-- <Map class="map" 
+                :lat="editedItem.latitud" 
+                :lng="editedItem.longitud" 
+                @latitudeChange="editedItem.latitud = $event" 
+                @longitudeChange="editedItem.longitud = $event">
+            </Map> -->
+          <!-- </portal> -->
           <v-app>
               <v-data-table
                 :headers="headers"
@@ -28,6 +37,8 @@
                     <v-spacer></v-spacer>
 
                     <v-dialog v-model="dialog" max-width="900px">
+                      
+
                       <template v-slot:activator="{ on }">
                         <v-btn color="primary" dark class="mb-2" v-on="on">Agregar Nuevo</v-btn>
                       </template>
@@ -44,16 +55,44 @@
                                 <v-text-field v-model="editedItem.nombre_origen" label="Nombre Origen"></v-text-field>
                               </v-col>
                               <v-col cols="12" sm="6" md="4">
+                                <v-text-field v-model="editedItem.comuna" label="Comuna"></v-text-field>
+                              </v-col>
+                              <v-col cols="12" sm="6" md="4">
+                                <v-text-field v-model="editedItem.calle" label="Calle"></v-text-field>
+                              </v-col>
+                              <v-col cols="12" sm="6" md="4">
+                                <v-text-field v-model="editedItem.numero" label="Número"></v-text-field>
+                              </v-col>
+                              
+                              <!-- <v-col cols="12" sm="6" md="4">
                                 <v-text-field v-model="editedItem.longitud" label="Longitud"></v-text-field>
                               </v-col>
                               <v-col cols="12" sm="6" md="4">
                                 <v-text-field v-model="editedItem.latitud" label="Latitud"></v-text-field>
-                              </v-col>
+                              </v-col> -->
+                            </v-row>
+                            
+                          </v-container>
+                         
+                        </v-card-text>
+                        <!-- <div>
+                          <v-img height="100%" width="100%">
+                          <client-only> -->
+                          <v-container fill-height fluid>
+                            <v-row justify="center">
+                              <Map class="map" 
+                                  :lat="editedItem.latitud" 
+                                  :lng="editedItem.longitud" 
+                                  @latitudeChange="editedItem.latitud = $event" 
+                                  @longitudeChange="editedItem.longitud = $event">
+                              </Map>
                             </v-row>
                           </v-container>
-                        </v-card-text>
-
-                        <!-- <iframe style="width:80%" src="/materiales"></iframe> -->
+                          <!-- </client-only>
+                          </v-img>
+                        </div> -->
+                        <!-- <iframe style="width:80%; height: 100%;" src="/mapa"></iframe> -->
+                          
             
                         <v-card-actions>
                           <v-spacer></v-spacer>
@@ -61,6 +100,7 @@
                           <v-btn color="blue darken-1" text @click="save">Save</v-btn>
                         </v-card-actions>
                       </v-card>
+                      
                     </v-dialog>
                   </v-toolbar>
                 </template>
@@ -92,11 +132,13 @@
 
 <script>
 import axios from 'axios';
+import Map from '~/components/Map.vue';
+
 export default {
   middleware: 'authenticated',
   data(){
     return {
-      dialog: false,
+      dialog: true,
       headers: [
         {
           text: 'Nombre Origen',
@@ -104,8 +146,8 @@ export default {
           sortable: false,
           value: 'nombre_origen',
         },
-        { text: 'Longitud', value: 'longitud' },
         { text: 'Latitud', value: 'latitud' },
+        { text: 'Longitud', value: 'longitud' },
         { text: 'Actions', value: 'actions', sortable: false }
       ],
       origenes: [],
@@ -113,20 +155,28 @@ export default {
       editedItem: {
         id: '',
         nombre_origen: '',
+        comuna: '',
+        calle: '',
+        numero: '',
         longitud: '',
         latitud: '',
         proyecto: ''
       }
     }
   },
-  // fetch ({ store, redirect }) {
-  //   if (!store.state.user) {
-  //     return redirect('/')
-  //   }
-  // },
+  components: {
+      Map
+  },
   computed: {
     formTitle () {
-      return this.editedIndex === -1 ? 'Agregar Nuevo Origen' : 'Editar Origen'
+      if (this.editedIndex === -1){
+        this.editedItem.longitud = '-70.567663758'
+        this.editedItem.latitud = '-33.404889471'
+        return 'Agregar Nuevo Origen'
+      }else{
+        return 'Editar Origen'
+      }
+      // return this.editedIndex === -1 ? 'Agregar Nuevo Origen' : 'Editar Origen'
     },
     idProyecto () {
       return this.$store.state.auth['Proyecto'].id;
@@ -217,6 +267,7 @@ export default {
       const res = await this.$axios.get('/Origen/')
       console.log("get all origenes",res.data)
       this.origenes = res.data;
+      this.dialog=false
     } catch (error) {
       console.log(error)
     }
@@ -226,4 +277,32 @@ export default {
 </script>
 
 <style>
+/* Map {
+    position: fixed !important;
+}
+.map {
+    position: fixed !important;
+} */
+  /* .map{ */
+    /* height: 100%;
+    width: 100%; */
+    /* position: fixed !important; */
+    /* position: absolute;
+    height: inherit;
+    width: inherit;
+  } */
+
+  /* .map {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+  } */
+  /* .map{
+    transform: translate3d(-50px,-50px);
+  } */
+  /* .map{
+    transform: translate(50%,50%);
+  } */
+
 </style>

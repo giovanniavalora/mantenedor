@@ -17,6 +17,7 @@
     "leaflet": "^1.6.0",
     "nuxt": "^2.0.0",
     "nuxt-leaflet": "0.0.21",
+    "portal-vue": "^2.1.7",
     "qrcode.vue": "^1.7.0",
     "vue-no-ssr": "^1.1.1",
     "vue2-leaflet": "^2.5.2"
