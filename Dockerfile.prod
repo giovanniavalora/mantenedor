@@ -9,7 +9,7 @@ WORKDIR /src/mantenedor
 COPY . /src/mantenedor/
 # RUN npm update
 RUN npm install
-RUN npm run build
+# RUN npm run build
 # RUN npm run start
 # RUN npm install js-cookie --save
 # RUN npm install cookieparser --save
