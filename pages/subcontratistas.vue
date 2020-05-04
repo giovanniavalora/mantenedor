@@ -207,7 +207,8 @@ export default {
         });
       } else {
         this.editedItem.proyecto = this.idProyecto
-        this.subcontratistas.push(this.editedItem)
+        this.editedItem['id']=res.data['id'] /** No va aqui (solucion parche) */
+        this.subcontratistas.push(this.editedItem) /** No va aqui (solucion parche) */
         this.$axios.post('/Subcontratista/',this.editedItem)
         .then(res => {
           console.log("new re.data:",res.data)

@@ -430,14 +430,15 @@ export default {
       } else {
         var guardado = false
         this.editedItem.proyecto = this.idProyecto
-        this.destinos.push(this.editedItem)
+        this.editedItem['id']=res.data['id'] /** No va aqui (solucion parche) */
+        this.destinos.push(this.editedItem) /** No va aqui (solucion parche) */
         this.$axios.post('/Destino/',this.editedItem)
         .then(res => {
           if(res.data){
             guardado = true
             console.log("c.guardado1:",guardado)
             console.log("c.this.editedItem1:",this.editedItem)
-            this.editedItem['id']=res.data['id']
+            // this.editedItem['id']=res.data['id']
             console.log("c.this.editedItem2:",this.editedItem)
             // this.destinos.push(this.editedItem)
             this.snack = true

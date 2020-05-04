@@ -219,7 +219,8 @@ export default {
         });
       } else {
         this.editedItem.proyecto = this.idProyecto
-        this.despachadores.push(this.editedItem)
+        this.editedItem['id']=res.data['id'] /** No va aqui (solucion parche) */
+        this.despachadores.push(this.editedItem) /** No va aqui (solucion parche) */
         this.$axios.post('/Despachador/',this.editedItem)
         .then(res => {
           console.log("new re.data:",res.data)

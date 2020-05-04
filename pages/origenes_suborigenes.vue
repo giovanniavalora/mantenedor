@@ -436,12 +436,13 @@ export default {
       } else {
         this.editedItem.proyecto = this.idProyecto
         console.log("create1:",this.origenes)
-        this.origenes.push(this.editedItem)
+        this.editedItem['id']=res.data['id'] /** No va aqui (solucion parche) */
+        this.origenes.push(this.editedItem) /** No va aqui (solucion parche) */
         this.$axios.post('/Origen/',this.editedItem)
         .then(res => {
           console.log("new res.data:",res.data)
           if(res.data){
-            this.editedItem['id']=res.data['id']
+            // this.editedItem['id']=res.data['id']
             console.log("create2:",this.origenes)
             // this.origenes.push(this.editedItem)
             console.log("create3:",this.origenes)
