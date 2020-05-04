@@ -53,7 +53,17 @@
                                 <v-text-field v-model="editedItem.telefono" label="Nro telefónico entregado"></v-text-field>
                               </v-col>
                               <v-col cols="12" sm="6" md="4">
-                                <v-text-field v-model="editedItem.origen_asignado" label="Origen"></v-text-field>
+                                <v-select
+                                  v-model="editedItem.origen_asignado"
+                                  :items= origenes
+                                  item-text="nombre_origen" 
+                                  item-value="id" 
+                                  single-line 
+                                  auto 
+                                  label="Origen"
+                                  required
+                                ></v-select>
+                                <!-- <v-text-field v-model="editedItem.origen_asignado" label="Origen"></v-text-field> -->
                               </v-col>
                               <v-col cols="12" sm="6" md="4">
                                 <v-text-field v-model="editedItem.password" type="password" label="Contraseña"></v-text-field>
@@ -117,6 +127,7 @@ export default {
         { text: 'Origen', value: 'origen_asignado' },
         { text: 'Actions', value: 'actions', sortable: false }
       ],
+      origenes: [],
       despachadores: [],
       editedIndex: -1,
       editedItem: {
@@ -127,6 +138,7 @@ export default {
         apellido: '',
         telefono: '',
         origen_asignado: '',
+        nom_origen: "", //no es propio del modelo, se agrega en el front
         proyecto: ''
       }
     }
@@ -227,8 +239,10 @@ export default {
   async created(){
     try {
       const res = await this.$axios.get('/Despachador/')
-      console.log("get all despachadores",res.data)
       this.despachadores = res.data;
+      /** Para mostrar los nombres de los Subcontratista en el dropdown del modal **/
+      const resp_origenes = await this.$axios.get('/Origen/') //Se obtienen todos, pero debieran ser solo los del proyecto
+      this.origenes = resp_origenes.data;
     } catch (error) {
       console.log(error)
     }

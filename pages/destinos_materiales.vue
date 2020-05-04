@@ -436,7 +436,9 @@ export default {
           if(res.data){
             guardado = true
             console.log("c.guardado1:",guardado)
+            console.log("c.this.editedItem1:",this.editedItem)
             this.editedItem['id']=res.data['id']
+            console.log("c.this.editedItem2:",this.editedItem)
             // this.destinos.push(this.editedItem)
             this.snack = true
             this.snackColor = 'success'
