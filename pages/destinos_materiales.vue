@@ -430,7 +430,7 @@ export default {
       } else {
         var guardado = false
         this.editedItem.proyecto = this.idProyecto
-        this.editedItem['id']=res.data['id'] /** No va aqui (solucion parche) */
+        // this.editedItem['id']=res.data['id'] /** No va aqui (solucion parche) */
         this.destinos.push(this.editedItem) /** No va aqui (solucion parche) */
         this.$axios.post('/Destino/',this.editedItem)
         .then(res => {

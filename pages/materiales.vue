@@ -338,7 +338,7 @@ export default {
        
       } else {
         console.log("this.editedItem",this.editedItem)
-        this.editedItem['id']=res.data['id'] /** No va aqui (solucion parche) */
+        // this.editedItem['id']=res.data['id'] /** No va aqui (solucion parche) */
         this.camiones.push(this.editedItem) /** No va aqui (solucion parche) */
         this.$axios.post('/Camion/',this.editedItem)
         .then(res => {

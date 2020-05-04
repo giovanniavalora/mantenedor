@@ -436,7 +436,7 @@ export default {
       } else {
         this.editedItem.proyecto = this.idProyecto
         console.log("create1:",this.origenes)
-        this.editedItem['id']=res.data['id'] /** No va aqui (solucion parche) */
+        // this.editedItem['id']=res.data['id'] /** No va aqui (solucion parche) */
         this.origenes.push(this.editedItem) /** No va aqui (solucion parche) */
         this.$axios.post('/Origen/',this.editedItem)
         .then(res => {
