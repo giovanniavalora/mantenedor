@@ -416,11 +416,12 @@ export default {
       if (this.editedIndex > -1) {
         this.editedItem.proyecto = this.idProyecto
         console.log("edit1:",this.origenes[this.editedIndex])
+        Object.assign(this.origenes[this.editedIndex], this.editedItem)
         this.$axios.put(`/Origen/${this.editedItem.id}/`,this.editedItem)
         .then(res => {
           if(res.data){
-            console.log("edit2:",this.origenes[this.editedIndex])
-            Object.assign(this.origenes[this.editedIndex], this.editedItem)
+            console.log("edit2:",this.origenes[this.editedIndex])//Arroja undefined
+            // Object.assign(this.origenes[this.editedIndex], this.editedItem)
             console.log("edit3:",this.origenes[this.editedIndex])
             this.snack = true
             this.snackColor = 'success'
@@ -435,13 +436,14 @@ export default {
       } else {
         this.editedItem.proyecto = this.idProyecto
         console.log("create1:",this.origenes)
+        this.origenes.push(this.editedItem)
         this.$axios.post('/Origen/',this.editedItem)
         .then(res => {
           console.log("new res.data:",res.data)
           if(res.data){
             this.editedItem['id']=res.data['id']
             console.log("create2:",this.origenes)
-            this.origenes.push(this.editedItem)
+            // this.origenes.push(this.editedItem)
             console.log("create3:",this.origenes)
             this.snack = true
             this.snackColor = 'success'

@@ -403,13 +403,15 @@ export default {
 
     save () {
       if (this.editedIndex > -1) {
+        var guardado = false
         this.editedItem.proyecto = this.idProyecto
-
-        
+        Object.assign(this.destinos[this.editedIndex], this.editedItem)
         this.$axios.put(`/Destino/${this.editedItem.id}/`,this.editedItem)
         .then(res => {
           if(res.data){
-            Object.assign(this.destinos[this.editedIndex], this.editedItem)
+            console.log("e.guardado1:",guardado)
+            guardado = true
+            console.log("e.guardado2:",guardado)
             this.snack = true
             this.snackColor = 'success'
             this.snackText = 'Actualizado'
@@ -420,13 +422,22 @@ export default {
             this.snackColor = 'error'
             this.snackText = error
         });
+        // console.log("e.guardado3:",guardado)
+        // if (guardado){
+        //     Object.assign(this.destinos[this.editedIndex], this.editedItem)
+        // }
+        
       } else {
+        var guardado = false
         this.editedItem.proyecto = this.idProyecto
+        this.destinos.push(this.editedItem)
         this.$axios.post('/Destino/',this.editedItem)
         .then(res => {
           if(res.data){
+            guardado = true
+            console.log("c.guardado1:",guardado)
             this.editedItem['id']=res.data['id']
-            this.destinos.push(this.editedItem)
+            // this.destinos.push(this.editedItem)
             this.snack = true
             this.snackColor = 'success'
             this.snackText = 'Creado'
@@ -437,6 +448,10 @@ export default {
             this.snackColor = 'error'
             this.snackText = error
         });
+        console.log("c.guardado2:",guardado)
+        if (guardado){
+            Object.assign(this.destinos[this.editedIndex], this.editedItem)
+        }
       }
       this.close()
     },
