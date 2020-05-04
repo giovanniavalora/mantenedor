@@ -63,7 +63,18 @@
                               <v-col cols="12" sm="6" md="4">
                                 <v-text-field v-model="editedItem.numero" label="Número"></v-text-field>
                               </v-col>
-                              
+                              <v-col cols="12" sm="6" md="4">
+                                <v-select
+                                  :items= filteredSuborigenes
+                                  item-text="nombre_suborigen" 
+                                  item-value="id" 
+                                  single-line 
+                                  auto 
+                                  label="Suborigenes"
+                                  required
+                                ></v-select>
+                                <!-- <v-text-field v-model="editedItem.subcontratista" label="Subcontratista"></v-text-field> -->
+                              </v-col>
                               <!-- <v-col cols="12" sm="6" md="4">
                                 <v-text-field v-model="editedItem.longitud" label="Longitud"></v-text-field>
                               </v-col>
@@ -75,23 +86,18 @@
                           </v-container>
                          
                         </v-card-text>
-                        <!-- <div>
-                          <v-img height="100%" width="100%">
-                          <client-only> -->
                           <v-container fill-height fluid>
-                            <v-row justify="center">
-                              <Map class="map" 
-                                  :lat="editedItem.latitud" 
-                                  :lng="editedItem.longitud" 
-                                  @latitudeChange="editedItem.latitud = $event" 
-                                  @longitudeChange="editedItem.longitud = $event">
-                              </Map>
+                            <v-row justify="center" align="center">
+                              <v-col cols="12">
+                                <Map class="map" 
+                                    :lat="editedItem.latitud" 
+                                    :lng="editedItem.longitud" 
+                                    @latitudeChange="editedItem.latitud = $event" 
+                                    @longitudeChange="editedItem.longitud = $event">
+                                </Map>
+                              </v-col>
                             </v-row>
                           </v-container>
-                          <!-- </client-only>
-                          </v-img>
-                        </div> -->
-                        <!-- <iframe style="width:80%; height: 100%;" src="/mapa"></iframe> -->
                           
             
                         <v-card-actions>
@@ -150,6 +156,7 @@ export default {
         { text: 'Longitud', value: 'longitud' },
         { text: 'Actions', value: 'actions', sortable: false }
       ],
+      suborigenes: [],
       origenes: [],
       editedIndex: -1,
       editedItem: {
@@ -183,6 +190,9 @@ export default {
     },
     nombreProyecto () {
       return this.$store.state.auth['Proyecto'].nombre_proyecto;
+    },
+    filteredSuborigenes(){
+        return this.suborigenes.filter(item => item.origen === this.editedItem.id)
     }
   },
 
@@ -245,13 +255,11 @@ export default {
         });
       } else {
         this.editedItem.proyecto = this.idProyecto
-        this.origenes.push(this.editedItem)
         this.$axios.post('/Origen/',this.editedItem)
         .then(res => {
-          console.log("new re.data:",res.data)
           if(res.data){
-            // this.editedItem['id']=res.data['id']
-            // this.origenes.push(this.editedItem)
+            this.editedItem['id']=res.data['id']
+            this.origenes.push(this.editedItem)
           }
         })
         .catch(error => {
@@ -265,9 +273,15 @@ export default {
   async created(){
     try {
       const res = await this.$axios.get('/Origen/')
-      console.log("get all origenes",res.data)
       this.origenes = res.data;
+
       this.dialog=false
+
+      /** Para mostrar los nombres de los Suborigenes en el dropdown del modal **/
+      const resp_suborigenes = await this.$axios.get('/Suborigen/')
+      this.suborigenes = resp_suborigenes.data;
+      console.log("get all suborigens",this.suborigenes)
+
     } catch (error) {
       console.log(error)
     }

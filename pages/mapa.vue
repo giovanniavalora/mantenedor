@@ -2,14 +2,14 @@
     <div>
         <!-- <h1>{{lat}} {{lng}}</h1> -->
 
-        <v-dialog v-model="dialog" max-width="900px">
+        <!-- <v-dialog v-model="dialog" max-width="900px">
             <template v-slot:activator="{ on }">
                 <v-btn color="primary" dark class="mb-2" v-on="on">Agregar Nuevo</v-btn>
             </template>
-            <v-card>
+            <v-card> -->
                 <Map class="map" :lat="lat" :lng="lng" @latitudeChange="lat = $event" @longitudeChange="lng = $event"></Map>
-            </v-card>
-        </v-dialog>
+            <!-- </v-card>
+        </v-dialog> -->
 
     </div>
 </template>

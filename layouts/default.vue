@@ -149,12 +149,12 @@ export default {
         {
           icon: 'mdi-source-commit-start-next-local',
           title: 'Origenes',
-          to: '/origenes'
+          to: '/origenes_suborigenes'
         },
         {
           icon: 'mdi-source-commit-end-local',
           title: 'Destinos',
-          to: '/destinos'
+          to: '/destinos_materiales'
         },
         {
           icon: 'mdi-chart-bubble',

@@ -68,9 +68,6 @@
                                 <v-text-field v-model="editedItem.color_camion" label="Color camión"></v-text-field>
                               </v-col>
                               <v-col cols="12" sm="6" md="4">
-                                <v-text-field v-model="editedItem.descripcion" label="Descripción camión"></v-text-field>
-                              </v-col>
-                              <v-col cols="12" sm="6" md="4">
                                 <v-text-field v-model="editedItem.nombre_conductor_principal" label="Nombre conductor principal"></v-text-field>
                               </v-col>
                               <v-col cols="12" sm="6" md="4">
@@ -235,7 +232,6 @@ export default {
         nombre_conductor_principal: "",
         apellido_conductor_principal: "",
         telefono_conductor_principal: "",
-        descripcion: "",
         numero_ejes: "",
         unidad_medida: "",
         color_camion: "",
@@ -360,7 +356,7 @@ export default {
       this.camiones = rescamion.data;
 
       /** Para mostrar los nombres de los Subcontratista en el dropdown del modal **/
-      const resp_subcontratistas = await this.$axios.get('/Subcontratista/')
+      const resp_subcontratistas = await this.$axios.get('/Subcontratista/') //Se obtienen todos, pero debieran ser solo los del proyecto
       this.subcontratistas = resp_subcontratistas.data;
 
     } catch (error) {
