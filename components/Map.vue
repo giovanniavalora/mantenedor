@@ -37,6 +37,7 @@
 </template>
 
 <script>
+//import { LMap, LTileLayer } from "vue2-leaflet"; // ¿es más rápido cuando se importan directamente estos componentes?
 export default {
     ssr: false,
     props:['lat','lng'],
