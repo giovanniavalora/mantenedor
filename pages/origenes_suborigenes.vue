@@ -437,11 +437,15 @@ export default {
         this.editedItem.proyecto = this.idProyecto
         console.log("create1:",this.origenes)
         // this.editedItem['id']=res.data['id'] /** No va aqui (solucion parche) */
-        this.origenes.push(this.editedItem) /** No va aqui (solucion parche) */
+        // this.origenes.push(this.editedItem) /** No va aqui (solucion parche) */
         this.$axios.$post('/Origen/',this.editedItem)
-          .then((res) => {
-            if(res.data){
-              this.editedItem['id']=res.data['id']
+          .then(res => {
+              console.log("entré")
+              console.log("this.editedItem:",this.editedItem)
+              console.log("this:",this)
+              console.log("res:",res)
+              console.log("res.data:",res.data)
+              this.editedItem['id']=res['id']
               console.log("this.editedItem:",this.editedItem)
               // console.log("create2:",this.origenes)
               this.origenes.push(this.editedItem)
@@ -449,7 +453,7 @@ export default {
               this.snack = true
               this.snackColor = 'success'
               this.snackText = 'Creado'
-            }
+              console.log("res.data:",res.data)
           })
           .catch(error => {
               this.snack = true
