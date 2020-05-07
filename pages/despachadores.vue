@@ -113,6 +113,13 @@ export default {
   middleware: 'authenticated',
   data(){
     return {
+      /* SnackBar */
+      snack: false,
+      snackColor: '',
+      snackText: '',
+      snackTop: true,
+
+      /* Despachadores */
       dialog: false,
       headers: [
         {

@@ -54,7 +54,8 @@
                               <v-col cols="12" sm="6" md="4">
                                 <v-text-field v-model="editedItem.numero" label="Número"></v-text-field>
                               </v-col>
-                              <v-col cols="12" sm="12" md="8">
+                              <!-- <v-col cols="12" sm="12" md="8"> -->
+                              <v-col cols="12" sm="12" md="8" v-if="formTitle === 'Editar Origen'">
                                 <v-divider
                                   class="mx-4"
                                   inset
@@ -130,12 +131,10 @@
                                         </template>
                                         <template v-slot:item.activo="props">
                                             <v-switch
-                                              dense
-                                              class="shrink mr-2"
+                                              :dense="dense"
                                               v-model="props.item.activo"
                                               @change="saveEditSuborigen(props.item)"
-                                            >
-                                            </v-switch>
+                                            ></v-switch>
                                         </template>
                                         <template v-slot:item.actions="{ item }">
                                           <v-icon
@@ -148,13 +147,7 @@
                                 </v-data-table> 
                                 
                               </v-col>
-                            </v-row>
-                            
-                          </v-container>
-                         
-                        </v-card-text>
-                          <v-container fill-height fluid>
-                            <v-row justify="center" align="center">
+                              <v-col cols="12">
                                 <Map 
                                     class="map" 
                                     :key="componentKey"
@@ -163,8 +156,24 @@
                                     @latitudeChange="editedItem.latitud = $event" 
                                     @longitudeChange="editedItem.longitud = $event">
                                 </Map>
+                              </v-col>
                             </v-row>
+                            
                           </v-container>
+                         
+                        </v-card-text>
+                        <!-- <v-container fill-height fluid>
+                          <v-row justify="center" align="center">
+                              <Map 
+                                  class="map" 
+                                  :key="componentKey"
+                                  :lat="editedItem.latitud" 
+                                  :lng="editedItem.longitud" 
+                                  @latitudeChange="editedItem.latitud = $event" 
+                                  @longitudeChange="editedItem.longitud = $event">
+                              </Map>
+                          </v-row>
+                        </v-container> -->
                           
             
                         <v-card-actions>
@@ -215,10 +224,16 @@ export default {
   middleware: 'authenticated',
   data(){
     return {
-      /*Forzar Render de Map*/
+      /* Forzar Render de Map */
       componentKey: 0,
 
-      /*Origen*/
+      /* SnackBar */
+      snack: false,
+      snackColor: '',
+      snackText: '',
+      snackTop: true,
+
+      /* Origen */
       dialog: false,
       headers: [
         {
@@ -250,10 +265,6 @@ export default {
 
       /* Suborigen */
       dialog_suborigen: false,
-      snack: false,
-      snackColor: '',
-      snackText: '',
-      snackTop: true,
       maxchars: v => v.length <= 25 || 'Máximo de caracteres excedido',
       headers_suborigen: [
         {
@@ -335,6 +346,7 @@ export default {
       this.$axios.post(`/Suborigen/`,this.editedItemSuborigen)
         .then(res => {
           if(res.data){
+            console.log("suborigen res.data:",res.data)
             this.editedItemSuborigen['id']=res.data['id']
             this.suborigenes.push(this.editedItemSuborigen) 
             this.snack = true
@@ -415,17 +427,19 @@ export default {
     save () {
       if (this.editedIndex > -1) {
         this.editedItem.proyecto = this.idProyecto
-        console.log("edit1:",this.origenes[this.editedIndex])
-        Object.assign(this.origenes[this.editedIndex], this.editedItem)
+        // console.log("edit1:",this.origenes[this.editedIndex])
+        // Object.assign(this.origenes[this.editedIndex], this.editedItem)
         this.$axios.put(`/Origen/${this.editedItem.id}/`,this.editedItem)
           .then(res => {
-            if(res.data){
-              console.log("edit2:",this.origenes[this.editedIndex])//Arroja undefined
-              // Object.assign(this.origenes[this.editedIndex], this.editedItem)
-              console.log("edit3:",this.origenes[this.editedIndex])
+            if(res.status == 200){
+              Object.assign(this.origenes[this.editedIndex], this.editedItem)
               this.snack = true
               this.snackColor = 'success'
               this.snackText = 'Actualizado'
+            }else{
+              this.snack = true
+              this.snackColor = 'error'
+              this.snackText = 'Hubo un error al actualizar. Refresque el navegador.'
             }
           })
           .catch(error => {
@@ -433,32 +447,30 @@ export default {
               this.snackColor = 'error'
               this.snackText = error
           });
+
       } else {
         this.editedItem.proyecto = this.idProyecto
-        console.log("create1:",this.origenes)
         // this.editedItem['id']=res.data['id'] /** No va aqui (solucion parche) */
         // this.origenes.push(this.editedItem) /** No va aqui (solucion parche) */
-        this.$axios.$post('/Origen/',this.editedItem)
+        this.$axios.post(`/Origen/`,this.editedItem)
           .then(res => {
-              console.log("entré")
-              console.log("this.editedItem:",this.editedItem)
-              console.log("this:",this)
+            if(res.status == 200){
               console.log("res:",res)
-              console.log("res.data:",res.data)
               this.editedItem['id']=res['id']
-              console.log("this.editedItem:",this.editedItem)
-              // console.log("create2:",this.origenes)
               this.origenes.push(this.editedItem)
-              // console.log("create3:",this.origenes)
               this.snack = true
               this.snackColor = 'success'
               this.snackText = 'Creado'
-              console.log("res.data:",res.data)
-          })
-          .catch(error => {
+            }else{
               this.snack = true
               this.snackColor = 'error'
-              this.snackText = error
+              this.snackText = 'Hubo un error al crear. Refresque el navegador.'
+            }
+          })
+          .catch((error) => {
+            this.snack = true
+            this.snackColor = 'error'
+            this.snackText = error
           });
       }
       this.close()

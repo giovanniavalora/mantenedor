@@ -50,9 +50,15 @@
                                 <v-text-field v-model="editedItem.rut_propietario" label="Rut propietario"></v-text-field>
                               </v-col>
                               <v-col cols="12" sm="6" md="4">
-                                <v-text-field v-model="editedItem.direccion" label="Dirección"></v-text-field>
+                                <v-text-field v-model="editedItem.comuna" label="Comuna"></v-text-field>
                               </v-col>
-                              <v-col cols="12" sm="12" md="8">
+                              <v-col cols="12" sm="6" md="4">
+                                <v-text-field v-model="editedItem.calle" label="Calle"></v-text-field>
+                              </v-col>
+                              <v-col cols="12" sm="6" md="4">
+                                <v-text-field v-model="editedItem.numero" label="Número"></v-text-field>
+                              </v-col>
+                              <v-col cols="12" v-if="formTitle === 'Editar Destino'">
                                 <v-data-table 
                                   dense
                                   :headers="headers_material"
@@ -121,7 +127,7 @@
                                                 </template>
                                             </v-edit-dialog>
                                         </template>
-                                        <template v-slot:item.activo="props">
+                                        <!-- <template v-slot:item.activo="props">
                                             <v-switch
                                               dense
                                               class="shrink mr-2"
@@ -129,25 +135,22 @@
                                               @change="saveEditMaterial(props.item)"
                                             >
                                             </v-switch>
-                                        </template>
+                                        </template> -->
                                         <template v-slot:item.actions="{ item }">
-                                          <v-icon
-                                            small
-                                            @click="deletematerial(item)"
-                                          >
-                                            mdi-delete
-                                          </v-icon>
+                                          <v-container fill-height fluid>
+                                          <v-row class="mr-2" justify="end">
+                                            <v-icon
+                                              small
+                                              @click="deletematerial(item)"
+                                            >
+                                              mdi-delete
+                                            </v-icon>
+                                          </v-row>
+                                          </v-container>
                                         </template>
                                 </v-data-table> 
-                                
                               </v-col>
-                            </v-row>
-                            
-                          </v-container>
-                         
-                        </v-card-text>
-                          <v-container fill-height fluid>
-                            <v-row justify="center" align="center">
+                              <v-col cols="12">
                                 <Map 
                                     class="map" 
                                     :key="componentKey"
@@ -156,8 +159,24 @@
                                     @latitudeChange="editedItem.latitud = $event" 
                                     @longitudeChange="editedItem.longitud = $event">
                                 </Map>
+                              </v-col>
                             </v-row>
+                            
                           </v-container>
+                         
+                        </v-card-text>
+                        <!-- <v-container fill-height fluid>
+                          <v-row justify="center" align="center">
+                              <Map 
+                                  class="map" 
+                                  :key="componentKey"
+                                  :lat="editedItem.latitud" 
+                                  :lng="editedItem.longitud" 
+                                  @latitudeChange="editedItem.latitud = $event" 
+                                  @longitudeChange="editedItem.longitud = $event">
+                              </Map>
+                          </v-row>
+                        </v-container> -->
                           
             
                         <v-card-actions>
@@ -211,20 +230,28 @@ export default {
       /*Forzar Render de Map*/
       componentKey: 0,
 
+      /* SnackBar */
+      snack: false,
+      snackColor: '',
+      snackText: '',
+      snackTop: true,
+
       /*Destino*/
       dialog: false,
       headers: [
         {
-          text: 'Nombre Destino',
+          text: 'Destino',
           align: 'start',
           sortable: false,
           value: 'nombre_destino',
         },
-        { text: 'Nombre propietario', value: 'nombre_propietario' },
+        { text: 'Propietario', value: 'nombre_propietario' },
         { text: 'Rut propietario', value: 'rut_propietario' },
-        { text: 'Dirección', value: 'direccion' },
-        { text: 'Longitud', value: 'longitud' },
-        { text: 'Latitud', value: 'latitud' },
+        { text: 'Comuna', value: 'comuna' },
+        { text: 'Calle', value: 'calle' },
+        { text: 'Número', value: 'numero' },
+        // { text: 'Longitud', value: 'longitud' },
+        // { text: 'Latitud', value: 'latitud' },
         { text: 'Actions', value: 'actions', sortable: false }
       ],
       
@@ -235,7 +262,9 @@ export default {
         nombre_destino: '',
         nombre_propietario: '',
         rut_propietario: '',
-        direccion: '',
+        comuna: '',
+        calle: '',
+        numero: '',
         longitud: '',
         latitud: '',
         proyecto: ''
@@ -243,10 +272,6 @@ export default {
 
       /* Material */
       dialog_material: false,
-      snack: false,
-      snackColor: '',
-      snackText: '',
-      snackTop: true,
       maxchars: v => v.length <= 25 || 'Máximo de caracteres excedido',
       headers_material: [
         {
@@ -403,58 +428,45 @@ export default {
 
     save () {
       if (this.editedIndex > -1) {
-        var guardado = false
         this.editedItem.proyecto = this.idProyecto
-        Object.assign(this.destinos[this.editedIndex], this.editedItem)
+        // Object.assign(this.destinos[this.editedIndex], this.editedItem)
         this.$axios.put(`/Destino/${this.editedItem.id}/`,this.editedItem)
-        .then(res => {
-          if(res.data){
-            console.log("e.guardado1:",guardado)
-            guardado = true
-            console.log("e.guardado2:",guardado)
-            this.snack = true
-            this.snackColor = 'success'
-            this.snackText = 'Actualizado'
-          }
-        })
-        .catch(error => {
-            this.snack = true
-            this.snackColor = 'error'
-            this.snackText = error
-        });
-        // console.log("e.guardado3:",guardado)
-        // if (guardado){
-        //     Object.assign(this.destinos[this.editedIndex], this.editedItem)
-        // }
+          .then(res => {
+            if(res.status == 200){
+              Object.assign(this.destinos[this.editedIndex], this.editedItem)
+              this.snack = true
+              this.snackColor = 'success'
+              this.snackText = 'Actualizado'
+            }else{
+              this.snack = true
+              this.snackColor = 'error'
+              this.snackText = 'Hubo un error al actualizar. Refresque el navegador.'
+            }
+          })
+          .catch(error => {
+              this.snack = true
+              this.snackColor = 'error'
+              this.snackText = error
+          });
         
       } else {
-        var guardado = false
         this.editedItem.proyecto = this.idProyecto
         // this.editedItem['id']=res.data['id'] /** No va aqui (solucion parche) */
-        this.destinos.push(this.editedItem) /** No va aqui (solucion parche) */
+        // this.destinos.push(this.editedItem) /** No va aqui (solucion parche) */
         this.$axios.post('/Destino/',this.editedItem)
-        .then(res => {
-          if(res.data){
-            guardado = true
-            console.log("c.guardado1:",guardado)
-            console.log("c.this.editedItem1:",this.editedItem)
-            // this.editedItem['id']=res.data['id']
-            console.log("c.this.editedItem2:",this.editedItem)
-            // this.destinos.push(this.editedItem)
-            this.snack = true
-            this.snackColor = 'success'
-            this.snackText = 'Creado'
-          }
-        })
-        .catch(error => {
-            this.snack = true
-            this.snackColor = 'error'
-            this.snackText = error
-        });
-        console.log("c.guardado2:",guardado)
-        if (guardado){
-            Object.assign(this.destinos[this.editedIndex], this.editedItem)
-        }
+          .then(res => {
+              console.log("res:",res)
+              this.editedItem['id']=res.data['id']
+              this.destinos.push(this.editedItem)
+              this.snack = true
+              this.snackColor = 'success'
+              this.snackText = 'Creado'
+          })
+          .catch(error => {
+              this.snack = true
+              this.snackColor = 'error'
+              this.snackText = error
+          });
       }
       this.close()
     },
