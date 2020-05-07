@@ -99,6 +99,10 @@
                 </template>
 
               </v-data-table>
+              <v-snackbar v-model="snack" :timeout="3000" :color="snackColor" :top="snackTop">
+                {{ snackText }}
+                <v-btn text @click="snack = false">cerrar</v-btn>
+              </v-snackbar>
           </v-app>
       </div>
     </v-flex>
@@ -205,40 +209,49 @@ export default {
 
 
 
-    save () {
+    async save () {
+      /* Para editar un registro */
       if (this.editedIndex > -1) {
-        console.log("edit 0:",this.editedItem)
         this.editedItem.proyecto = this.idProyecto
-        console.log("edit 1:",this.editedItem)
-        console.log("edit idP:", this.idProyecto)
-
-        Object.assign(this.despachadores[this.editedIndex], this.editedItem)
-        this.$axios.put(`/Despachador/${this.editedItem.id}/`,this.editedItem)
-        .then(res => {
-          if(res.data){
-            console.log("edit 2:",this.editedItem)
-            // this.editedItem['id']=res.data.id
-            console.log("edit 3:",this.editedItem['id'])
+        try {
+          let res = await this.$axios.put(`/Despachador/${this.editedItem.id}/`,this.editedItem)
+          if(res.status == 200){
+            this.editedItem['id']=res.data.id
+            Object.assign(this.despachadores[this.editedIndex], this.editedItem)
+            this.snack = true
+            this.snackColor = 'success'
+            this.snackText = 'Guardado'
+          }else{
+              this.snack = true
+              this.snackColor = 'error'
+              this.snackText = 'Hubo un error al actualizar. Refresque el navegador.'
           }
-        })
-        .catch(error => {
-          alert(Object.values(error.response.data))
-        });
+        } catch (error) {
+          this.snack = true
+          this.snackColor = 'error'
+          this.snackText = error
+        }
+      /*Para crear un nuevo registro*/
       } else {
         this.editedItem.proyecto = this.idProyecto
-        // this.editedItem['id']=res.data['id'] /** No va aqui (solucion parche) */
-        this.despachadores.push(this.editedItem) /** No va aqui (solucion parche) */
-        this.$axios.post('/Despachador/',this.editedItem)
-        .then(res => {
-          console.log("new re.data:",res.data)
-          if(res.data){
-            // this.editedItem['id']=res.data['id']
-            // this.despachadores.push(this.editedItem)
+        try {
+          let res = await this.$axios.post('/Despachador/',this.editedItem)
+          if (res.status = 201) {
+            this.editedItem['id']=res.data['id']
+            this.despachadores.push(this.editedItem)
+            this.snack = true
+            this.snackColor = 'success'
+            this.snackText = 'Creado'
+          } else {
+              this.snack = true
+              this.snackColor = 'error'
+              this.snackText = 'Hubo un error al crear. Refresque el navegador.'+res.error
           }
-        })
-        .catch(error => {
-          alert(Object.values(error.response.data))
-        });
+        } catch (error) {
+            this.snack = true
+            this.snackColor = 'error'
+            this.snackText = error
+        }
       }
       this.close()
     },
