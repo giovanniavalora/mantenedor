@@ -456,7 +456,7 @@ export default {
           .then(res => {
             if(res.status == 201){
               console.log("res:",res)
-              this.editedItem['id']=res['id']
+              this.editedItem['id']=res.data['id']
               this.origenes.push(this.editedItem)
               this.snack = true
               this.snackColor = 'success'
