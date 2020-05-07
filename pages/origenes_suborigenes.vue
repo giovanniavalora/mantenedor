@@ -454,7 +454,7 @@ export default {
         // this.origenes.push(this.editedItem) /** No va aqui (solucion parche) */
         this.$axios.post(`/Origen/`,this.editedItem)
           .then(res => {
-            if(res.status == 200){
+            if(res.status == 201){
               console.log("res:",res)
               this.editedItem['id']=res['id']
               this.origenes.push(this.editedItem)
