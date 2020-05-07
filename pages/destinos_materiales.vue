@@ -423,10 +423,8 @@ export default {
       }, 300),
       this.dialog = false
     },
-
-
-
-    save () {
+    
+    async save () {
       if (this.editedIndex > -1) {
         this.editedItem.proyecto = this.idProyecto
         // Object.assign(this.destinos[this.editedIndex], this.editedItem)
@@ -451,29 +449,27 @@ export default {
         
       } else {
         this.editedItem.proyecto = this.idProyecto
-        // this.editedItem['id']=res.data['id'] /** No va aqui (solucion parche) */
+        console.log("editedItem:",this.editedItem)
         // this.destinos.push(this.editedItem) /** No va aqui (solucion parche) */
-        this.$axios.post('/Destino/',this.editedItem)
-          .then(res => {
-            // if(res.status == 201){
-            console.log("res:",res)
-            this.editedItem['id']=res.data['id']
-            console.log("editedItem:",this.editedItem)
-            this.destinos.push(this.editedItem)
-            this.snack = true
-            this.snackColor = 'success'
-            this.snackText = 'Creado'
-            // }else{
-            //   this.snack = true
-            //   this.snackColor = 'error'
-            //   this.snackText = 'Hubo un error al crear. Refresque el navegador.'
-            // }
-          })
-          .catch(error => {
+        try{
+            let respuesta = await this.$axios.post('/Destino/',this.editedItem)
+            if(respuesta.status == 201){
+                this.editedItem['id']=respuesta.data['id']
+                this.destinos.push(this.editedItem)
+                this.snack = true
+                this.snackColor = 'success'
+                this.snackText = 'Creado'
+            }else{
               this.snack = true
               this.snackColor = 'error'
-              this.snackText = error
-          });
+              this.snackText = 'Hubo un error al crear. Refresque el navegador.'+respuesta.error
+            }
+
+        }catch(error){
+            this.snack = true
+            this.snackColor = 'error'
+            this.snackText = error
+        }
       }
       this.close()
     },
