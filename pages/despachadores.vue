@@ -149,7 +149,7 @@ export default {
         apellido: '',
         telefono: '',
         origen_asignado: '',
-        nom_origen: "", //no es propio del modelo, se agrega en el front
+        // nom_origen: "", //no es propio del modelo, se agrega en el front
         proyecto: ''
       }
     }
@@ -216,7 +216,6 @@ export default {
         try {
           let res = await this.$axios.put(`/Despachador/${this.editedItem.id}/`,this.editedItem)
           if(res.status == 200){
-            this.editedItem['id']=res.data.id
             Object.assign(this.despachadores[this.editedIndex], this.editedItem)
             this.snack = true
             this.snackColor = 'success'
@@ -236,8 +235,10 @@ export default {
         this.editedItem.proyecto = this.idProyecto
         try {
           let res = await this.$axios.post('/Despachador/',this.editedItem)
+          console.log("res",res)
           if (res.status = 201) {
-            this.editedItem['id']=res.data['id']
+            this.editedItem['id']=res.data.data.id
+            console.log("editedItem",this.editedItem)
             this.despachadores.push(this.editedItem)
             this.snack = true
             this.snackColor = 'success'
