@@ -452,20 +452,21 @@ export default {
         this.editedItem.proyecto = this.idProyecto
         // this.editedItem['id']=res.data['id'] /** No va aqui (solucion parche) */
         // this.origenes.push(this.editedItem) /** No va aqui (solucion parche) */
-        this.$axios.post(`/Origen/`,this.editedItem)
+        this.$axios.$post(`/Origen/`,this.editedItem)
           .then(res => {
-            if(res.status == 201){
-              console.log("res:",res)
-              this.editedItem['id']=res.data['id']
-              this.origenes.push(this.editedItem)
-              this.snack = true
-              this.snackColor = 'success'
-              this.snackText = 'Creado'
-            }else{
-              this.snack = true
-              this.snackColor = 'error'
-              this.snackText = 'Hubo un error al crear. Refresque el navegador.'
-            }
+            // if(res.status == 201){
+            console.log("res:",res)
+            this.editedItem['id']=res.id
+            console.log("editedItem:",this.editedItem)
+            this.origenes.push(this.editedItem)
+            this.snack = true
+            this.snackColor = 'success'
+            this.snackText = 'Creado'
+            // }else{
+            //   this.snack = true
+            //   this.snackColor = 'error'
+            //   this.snackText = 'Hubo un error al crear. Refresque el navegador.'
+            // }
           })
           .catch((error) => {
             this.snack = true

@@ -455,12 +455,19 @@ export default {
         // this.destinos.push(this.editedItem) /** No va aqui (solucion parche) */
         this.$axios.post('/Destino/',this.editedItem)
           .then(res => {
-              console.log("res:",res)
-              this.editedItem['id']=res.data['id']
-              this.destinos.push(this.editedItem)
-              this.snack = true
-              this.snackColor = 'success'
-              this.snackText = 'Creado'
+            // if(res.status == 201){
+            console.log("res:",res)
+            this.editedItem['id']=res.data['id']
+            console.log("editedItem:",this.editedItem)
+            this.destinos.push(this.editedItem)
+            this.snack = true
+            this.snackColor = 'success'
+            this.snackText = 'Creado'
+            // }else{
+            //   this.snack = true
+            //   this.snackColor = 'error'
+            //   this.snackText = 'Hubo un error al crear. Refresque el navegador.'
+            // }
           })
           .catch(error => {
               this.snack = true
