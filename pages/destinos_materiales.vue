@@ -423,13 +423,13 @@ export default {
       }, 300),
       this.dialog = false
     },
-    
+
     async save () {
-      if (this.editedIndex > -1) {
+      /* Para editar un registro */
+      if (this.editedIndex > -1) { 
         this.editedItem.proyecto = this.idProyecto
-        // Object.assign(this.destinos[this.editedIndex], this.editedItem)
-        this.$axios.put(`/Destino/${this.editedItem.id}/`,this.editedItem)
-          .then(res => {
+        try{
+            let res = await this.$axios.put(`/Destino/${this.editedItem.id}/`,this.editedItem)
             if(res.status == 200){
               Object.assign(this.destinos[this.editedIndex], this.editedItem)
               this.snack = true
@@ -440,21 +440,19 @@ export default {
               this.snackColor = 'error'
               this.snackText = 'Hubo un error al actualizar. Refresque el navegador.'
             }
-          })
-          .catch(error => {
+
+        }catch(error){
               this.snack = true
               this.snackColor = 'error'
               this.snackText = error
-          });
-        
-      } else {
+        }
+      /*Para crear un nuevo registro*/
+      } else {      
         this.editedItem.proyecto = this.idProyecto
-        console.log("editedItem:",this.editedItem)
-        // this.destinos.push(this.editedItem) /** No va aqui (solucion parche) */
         try{
-            let respuesta = await this.$axios.post('/Destino/',this.editedItem)
-            if(respuesta.status == 201){
-                this.editedItem['id']=respuesta.data['id']
+            let res= await this.$axios.post('/Destino/',this.editedItem)
+            if(res.status == 201){
+                this.editedItem['id']=res.data['id']
                 this.destinos.push(this.editedItem)
                 this.snack = true
                 this.snackColor = 'success'
@@ -462,7 +460,7 @@ export default {
             }else{
               this.snack = true
               this.snackColor = 'error'
-              this.snackText = 'Hubo un error al crear. Refresque el navegador.'+respuesta.error
+              this.snackText = 'Hubo un error al crear. Refresque el navegador.'+res.error
             }
 
         }catch(error){
