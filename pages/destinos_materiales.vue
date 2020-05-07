@@ -442,9 +442,9 @@ export default {
             }
 
         }catch(error){
-              this.snack = true
-              this.snackColor = 'error'
-              this.snackText = error
+          this.snack = true
+          this.snackColor = 'error'
+          this.snackText = error
         }
       /*Para crear un nuevo registro*/
       } else {      
@@ -462,7 +462,6 @@ export default {
               this.snackColor = 'error'
               this.snackText = 'Hubo un error al crear. Refresque el navegador.'+res.error
             }
-
         }catch(error){
             this.snack = true
             this.snackColor = 'error'

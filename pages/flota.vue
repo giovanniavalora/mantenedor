@@ -173,6 +173,10 @@
                 </template>
 
               </v-data-table>
+              <v-snackbar v-model="snack" :timeout="3000" :color="snackColor" :top="snackTop">
+                {{ snackText }}
+                <v-btn text @click="snack = false">cerrar</v-btn>
+              </v-snackbar>
           </v-app>
       </div>
     </v-flex>
@@ -189,6 +193,13 @@ export default {
   middleware: 'authenticated',
   data(){
     return {
+      /* SnackBar */
+      snack: false,
+      snackColor: '',
+      snackText: '',
+      snackTop: true,
+
+      /* Camion */
       dialog: false,
       dialogqr: false,
 
@@ -320,31 +331,47 @@ export default {
 
 
 
-    save () {
+    async save () {
+      /* Para editar un registro */
       if (this.editedIndex > -1) {
-        Object.assign(this.camiones[this.editedIndex], this.editedItem)
-        this.$axios.put(`/Camion/${this.editedItem['id']}/`,this.editedItem)
-        .then(res => {
-          console.log("edit re.data:",res.data)
-        })
-        .catch(error => {
-          alert(Object.values(error.response.data))
-        });
-       
-      } else {
-        console.log("this.editedItem",this.editedItem)
-        // this.editedItem['id']=res.data['id'] /** No va aqui (solucion parche) */
-        this.camiones.push(this.editedItem) /** No va aqui (solucion parche) */
-        this.$axios.post('/Camion/',this.editedItem)
-        .then(res => {
-          if(res.data){
-            // this.camiones.push(this.editedItem)
-            console.log("new re.data:",res.data)
+        try {
+          let res = await this.$axios.put(`/Camion/${this.editedItem['id']}/`,this.editedItem)
+          if(res.status == 200){
+            Object.assign(this.camiones[this.editedIndex], this.editedItem)
+            this.snack = true
+            this.snackColor = 'success'
+            this.snackText = 'Actualizado'
+          }else{
+            this.snack = true
+            this.snackColor = 'error'
+            this.snackText = 'Hubo un error al actualizar. Refresque el navegador.'
           }
-        })
-        .catch(error => {
-          alert(Object.values(error.response.data))
-        });
+        } catch (error) {
+          this.snack = true
+          this.snackColor = 'error'
+          this.snackText = error
+        }
+      /*Para crear un nuevo registro*/
+      } else {
+        try {
+            let res = await this.$axios.post('/Camion/',this.editedItem)
+            if(res.status == 201){
+                this.editedItem['id']=res.data['id']
+                this.camiones.push(this.editedItem)
+                this.snack = true
+                this.snackColor = 'success'
+                this.snackText = 'Creado'
+                this.$axios.post('/CodigoQR/',{'camion':res.data['id']})
+            }else{
+                this.snack = true
+                this.snackColor = 'error'
+                this.snackText = 'Hubo un error al crear. Refresque el navegador.'+res.error
+            }
+        } catch (error) {
+            this.snack = true
+            this.snackColor = 'error'
+            this.snackText = error
+        }
       }
       this.close()
     },
