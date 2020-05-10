@@ -127,15 +127,6 @@
                                                 </template>
                                             </v-edit-dialog>
                                         </template>
-                                        <!-- <template v-slot:item.activo="props">
-                                            <v-switch
-                                              dense
-                                              class="shrink mr-2"
-                                              v-model="props.item.activo"
-                                              @change="saveEditMaterial(props.item)"
-                                            >
-                                            </v-switch>
-                                        </template> -->
                                         <template v-slot:item.actions="{ item }">
                                           <v-container fill-height fluid>
                                           <v-row class="mr-2" justify="end">

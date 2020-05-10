@@ -105,40 +105,78 @@
                     <!-- <v-dialog v-model="dialogqr" hide-overlay transition="dialog-bottom-transition"> -->
                       <v-card id="imprimirQR">
                         <v-toolbar dark color="primary">
-                          <v-btn icon dark @click="dialogqr = false">
-                            <v-icon>mdi-close</v-icon>
-                          </v-btn>
-                          <v-toolbar-title>Codigo QR</v-toolbar-title>
-                          <v-spacer></v-spacer>
-                          <v-toolbar-items>
-                            <v-btn dark text @click="imprimirqr">Imprimir</v-btn>
-                          </v-toolbar-items>
+                              <v-btn icon dark @click="dialogqr = false">
+                                  <v-icon>mdi-close</v-icon>
+                              </v-btn>
+                              <v-toolbar-title>Codigo QR</v-toolbar-title>
+                              <v-spacer></v-spacer>
+                              <v-toolbar-items>
+                                  <v-btn dark text  @click="nuevoqr">Nuevo QR</v-btn>
+                                  <v-btn dark text @click="imprimirqr">Imprimir</v-btn>
+                              </v-toolbar-items>
                         </v-toolbar>
                         <!-- <v-card-title>
                           <span class="headline">Código QR</span>
                         </v-card-title> -->
-                        <v-card-text class="text-center mt-12">
-                          <v-container id="qrcamion" fluid>
-                            <div>
-                              <qrcode-vue :value="qrvalue" :size="size" level="H"></qrcode-vue>
-                            </div>
-                            <div><h1>
-                              <br><br>{{datosCamionQR.patente_camion}} <br><br>
-                            </h1></div>
-                            <div><h1>
-                              {{datosCamionQR.marca_camion}}<br><br>
-                            </h1></div>
-                            <div><h1>
-                              {{datosCamionQR.modelo_camion}}<br><br>
-                            </h1></div>
+                        <v-container fill-height fluid>
+                          
+                          <v-row justify="center">
+                            <v-col cols="12" sm="10" md="9">
+                                  <v-col cols="12">
+                                        <v-row justify="center">
+                                        <h1>{{editedItem.nom_subcontratista}}</h1>
+                                        </v-row>
+                                  </v-col>
+                                  <v-col cols="12">
+                                        <v-row justify="center">
+                                        <qrcode-vue :value="qrvalue" :size="size" level="H"></qrcode-vue>
+                                        </v-row>
+                                  </v-col>
+                                  <v-col cols="12">
+                                        <v-row justify="center">
+                                        <h2>{{datosCamionQR.patente_camion}}</h2>
+                                        </v-row>
+                                  </v-col>
+                                  <v-col cols="12">
+                                        <v-row justify="center">
+                                        <h2>{{datosCamionQR.marca_camion}}</h2>
+                                        </v-row>
+                                  </v-col>
+                                  <v-col cols="12">
+                                        <v-row justify="center">
+                                        <h2>{{datosCamionQR.modelo_camion}}</h2>
+                                        </v-row>
+                                  </v-col>
+                            </v-col>
+                            <v-col cols="12" sm="2" md="3">
+                                <v-col cols="12">
+                                  <!-- <v-subheader class="pa-2"> Tamaño QR</v-subheader> -->
+                                  Tamaño QR
+                                  <v-slider
+                                    v-model="size"
+                                    :thumb-size="24"
+                                    min="100"
+                                    max="300"
+                                    thumb-label
+                                    inverse-label=""
+                                  ></v-slider>
+                                </v-col>
+                                <v-col cols="12">
+                                    <!-- <v-subheader class="pa-2"> Activar/Desactivar Código QR</v-subheader> -->
+                                    Activar/Desactivar
+                                    <!-- <v-row justify="center"> -->
+                                      <v-switch
+                                          dense
+                                          v-model="datosqractivo.activo"
+                                          @change="desactivarqr"
+                                      ></v-switch>
+                                    <!-- </v-row> -->
+                                </v-col>
+                                
+                            </v-col>
                             
-                          </v-container>
-                        </v-card-text>
-                        <!-- <v-card-actions>
-                          <v-spacer></v-spacer>
-                          <v-btn color="blue darken-1" text @click="dialogqr=false">Cancelar</v-btn>
-                          <v-btn id="btnPrint" color="blue darken-1" text @click="imprimirqr">Imprimir</v-btn>
-                        </v-card-actions> -->
+                          </v-row>
+                        </v-container>
                       </v-card>
                     </v-dialog>
 
@@ -199,12 +237,15 @@ export default {
       snackText: '',
       snackTop: true,
 
-      /* Camion */
-      dialog: false,
+      /* CodigoQR */
       dialogqr: false,
-
       qrvalue: '',
-      size: 300,
+      size: 200,
+      datosqractivo: {
+          id: '',
+          camion: '',
+          activo: '',
+      },
       datosCamionQR: {
         id: '',
         patente_camion: "",
@@ -212,16 +253,17 @@ export default {
         modelo_camion: "",
       },
 
+      /* Camion */
+      dialog: false,
       textfootertable:{
         text: 'todo'
       },
-
       headers: [
         {
           text: 'Subcontratista',
           align: 'start',
           sortable: false,
-          value: 'subcontratista',
+          value: 'nom_subcontratista',
         },
         { text: 'Patente', value: 'patente_camion' },
         { text: 'Marca', value: 'marca_camion' },
@@ -260,7 +302,12 @@ export default {
     },
     nombreProyecto () {
       return this.$store.state.auth['Proyecto'].nombre_proyecto;
-    }
+    },
+    // nombreSubcontratista(){
+    //     var ns = this.subcontratistas.find(item => item.id === this.editedItem.id);
+    //     console.log("ns",ns)
+    //     return ns;
+    // }
   },
 
   watch: {
@@ -270,6 +317,25 @@ export default {
   },
 
   methods: {
+    nuevoqr() {
+      console.log("nqr.editedItem: ",this.editedItem)
+      console.log("nqr.datosCamionQR: ",this.datosCamionQR)
+      let result = confirm('Al crear un nuevo código QR se desactivará el anterior, ¿Desea continuar?')
+      if (result){
+        this.$axios.post('/CodigoQR/',{"camion":this.datosCamionQR.id})
+        .then(res => {
+          console.log("nuevo qr:",res.data)
+          this.datosqractivo=res.data
+          this.qrvalue = '{\"id_qr\":'+String(res.data.id)+', \"id_camion\":'+String(res.data.camion)+'}'
+        })
+      }
+    },
+    desactivarqr(){
+      console.log("dqr.datosCamionQR",this.datosqractivo)
+      this.$axios.put(`/CodigoQR/${this.datosqractivo.id}/`,this.datosqractivo)
+    },
+
+
     imprimirqr() {
       // const elem = document.getElementById("imprimirQR")
       // var domClone = elem.cloneNode(true);
@@ -282,18 +348,19 @@ export default {
       // $printSection.innerHTML = "";
       // $printSection.appendChild(domClone);
       print() // window.print();
-      this.dialogqr=false
-
     },
 
     getDatosCamionQR (item) {
-      console.log("datosCamionQR: ",item)
+      this.editedItem = Object.assign({}, item)
+      console.log("ns1:",item.nom_subcontratista)
+      console.log("item:",item)
+      var ns = this.subcontratistas.find(x => x.id === item.subcontratista).nombre_subcontratista;
+      console.log("ns2: ",ns)
       this.$axios.get(`/CodigoQRCamion/${item.id}`)
       .then(res => {
         console.log("codigoqr_activo:",res.data.data.codigoqr_activo)
+        this.datosqractivo=res.data.data.codigoqr_activo
         this.qrvalue = '{\"id_qr\":'+String(res.data.data.codigoqr_activo.id)+', \"id_camion\":'+String(res.data.data.codigoqr_activo.camion)+'}'
-        // this.editedItem['id']=res.data['id']
-        // Object.assign(this.camiones[this.editedIndex], this.editedItem)
       })
       .catch(error => {
         this.qrvalue = 'error'
@@ -314,11 +381,14 @@ export default {
       const index = this.camiones.indexOf(item)
       let id = item.id
       var result = confirm('¿Desea eliminar item?') && this.camiones.splice(index, 1)
-      if (result)
+      if (result){
         this.$axios.delete(`/Camion/${id}/`)
         .catch(error => {
-            alert(Object.values(error.response.data))
+            this.snack = true
+            this.snackColor = 'error'
+            this.snackText = error
         });
+      }
     },
 
     close () {
@@ -386,6 +456,12 @@ export default {
       /** Para mostrar los nombres de los Subcontratista en el dropdown del modal **/
       const resp_subcontratistas = await this.$axios.get('/Subcontratista/') //Se obtienen todos, pero debieran ser solo los del proyecto
       this.subcontratistas = resp_subcontratistas.data;
+
+      /* Lo siguiente debiera ocurrir en el backend, el cual debiera enviar el nombre del subcontratista al que pertenece */
+      /* Asigna a 'camiones' el atributo del nombre del subcontratista al que pertenece */
+      for(var prop in this.camiones){
+        this.camiones[prop].nom_subcontratista = this.subcontratistas.find(x => x.id === this.camiones[prop].subcontratista).nombre_subcontratista;
+      }
 
     } catch (error) {
       console.log(error)

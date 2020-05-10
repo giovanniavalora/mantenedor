@@ -311,7 +311,6 @@ export default {
     },
     filteredSuborigenes(){
         return this.suborigenes.filter(item => item.origen === this.editedItem.id)
-        
     }
   },
 
