@@ -178,7 +178,7 @@
                                       <v-switch
                                           dense
                                           v-model="datosqractivo.activo"
-                                          @change="desactivarqr"
+                                          @change="activacionqr"
                                       ></v-switch>
                                     <!-- </v-row> -->
                                 </v-col>
@@ -337,12 +337,31 @@ export default {
           console.log("nuevo qr:",res.data)
           this.datosqractivo=res.data
           this.qrvalue = '{\"id_qr\":'+String(res.data.id)+', \"id_camion\":'+String(res.data.camion)+'}'
+          this.snack = true
+          this.snackColor = 'success'
+          this.snackText = 'Nuevo código qr creado'
         })
       }
     },
-    desactivarqr(){
+    activacionqr(){
       console.log("dqr.datosCamionQR",this.datosqractivo)
       this.$axios.put(`/CodigoQR/${this.datosqractivo.id}/`,this.datosqractivo)
+      .then(res => {
+          if(res.status == 200){
+            this.snack = true
+            this.snackColor = 'success'
+            this.snackText = 'Actualizado'
+          }else{
+            this.snack = true
+            this.snackColor = 'error'
+            this.snackText = 'Hubo un error al actualizar. Refresque el navegador.'
+          }
+      })
+      .catch(error => {
+        this.snack = true
+        this.snackColor = 'error'
+        this.snackText = 'Hubo un error al actualizar. Refresque el navegador. '+error
+      });
     },
 
 
@@ -374,7 +393,9 @@ export default {
       })
       .catch(error => {
         this.qrvalue = 'error'
-        alert(Object.values(error.response.data))
+        this.snack = true
+        this.snackColor = 'error'
+        this.snackText = error
       });
       this.datosCamionQR = Object.assign({}, item)
       this.dialogqr=true
