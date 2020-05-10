@@ -87,6 +87,16 @@
                                   label="Subcontratista"
                                   required
                                 ></v-select>
+                                <!-- <v-select
+                                  v-model="editedItem.nom_subcontratista"
+                                  :items= subcontratistas
+                                  item-text="nombre_subcontratista" 
+                                  item-value="id" 
+                                  single-line 
+                                  auto 
+                                  label="Subcontratista"
+                                  required
+                                ></v-select> -->
                                 <!-- <v-text-field v-model="editedItem.subcontratista" label="Subcontratista"></v-text-field> -->
                               </v-col>
                             </v-row>
@@ -139,14 +149,14 @@
                                   </v-col>
                                   <v-col cols="12">
                                         <v-row justify="center">
-                                        <h2>{{datosCamionQR.marca_camion}}</h2>
+                                        <h3>{{datosCamionQR.marca_camion}} {{datosCamionQR.modelo_camion}}</h3>
                                         </v-row>
                                   </v-col>
-                                  <v-col cols="12">
+                                  <!-- <v-col cols="12">
                                         <v-row justify="center">
-                                        <h2>{{datosCamionQR.modelo_camion}}</h2>
+                                        <h3>{{datosCamionQR.modelo_camion}}</h3>
                                         </v-row>
-                                  </v-col>
+                                  </v-col> -->
                             </v-col>
                             <v-col cols="12" sm="2" md="3">
                                 <v-col cols="12">
@@ -427,6 +437,8 @@ export default {
             let res = await this.$axios.post('/Camion/',this.editedItem)
             if(res.status == 201){
                 this.editedItem['id']=res.data['id']
+                this.editedItem.nom_subcontratista = this.subcontratistas.find(x => x.id === this.editedItem.subcontratista).nombre_subcontratista;
+                console.log("verification",this.editedItem)
                 this.camiones.push(this.editedItem)
                 this.snack = true
                 this.snackColor = 'success'
