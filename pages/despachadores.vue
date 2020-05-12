@@ -41,7 +41,7 @@
                           <v-container>
                             <v-row>
                               <v-col cols="12" sm="6" md="4">
-                                <v-text-field v-model="editedItem.rut" label="Rut"></v-text-field>
+                                <v-text-field v-model="editedItem.rut" :rules="rutRules" label="Rut"></v-text-field>
                               </v-col>
                               <v-col cols="12" sm="6" md="4">
                                 <v-text-field v-model="editedItem.nombre" label="Nombre despachador"></v-text-field>
@@ -75,7 +75,7 @@
                         <v-card-actions>
                           <v-spacer></v-spacer>
                           <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
-                          <v-btn color="blue darken-1" text @click="save">Save</v-btn>
+                          <v-btn color="blue darken-1" :disabled="!valid" text @click="save">Save</v-btn>
                         </v-card-actions>
                       </v-card>
                     </v-dialog>
@@ -150,8 +150,15 @@ export default {
         telefono: '',
         origen_asignado: '',
         // nom_origen: "", //no es propio del modelo, se agrega en el front
-        proyecto: ''
-      }
+        proyecto: '',
+      },
+
+      /* Validación de formulario */
+      valid:true,
+      rutRules:[
+        v => !!v || 'Este campo es requerido',
+        v => /^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test(v) || 'Ingrese Rut con guión y sin puntos',
+      ]
     }
   },
   // fetch ({ store, redirect }) {

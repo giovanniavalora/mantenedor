@@ -75,8 +75,8 @@
 
                 <v-text-field
                   v-model="editedItem.cantidad_voucher_imprimir"
-                  :counter="100"
-                  :rules="nombre_proyecto_Rules"
+                  :counter="1"
+                  :rules="nro_imprimir_Rules"
                   label="Cantidad de voucher a imprimir"
                   type="number"
                   required
@@ -282,6 +282,10 @@ export default {
     emailRules: [
       v => !!v || 'E-mail es requerido',
       v => /.+@.+\..+/.test(v) || 'E-mail debe ser valido',
+    ],
+    nro_imprimir_Rules: [
+      v => !!v || 'Es requerido',
+      v => v <= 5 || 'No puede ser superior a 5 impresiones',
     ],
     select: null,
     items: [

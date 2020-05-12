@@ -13,9 +13,59 @@
       </div>
       <v-card>
         <v-card-title class="headline">
+            Generar Reporte Proyecto {{nombreProyecto}}
         </v-card-title>
         <v-card-text>
-          No hay registros suficientes para hacer reportes
+          <v-row justify="center">
+              <v-col cols="12">
+                <v-menu
+                  v-model="menu1"
+                  :close-on-content-click="false"
+                  :nudge-right="40"
+                  transition="scale-transition"
+                  offset-y
+                  max-width="290px"
+                >
+                  <template v-slot:activator="{ on }">
+                    <v-text-field
+                      v-model="date1"
+                      label="Desde"
+                      prepend-icon="mdi-calendar"
+                      readonly
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker v-model="date1" locale="es" first-day-of-week="1" @input="menu1=false"></v-date-picker>
+                </v-menu>
+              </v-col>
+              <v-col cols="12">
+                <v-menu
+                  v-model="menu2"
+                  :close-on-content-click="false"
+                  :nudge-right="40"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="290px"
+                >
+                  <template v-slot:activator="{ on }">
+                    <v-text-field
+                      v-model="date2"
+                      label="Hasta"
+                      prepend-icon="mdi-calendar"
+                      readonly
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker v-model="date2" locale="es" first-day-of-week="1" @input="menu2=false"></v-date-picker>
+                </v-menu>
+              </v-col>
+              <v-col cols="12">
+                <v-row justify="center">
+                  <v-btn color="primary" class="mb-2" @click="reporte">Generar</v-btn>
+                </v-row>
+              </v-col>
+
+            </v-row>
         </v-card-text>
       </v-card>
     </v-flex>
@@ -28,9 +78,76 @@ import VuetifyLogo from '~/components/VuetifyLogo.vue'
 
 export default {
   middleware: 'authenticated',
+  data(){
+    return {
+      date1: new Date().toISOString().substr(0, 10),
+      menu1: false,
+      date2: new Date().toISOString().substr(0, 10),
+      menu2: false,
+    }
+  },
   components: {
     Logo,
     VuetifyLogo
+  },
+  computed: {
+    nombreProyecto () {
+      return this.$store.state.auth['Proyecto'].nombre_proyecto;
+    }
+  },
+  methods:{
+    async reporte () {
+      console.log("date1:",this.date1)
+      console.log("date2:",this.date2)
+      try {
+        this.$axios({
+          method: 'GET',
+          url: '/Reporte/',
+          responseType: 'blob'
+        }).then((response) => {
+          console.log("response.data.type",response.data.type)
+          console.log("response.headers",response.headers)
+          console.log("response: ",response)
+          const blob = new Blob([response.data], {type: response.data.type});
+          const url = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          const contentDisposition = response.headers['content-disposition'];
+          let fileName = 'Reporte.xlsx';
+          if (contentDisposition) {
+              const fileNameMatch = contentDisposition.match(/filename="(.+)"/);
+              if (fileNameMatch.length === 2)
+                  fileName = fileNameMatch[1];
+          }
+          link.setAttribute('download', fileName);
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+          window.URL.revokeObjectURL(url);
+        });
+
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  },
+  async created(){
+    // try {
+    //   this.$axios({
+    //     method: 'GET',
+    //     url: '/Reporte/',
+    //     responseType: 'blob'
+    //   }).then(res=>{
+    //     let blob = new Blob([res.data], {type: "application/vnd.ms-excel"});
+    //     let url = window.URL.createObjectURL(blob);
+    //     window.location.href = url;
+    //   }).catch(err=>{
+    //     console.log(err)
+    //   })
+
+    // } catch (error) {
+    //   console.log(error)
+    // }
   }
 }
 </script>
