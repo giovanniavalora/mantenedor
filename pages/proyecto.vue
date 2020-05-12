@@ -1,6 +1,6 @@
 <template>
   <v-layout>
-    <v-flex class="text-center">
+    <v-flex>
       <div id="app">
         <v-app id="inspire">
           <v-form
@@ -82,14 +82,16 @@
                   required
                 ></v-text-field>
 
-                <v-btn
-                  :disabled="!valid"
-                  color="primary"
-                  class="mr-4"
-                  @click="validaryactualizar"
-                >
-                  Actualizar
-                </v-btn>
+                <v-row justify="center">
+                    <v-btn
+                      :disabled="!valid"
+                      color="primary"
+                      class="mr-4"
+                      @click="validaryactualizar"
+                    >
+                      Actualizar
+                    </v-btn>
+                </v-row>
 
 
             <!-- <v-row>
@@ -243,6 +245,32 @@
                 </v-btn> 
               -->
           </v-form>
+
+          <div class="container mt-5">
+              <v-data-table
+                :headers="headers"
+                :items="administradores"
+                :items-per-page="10"
+                :footer-props="{
+                  itemsPerPageAllText: 'Todo',
+                  itemsPerPageText: 'Filas por página'
+                }"
+                sort-by="rut"
+                class="elevation-1"
+              >
+                <template v-slot:top>
+                  <v-toolbar flat>
+                    <v-toolbar-title>Administradores</v-toolbar-title>
+                    <v-divider
+                      class="mx-4"
+                      inset
+                      vertical
+                    ></v-divider>
+                  </v-toolbar>
+                </template>
+              </v-data-table>
+          </div>
+
         </v-app>
       </div>
     </v-flex>
@@ -295,6 +323,24 @@ export default {
       'Item 4',
     ],
     checkbox: false,
+
+
+
+      headers: [
+        {
+          text: 'Rut',
+          align: 'start',
+          sortable: false,
+          value: 'rut',
+        },
+        { text: 'Nombre', value: 'nombre' },
+        { text: 'Apellido', value: 'apellido' },
+        { text: 'Último Ingreso', value: 'last_login' },
+        { text: 'Cargo', value: 'cargo' },
+        { text: 'Correo', value: 'email' },
+        // { text: 'Actions', value: 'actions', sortable: false }
+      ],
+      administradores: [],
   }),
 
   methods: {
@@ -332,7 +378,10 @@ export default {
       const res = await this.$axios.get(`/Proyecto/${id}/`)
       this.editedItem = res.data;
       this.editedItem.cantidad_voucher_imprimir = String(this.editedItem.cantidad_voucher_imprimir);
-      console.log("proyecto",this.editedItem )
+
+      const res_admin = await this.$axios.get('/Administrador/')
+      this.administradores = res_admin.data;
+      this.administradores = this.administradores.filter(x => x.proyecto === this.idProyecto)
 
     } catch (error) {
       console.log(error)

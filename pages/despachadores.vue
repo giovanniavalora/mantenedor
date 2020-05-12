@@ -269,9 +269,12 @@ export default {
     try {
       const res = await this.$axios.get('/Despachador/')
       this.despachadores = res.data;
+      this.despachadores = this.despachadores.filter(x => x.proyecto === this.idProyecto)
+
       /** Para mostrar los nombres de los Subcontratista en el dropdown del modal **/
-      const resp_origenes = await this.$axios.get('/Origen/') //Se obtienen todos, pero debieran ser solo los del proyecto
+      const resp_origenes = await this.$axios.get('/Origen/') //Se obtienen todos, pero debieran ser solo los del proyecto?
       this.origenes = resp_origenes.data;
+      this.origenes = this.origenes.filter(x => x.proyecto === this.idProyecto)//Aquí se filtran los origenes pertenecientes al proyecto
     } catch (error) {
       console.log(error)
     }

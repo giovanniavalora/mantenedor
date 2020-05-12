@@ -58,8 +58,7 @@ export default {
   },
   methods: {
     login() {
-      console.log("login")
-      return this.$axios.post("/login/",{
+        return this.$axios.post("/login/",{
           email: this.loginEmail,
           password: this.loginPassword
         })
@@ -81,6 +80,7 @@ export default {
               this.$store.commit('setAuth', auth) // mutating to store for client rendering
               Cookie.set('auth', auth) // saving token in cookie for server rendering
               this.$router.push('/')
+              console.log("credenciales validadas correctamente")
               })
           }
         })
