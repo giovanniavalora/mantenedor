@@ -102,7 +102,7 @@ export default {
       try {
         this.$axios({
           method: 'GET',
-          url: '/Reporte/',
+          url: `/Reporte/${this.date1}/${this.date2}/`,
           responseType: 'blob'
         }).then((response) => {
           console.log("response.data.type",response.data.type)
