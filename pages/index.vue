@@ -9,6 +9,10 @@
       sm8
       md6
     >
+      <!-- <div class="text-center">
+        <logo />
+        <vuetify-logo />
+      </div> -->
       <div class="text-center">
       </div>
       <v-card>
@@ -68,6 +72,10 @@
             </v-row>
         </v-card-text>
       </v-card>
+      <v-snackbar v-model="snack" :timeout="3000" :color="snackColor" :top="snackTop">
+        {{ snackText }}
+        <v-btn text @click="snack = false">cerrar</v-btn>
+      </v-snackbar>
     </v-flex>
   </v-layout>
 </template>
@@ -84,6 +92,12 @@ export default {
       menu1: false,
       date2: new Date().toISOString().substr(0, 10),
       menu2: false,
+
+      /* SnackBar */
+      snack: false,
+      snackColor: '',
+      snackText: '',
+      snackTop: true,
     }
   },
   components: {
@@ -96,6 +110,14 @@ export default {
     }
   },
   methods:{
+    fecha_actual: function () { // Otra forma de escribir una función, es equivalente a: hora_actual (){ }
+        var currentDate = new Date();
+        var currentDateWithFormat = new Date().toJSON().slice(0,10);
+        console.log("currentDateWithFormat",currentDateWithFormat);
+        return currentDateWithFormat;
+        // var currentDateWithFormat = new Date().toJSON().slice(0,10).replace(/-/g,'/');
+        
+    },
     async reporte () {
       console.log("date1:",this.date1)
       console.log("date2:",this.date2)
@@ -105,31 +127,44 @@ export default {
           url: `/Reporte/${this.date1}/${this.date2}/`,
           responseType: 'blob'
         }).then((response) => {
-          console.log("response.data.type",response.data.type)
-          console.log("response.headers",response.headers)
-          console.log("response: ",response)
-          const blob = new Blob([response.data], {type: response.data.type});
-          const url = window.URL.createObjectURL(blob);
-          const link = document.createElement('a');
-          link.href = url;
-          const contentDisposition = response.headers['content-disposition'];
-          let fileName = 'Reporte.xlsx';
-          if (contentDisposition) {
-              const fileNameMatch = contentDisposition.match(/filename="(.+)"/);
-              if (fileNameMatch.length === 2)
-                  fileName = fileNameMatch[1];
+          // console.log("response.data.type",response.data.type)
+          // console.log("response.headers",response.headers)
+          if(response.status == 204){
+              this.snack = true
+              this.snackColor = 'error'
+              this.snackText = 'No se encontraron registros. Indique otro rango de fechas.'
           }
-          link.setAttribute('download', fileName);
-          document.body.appendChild(link);
-          link.click();
-          link.remove();
-          window.URL.revokeObjectURL(url);
+          if(response.status == 200){
+              const blob = new Blob([response.data], {type: response.data.type});
+              const url = window.URL.createObjectURL(blob);
+              const link = document.createElement('a');
+              link.href = url;
+              const contentDisposition = response.headers['content-disposition'];
+              let fileName = this.fecha_actual()+'_Reporte.xlsx';
+              if (contentDisposition) {
+                  const fileNameMatch = contentDisposition.match(/filename="(.+)"/);
+                  if (fileNameMatch.length === 2)
+                      fileName = fileNameMatch[1];
+              }
+              link.setAttribute('download', fileName);
+              document.body.appendChild(link);
+              link.click();
+              link.remove();
+              window.URL.revokeObjectURL(url);
+          }
+          
+          
+        }).catch((error) => {
+          console.log("error1",error)
         });
 
       } catch (error) {
-        console.log(error)
+          console.log("error2",error)
       }
     }
+  },
+  mounted (){
+      this.fecha_actual()
   },
   async created(){
     // try {

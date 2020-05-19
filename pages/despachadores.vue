@@ -223,10 +223,10 @@ export default {
         try {
           let res = await this.$axios.put(`/Despachador/${this.editedItem.id}/`,this.editedItem)
           if(res.status == 200){
-            Object.assign(this.despachadores[this.editedIndex], this.editedItem)
-            this.snack = true
-            this.snackColor = 'success'
-            this.snackText = 'Guardado'
+              Object.assign(this.despachadores[this.editedIndex], this.editedItem)
+              this.snack = true
+              this.snackColor = 'success'
+              this.snackText = 'Guardado'
           }else{
               this.snack = true
               this.snackColor = 'error'
