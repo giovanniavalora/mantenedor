@@ -480,7 +480,7 @@ export default {
     },
   },
 
-  async created(){
+  async asyncData(){
     try {
       // const res = await axios.get('http://157.245.237.33:5000/api/v1/Camion/')
       const rescamion = await this.$axios.get('/Camion/')
