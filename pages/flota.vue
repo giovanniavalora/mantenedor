@@ -480,30 +480,46 @@ export default {
     },
   },
 
-  async asyncData(){
+  // async created(){
+  //   try {
+  //     // const res = await axios.get('http://157.245.237.33:5000/api/v1/Camion/')
+  //     const rescamion = await this.$axios.get('/Camion/')
+  //     this.camiones = rescamion.data;
+
+  //     /** Para mostrar los nombres de los Subcontratista en el dropdown del modal **/
+  //     const resp_subcontratistas = await this.$axios.get('/Subcontratista/') //Se obtienen todos, pero debieran ser solo los del proyecto
+  //     this.subcontratistas = resp_subcontratistas.data;
+
+  //     /* Lo siguiente debiera ocurrir en el backend, el cual debiera enviar el nombre del subcontratista al que pertenece */
+  //     /* Asigna a 'camiones' el atributo del nombre del subcontratista al que pertenece */
+  //     for(var prop in this.camiones){
+  //       this.camiones[prop].nom_subcontratista = this.subcontratistas.find(x => x.id === this.camiones[prop].subcontratista).nombre_subcontratista;
+  //     }
+
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // },
+  async asyncData({$axios}){
     try {
       // const res = await axios.get('http://157.245.237.33:5000/api/v1/Camion/')
-      const rescamion = await this.$axios.get('/Camion/')
-      this.camiones = rescamion.data;
+      const rescamion = await $axios.get('http://127.0.0.1:5000/api/v1/Camion/')
+      console.log("rescamion",rescamion.data);
 
       /** Para mostrar los nombres de los Subcontratista en el dropdown del modal **/
-      const resp_subcontratistas = await this.$axios.get('/Subcontratista/') //Se obtienen todos, pero debieran ser solo los del proyecto
-      this.subcontratistas = resp_subcontratistas.data;
+      const resp_subcontratistas = await $axios.get('http://127.0.0.1:5000/api/v1/Subcontratista/') //Se obtienen todos, pero debieran ser solo los del proyecto
+      console.log("resp_subcontratistas",resp_subcontratistas.data);
 
       /* Lo siguiente debiera ocurrir en el backend, el cual debiera enviar el nombre del subcontratista al que pertenece */
       /* Asigna a 'camiones' el atributo del nombre del subcontratista al que pertenece */
-      for(var prop in this.camiones){
-        this.camiones[prop].nom_subcontratista = this.subcontratistas.find(x => x.id === this.camiones[prop].subcontratista).nombre_subcontratista;
-      }
+      // for(var prop in this.camiones){
+      //   this.camiones[prop].nom_subcontratista = this.subcontratistas.find(x => x.id === this.camiones[prop].subcontratista).nombre_subcontratista;
+      // }
 
     } catch (error) {
-      console.log(error)
+      console.log("errorcito:",error)
     }
   }
-  // asyncData({$axios}){
-  //     const res = await $axios.get('/camion/')
-  //     this.camiones = res.data;
-  // }
     
     
   
