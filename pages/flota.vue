@@ -500,14 +500,15 @@ export default {
   //     console.log(error)
   //   }
   // },
+  // async asyncData({$axios}){
   async asyncData({$axios}){
     try {
       // const res = await axios.get('http://157.245.237.33:5000/api/v1/Camion/')
-      const rescamion = await $axios.get('http://127.0.0.1:5000/api/v1/Camion/')
+      const rescamion = await axios.get('http://127.0.0.1:5000/api/v1/Camion/')
       console.log("rescamion.data",rescamion.data);
 
       /** Para mostrar los nombres de los Subcontratista en el dropdown del modal **/
-      const resp_subcontratistas = await $axios.get('http://127.0.0.1:5000/api/v1/Subcontratista/') //Se obtienen todos, pero debieran ser solo los del proyecto
+      const resp_subcontratistas = await axios.get('http://127.0.0.1:5000/api/v1/Subcontratista/') //Se obtienen todos, pero debieran ser solo los del proyecto
       console.log("resp_subcontratistas.data",resp_subcontratistas.data);
 
       /* Lo siguiente debiera ocurrir en el backend, el cual debiera enviar el nombre del subcontratista al que pertenece */
