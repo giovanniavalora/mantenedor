@@ -13,7 +13,7 @@ RUN npm run build
 # RUN npm run start
 # RUN npm install js-cookie --save
 # RUN npm install cookieparser --save
-EXPOSE 3000
+# EXPOSE 3000
 ENV HOST 0.0.0.0
 
 
