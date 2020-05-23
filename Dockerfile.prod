@@ -3,12 +3,17 @@ FROM node:13.12.0
 
 # set work directory
 RUN mkdir -p /src/mantenedor/
+COPY . /src/mantenedor
 WORKDIR /src/mantenedor
 
-# copy project
-COPY . /src/mantenedor/
-# RUN npm update
+COPY package.json /src/mantenedor
+#RUN npm rebuild #Debe ejecutarse la primera vez después de cambiar la version de node
+
 RUN npm install
+
+ENV NODE_ENV=production
+
+COPY . /src/mantenedor
 RUN npm run build
 # RUN npm run start
 # RUN npm install js-cookie --save
