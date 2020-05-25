@@ -58,11 +58,11 @@ export default {
     // proxy: true,
     // baseURL: "http://127.0.0.1:5000/api/v1"
     // baseURL: "http://192.168.0.11:5000/api/v1" 
-    // baseURL: "http://157.245.237.33:5000/api/v1"
-    baseURL:
-      process.env.NODE_ENV !== "production"
-        ? "http://192.168.0.11:5000/api/v1"
-        : "http://157.245.237.33:5000/api/v1"
+    baseURL: "http://157.245.237.33:5000/api/v1"
+    // baseURL:
+    //   process.env.NODE_ENV !== "production"
+    //     ? "http://localhost:5000/api/v1"
+    //     : "http://157.245.237.33:5000/api/v1"
   },
   /*
   ** vuetify module configuration
