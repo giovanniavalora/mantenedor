@@ -52,8 +52,8 @@ export default {
     return {
       showPassword: false,
 
-      loginEmail: 'giovanni.aravena@avalora.com',
-      loginPassword: '87654321'
+      loginEmail: '',
+      loginPassword: ''
     }
   },
   methods: {
