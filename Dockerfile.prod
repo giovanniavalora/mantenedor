@@ -29,10 +29,10 @@
 FROM node:13.12.0
 RUN mkdir -p /src/mantenedor/
 WORKDIR /src/mantenedor
-COPY . /src/mantenedor/
+COPY package*.json ./
 RUN npm install
+COPY . .
 RUN npm build
-EXPOSE 3000
 ENV HOST 0.0.0.0
 
 
