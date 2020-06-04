@@ -37,46 +37,53 @@
                           <span class="headline">{{ formTitle }}</span>
                         </v-card-title>
 
-                        <v-card-text>
-                          <v-container>
-                            <v-row>
-                              <v-col cols="12" sm="6" md="4">
-                                <v-text-field v-model="editedItem.rut" :rules="rutRules" label="Rut"></v-text-field>
-                              </v-col>
-                              <v-col cols="12" sm="6" md="4">
-                                <v-text-field v-model="editedItem.nombre" label="Nombre despachador"></v-text-field>
-                              </v-col>
-                              <v-col cols="12" sm="6" md="4">
-                                <v-text-field v-model="editedItem.apellido" label="Apellido despachador"></v-text-field>
-                              </v-col>
-                              <v-col cols="12" sm="6" md="4">
-                                <v-text-field v-model="editedItem.telefono" label="Nro telefónico entregado"></v-text-field>
-                              </v-col>
-                              <v-col cols="12" sm="6" md="4">
-                                <v-select
-                                  v-model="editedItem.origen_asignado"
-                                  :items= origenes
-                                  item-text="nombre_origen" 
-                                  item-value="id" 
-                                  single-line 
-                                  auto 
-                                  label="Origen"
-                                  required
-                                ></v-select>
-                                <!-- <v-text-field v-model="editedItem.origen_asignado" label="Origen"></v-text-field> -->
-                              </v-col>
-                              <v-col cols="12" sm="6" md="4">
-                                <v-text-field v-model="editedItem.password" type="password" label="Contraseña"></v-text-field>
-                              </v-col>
-                            </v-row>
-                          </v-container>
-                        </v-card-text>
-            
-                        <v-card-actions>
-                          <v-spacer></v-spacer>
-                          <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
-                          <v-btn color="blue darken-1" :disabled="!valid" text @click="save">Save</v-btn>
-                        </v-card-actions>
+                        <v-form
+                          ref="form"
+                          v-model="valid"
+                          lazy-validation
+                        >
+                            <v-card-text>
+                              <v-container>
+                                <v-row>
+                                  <v-col cols="12" sm="6" md="4">
+                                    <v-text-field v-model="editedItem.rut" :rules="rutRules" label="Rut" required></v-text-field>
+                                  </v-col>
+                                  <v-col cols="12" sm="6" md="4">
+                                    <v-text-field v-model="editedItem.nombre" :rules="nombreapellidoRules" label="Nombre despachador" required></v-text-field>
+                                  </v-col>
+                                  <v-col cols="12" sm="6" md="4">
+                                    <v-text-field v-model="editedItem.apellido" :rules="nombreapellidoRules" label="Apellido despachador" required></v-text-field>
+                                  </v-col>
+                                  <v-col cols="12" sm="6" md="4">
+                                    <v-text-field v-model="editedItem.telefono" :rules="telefonoRules" label="Nro telefónico entregado"></v-text-field>
+                                  </v-col>
+                                  <v-col cols="12" sm="6" md="4">
+                                    <v-select
+                                      v-model="editedItem.origen_asignado"
+                                      :items= origenes
+                                      :rules="origenasignadoRules"
+                                      item-text="nombre_origen" 
+                                      item-value="id" 
+                                      single-line 
+                                      auto 
+                                      label="Origen"
+                                      required
+                                    ></v-select>
+                                    <!-- <v-text-field v-model="editedItem.origen_asignado" label="Origen"></v-text-field> -->
+                                  </v-col>
+                                  <v-col cols="12" sm="6" md="4">
+                                    <v-text-field v-model="editedItem.password" :rules="passwordRules" type="password" label="Contraseña" required></v-text-field>
+                                  </v-col>
+                                </v-row>
+                              </v-container>
+                            </v-card-text>
+                          </v-form>
+                            <v-card-actions>
+                              <v-spacer></v-spacer>
+                              <v-btn color="blue darken-1" :disabled="!valid" text @click="close">Cancel</v-btn>
+                              <v-btn color="blue darken-1" :disabled="!valid" text @click="save">Save</v-btn>
+                            </v-card-actions>
+                        
                       </v-card>
                     </v-dialog>
                   </v-toolbar>
@@ -117,6 +124,7 @@ export default {
   middleware: 'authenticated',
   data(){
     return {
+      valid: true,
       /* SnackBar */
       snack: false,
       snackColor: '',
@@ -157,8 +165,28 @@ export default {
       valid:true,
       rutRules:[
         v => !!v || 'Este campo es requerido',
-        v => /^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test(v) || 'Ingrese Rut con guión y sin puntos',
-      ]
+        v => /^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test(v) || 'Ingrese Rut sin puntos y con guión',
+      ],
+      nombreapellidoRules: [
+        v => !!v || 'Este campo es requerido',
+        v => (v && v.length <= 20) || 'Este campo debe tener menos de 20 caracteres',
+      ],
+      origenasignadoRules: [
+        v => !!v || 'Este campo es requerido',
+        // v => (v && v.length <= 50) || 'Este campo debe tener menos de 50 caracteres',
+      ],
+      telefonoRules: [
+        // v => !!v || 'Este campo es requerido',
+        v => (v.length <= 20) || 'Este campo debe tener menos de 20 caracteres',
+      ],
+      passwordRules: [
+        v => !!v || 'Este campo es requerido',
+        v => (v && v.length > 7) || 'Debe tener a lo menos 8 caracteres',
+      ],
+      nro_impresiones_Rules: [
+        v => !!v || 'Es requerido',
+        v => v <= 5 || 'No puede ser superior a 5 impresiones',
+      ],
     }
   },
   // fetch ({ store, redirect }) {

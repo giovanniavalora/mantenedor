@@ -44,7 +44,7 @@
                 <v-text-field
                   v-model="editedItem.rut_cliente"
                   :counter="100"
-                  :rules="editedItem.nombre_proyecto_Rules"
+                  :rules="rutRules"
                   label="Rut cliente"
                   required
                 ></v-text-field>
@@ -60,7 +60,7 @@
                 <v-text-field
                   v-model="editedItem.rut_mandante"
                   :counter="100"
-                  :rules="nombre_proyecto_Rules"
+                  :rules="rutRules"
                   label="Rut mandante"
                   required
                 ></v-text-field>
@@ -76,7 +76,7 @@
                 <v-text-field
                   v-model="editedItem.cantidad_voucher_imprimir"
                   :counter="1"
-                  :rules="nro_imprimir_Rules"
+                  :rules="nro_impresiones_Rules"
                   label="Cantidad de voucher a imprimir"
                   type="number"
                   required
@@ -297,12 +297,10 @@ export default {
       mandante_final: '',
       cantidad_voucher_imprimir: '',
     },
-    centro_de_coste: '',
     centro_de_coste_Rules: [
       v => !!v || 'Este campo es requerido',
       v => (v && v.length <= 20) || 'Este campo debe tener menos de 20 caracteres',
     ],
-    nombre_proyecto: '',
     nombre_proyecto_Rules: [
       v => !!v || 'Este campo es requerido',
       v => (v && v.length <= 100) || 'Este campo debe tener menos de 100 caracteres',
@@ -311,9 +309,13 @@ export default {
       v => !!v || 'E-mail es requerido',
       v => /.+@.+\..+/.test(v) || 'E-mail debe ser valido',
     ],
-    nro_imprimir_Rules: [
+    nro_impresiones_Rules: [
       v => !!v || 'Es requerido',
       v => v <= 5 || 'No puede ser superior a 5 impresiones',
+    ],
+    rutRules:[
+        v => !!v || 'Este campo es requerido',
+        v => /^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test(v) || 'Ingrese Rut sin puntos y con guión',
     ],
     select: null,
     items: [
