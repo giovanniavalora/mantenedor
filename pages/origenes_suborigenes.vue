@@ -39,150 +39,157 @@
                           <span class="headline">{{ formTitle }}</span>
                         </v-card-title>
 
-                        <v-card-text>
-                          <v-container>
-                            <v-row>
-                              <v-col cols="12" sm="6" md="4">
-                                <v-text-field v-model="editedItem.nombre_origen" label="Nombre Origen"></v-text-field>
-                              </v-col>
-                              <v-col cols="12" sm="6" md="4">
-                                <v-text-field v-model="editedItem.comuna" label="Comuna"></v-text-field>
-                              </v-col>
-                              <v-col cols="12" sm="6" md="4">
-                                <v-text-field v-model="editedItem.calle" label="Calle"></v-text-field>
-                              </v-col>
-                              <v-col cols="12" sm="6" md="4">
-                                <v-text-field v-model="editedItem.numero" label="Número"></v-text-field>
-                              </v-col>
-                              <!-- <v-col cols="12" sm="12" md="8"> -->
-                              <v-col cols="12" sm="12" md="8" v-if="formTitle === 'Editar Origen'">
-                                <v-divider
-                                  class="mx-4"
-                                  inset
-                                  vertical
-                                ></v-divider>
-                                <v-data-table 
-                                  dense
-                                  :headers="headers_suborigen"
-                                  :items="filteredSuborigenes"
-                                  hide-default-header
-                                  hide-default-footer
-                                  sort-by="nombre_suborigen"
-                                  class="elevation-1"
-                                  >
-                                        <template v-slot:top>
-                                          <v-toolbar class="grey lighten-5" flat short dense>
-                                                Suborigenes
-                                            <v-divider
-                                              class="mx-4"
-                                              inset
-                                              vertical
-                                            ></v-divider>
-                                            <v-spacer></v-spacer>
-                                                <v-btn color="primary" class="mr-5" small @click="dialog_suborigen=true">Agregar</v-btn>
-                                                <!-- <v-icon color="primary" class="align-right" @click="dialog_suborigen=true">
-                                                    mdi-plus-circle
-                                                </v-icon> -->
-                                          </v-toolbar>
-                                          <v-divider></v-divider>
-                                          <v-dialog v-model="dialog_suborigen" max-width="300px">
-                                              <v-card>
-                                                <v-card-title>Nuevo Suborigen</v-card-title>
-                                                <v-card-text>
-                                                  <v-container>
-                                                    <v-row justify="center">
-                                                      <v-col>
-                                                        <v-text-field v-model="editedItemSuborigen.nombre_suborigen" label="Nombre Suborigen"></v-text-field>
-                                                      </v-col>
-                                                    </v-row>
-                                                  </v-container>
-                                                </v-card-text>
-                                                <v-card-actions>
-                                                  <v-spacer></v-spacer>
-                                                  <v-btn color="blue darken-1" text @click="cancelsuborigen">Cancelar</v-btn>
-                                                  <v-btn color="blue darken-1" text @click="saveCreateSuborigen">Guardar</v-btn>
-                                                </v-card-actions>
-                                              </v-card>
-                                          </v-dialog>
-                                        </template> 
-                                        
+                        <v-form
+                          ref="form"
+                          v-model="valid"
+                          lazy-validation
+                        >
 
-                                        <template v-slot:item.nombre_suborigen="props">
-                                            <v-edit-dialog
-                                              dense
-                                              :return-value.sync="props.item.nombre_suborigen"
-                                              @save="saveEditSuborigen(props.item)"
-                                              @cancel="cancelsuborigen"
-                                              @open="opensuborigen"
-                                              @close="closesuborigen"
-                                            > {{props.item.nombre_suborigen}}
-                                                <template v-slot:input>
-                                                    <v-text-field
-                                                        dense
-                                                        v-model="props.item.nombre_suborigen"
-                                                        :rules="[maxchars]"
-                                                        label="Edit"
-                                                        single-line
-                                                        counter
-                                                        autofocus
-                                                    ></v-text-field>
-                                                </template>
-                                            </v-edit-dialog>
-                                        </template>
-                                        <template v-slot:item.activo="props">
-                                            <v-switch
-                                              dense
-                                              v-model="props.item.activo"
-                                              @change="saveEditSuborigen(props.item)"
-                                            ></v-switch>
-                                        </template>
-                                        <template v-slot:item.actions="{ item }">
-                                          <v-icon
-                                            small
-                                            @click="deletesuborigen(item)"
-                                          >
-                                            mdi-delete
-                                          </v-icon>
-                                        </template>
-                                </v-data-table> 
+                            <v-card-text>
+                              <v-container>
+                                <v-row>
+                                  <v-col cols="12" sm="6" md="4">
+                                    <v-text-field v-model="editedItem.nombre_origen" :rules="nombreorigenRules" label="Nombre Origen" required></v-text-field>
+                                  </v-col>
+                                  <v-col cols="12" sm="6" md="4">
+                                    <v-text-field v-model="editedItem.comuna" :rules="comunacalleRules" label="Comuna"></v-text-field>
+                                  </v-col>
+                                  <v-col cols="12" sm="6" md="4">
+                                    <v-text-field v-model="editedItem.calle" :rules="comunacalleRules" label="Calle"></v-text-field>
+                                  </v-col>
+                                  <v-col cols="12" sm="6" md="4">
+                                    <v-text-field v-model="editedItem.numero" :rules="numeroRules" label="Número"></v-text-field>
+                                  </v-col>
+
+                                  <!-- <v-col cols="12" sm="12" md="8"> -->
+                                  <v-col cols="12" sm="12" md="8" v-if="formTitle === 'Editar Origen'">
+                                    <v-divider
+                                      class="mx-4"
+                                      inset
+                                      vertical
+                                    ></v-divider>
+                                    <v-data-table 
+                                      dense
+                                      :headers="headers_suborigen"
+                                      :items="filteredSuborigenes"
+                                      hide-default-header
+                                      hide-default-footer
+                                      sort-by="nombre_suborigen"
+                                      class="elevation-1"
+                                      >
+                                            <template v-slot:top>
+                                              <v-toolbar class="grey lighten-5" flat short dense>
+                                                    Suborigenes
+                                                <v-divider
+                                                  class="mx-4"
+                                                  inset
+                                                  vertical
+                                                ></v-divider>
+                                                <v-spacer></v-spacer>
+                                                    <v-btn color="primary" class="mr-5" small @click="dialog_suborigen=true">Agregar</v-btn>
+                                                    <!-- <v-icon color="primary" class="align-right" @click="dialog_suborigen=true">
+                                                        mdi-plus-circle
+                                                    </v-icon> -->
+                                              </v-toolbar>
+                                              <v-divider></v-divider>
+                                              <v-dialog v-model="dialog_suborigen" max-width="300px">
+                                                  <v-card>
+                                                    <v-card-title>Nuevo Suborigen</v-card-title>
+                                                    <v-card-text>
+                                                      <v-container>
+                                                        <v-row justify="center">
+                                                          <v-col>
+                                                            <v-text-field v-model="editedItemSuborigen.nombre_suborigen" label="Nombre Suborigen"></v-text-field>
+                                                          </v-col>
+                                                        </v-row>
+                                                      </v-container>
+                                                    </v-card-text>
+                                                    <v-card-actions>
+                                                      <v-spacer></v-spacer>
+                                                      <v-btn color="blue darken-1" text @click="cancelsuborigen">Cancelar</v-btn>
+                                                      <v-btn color="blue darken-1" text @click="saveCreateSuborigen">Guardar</v-btn>
+                                                    </v-card-actions>
+                                                  </v-card>
+                                              </v-dialog>
+                                            </template> 
+                                            
+
+                                            <template v-slot:item.nombre_suborigen="props">
+                                                <v-edit-dialog
+                                                  dense
+                                                  :return-value.sync="props.item.nombre_suborigen"
+                                                  @save="saveEditSuborigen(props.item)"
+                                                  @cancel="cancelsuborigen"
+                                                  @open="opensuborigen"
+                                                  @close="closesuborigen"
+                                                > {{props.item.nombre_suborigen}}
+                                                    <template v-slot:input>
+                                                        <v-text-field
+                                                            dense
+                                                            v-model="props.item.nombre_suborigen"
+                                                            :rules="[maxchars]"
+                                                            label="Edit"
+                                                            single-line
+                                                            counter
+                                                            autofocus
+                                                        ></v-text-field>
+                                                    </template>
+                                                </v-edit-dialog>
+                                            </template>
+                                            <template v-slot:item.activo="props">
+                                                <v-switch
+                                                  dense
+                                                  v-model="props.item.activo"
+                                                  @change="saveEditSuborigen(props.item)"
+                                                ></v-switch>
+                                            </template>
+                                            <template v-slot:item.actions="{ item }">
+                                              <v-icon
+                                                small
+                                                @click="deletesuborigen(item)"
+                                              >
+                                                mdi-delete
+                                              </v-icon>
+                                            </template>
+                                    </v-data-table> 
+                                    
+                                  </v-col>
+                                  <v-col cols="12">
+                                    <Map 
+                                        class="map" 
+                                        :key="componentKey"
+                                        :lat="editedItem.latitud" 
+                                        :lng="editedItem.longitud" 
+                                        @latitudeChange="editedItem.latitud = $event" 
+                                        @longitudeChange="editedItem.longitud = $event">
+                                    </Map>
+                                  </v-col>
+                                </v-row>
                                 
-                              </v-col>
-                              <v-col cols="12">
-                                <Map 
-                                    class="map" 
-                                    :key="componentKey"
-                                    :lat="editedItem.latitud" 
-                                    :lng="editedItem.longitud" 
-                                    @latitudeChange="editedItem.latitud = $event" 
-                                    @longitudeChange="editedItem.longitud = $event">
-                                </Map>
-                              </v-col>
-                            </v-row>
+                              </v-container>
                             
-                          </v-container>
-                         
-                        </v-card-text>
-                        <!-- <v-container fill-height fluid>
-                          <v-row justify="center" align="center">
-                              <Map 
-                                  class="map" 
-                                  :key="componentKey"
-                                  :lat="editedItem.latitud" 
-                                  :lng="editedItem.longitud" 
-                                  @latitudeChange="editedItem.latitud = $event" 
-                                  @longitudeChange="editedItem.longitud = $event">
-                              </Map>
-                          </v-row>
-                        </v-container> -->
-                          
-            
-                        <v-card-actions>
-                          <v-spacer></v-spacer>
-                          <v-btn color="blue darken-1" text @click="close">Cancelar</v-btn>
-                          <v-btn color="blue darken-1" text @click="save">Guardar</v-btn>
-                        </v-card-actions>
+                            </v-card-text>
+                            <!-- <v-container fill-height fluid>
+                              <v-row justify="center" align="center">
+                                  <Map 
+                                      class="map" 
+                                      :key="componentKey"
+                                      :lat="editedItem.latitud" 
+                                      :lng="editedItem.longitud" 
+                                      @latitudeChange="editedItem.latitud = $event" 
+                                      @longitudeChange="editedItem.longitud = $event">
+                                  </Map>
+                              </v-row>
+                            </v-container> -->
+                              
+                
+                            <v-card-actions>
+                              <v-spacer></v-spacer>
+                              <v-btn color="blue darken-1" text @click="close">Cancelar</v-btn>
+                              <v-btn color="blue darken-1" :disabled="!valid" text @click="save">Guardar</v-btn>
+                            </v-card-actions>
+                        </v-form>
                       </v-card>
-                      
                     </v-dialog>
                   </v-toolbar>
                 </template>
@@ -285,6 +292,29 @@ export default {
         activo: '',
         origen: '',
       },
+
+
+      /* Validación de formulario */
+      valid: false,
+      nombreorigenRules: [
+        v => !!v || 'Este campo es requerido',
+        v => (v && v.length <= 20) || 'Este campo debe tener menos de 20 caracteres',
+      ],
+      comunacalleRules: [
+        v => {
+          if (v) return v.length <= 50 || 'Este campo debe tener menos de 50 caracteres';
+          else return true;
+        },
+      ],
+      numeroRules: [
+        v => {
+          if (v) return v.length <= 6 || 'Este campo debe tener menos de 6 caracteres';
+          else return true;
+        },
+      ],
+      // latitudlongitudRules: [
+      //   v => !!v || 'Este campo es requerido',
+      // ],
 
       
     }
@@ -424,47 +454,49 @@ export default {
 
 
     async save () {
-      if (this.editedIndex > -1) {
-        this.editedItem.proyecto = this.idProyecto
-        try{
-            let res = await this.$axios.put(`/Origen/${this.editedItem.id}/`,this.editedItem)
-            if(res.status == 200){
-              Object.assign(this.origenes[this.editedIndex], this.editedItem)
-              this.snack = true
-              this.snackColor = 'success'
-              this.snackText = 'Actualizado'
-            }else{
-              this.snack = true
-              this.snackColor = 'error'
-              this.snackText = 'Hubo un error al actualizar. Refresque el navegador.'+res.error
-            }
-        }catch(error){
-              this.snack = true
-              this.snackColor = 'error'
-              this.snackText = error
-        }
-      } else {
-        this.editedItem.proyecto = this.idProyecto
-        try{
-              let res = await this.$axios.post(`/Origen/`,this.editedItem)
-              if(res.status == 201){
-                this.editedItem['id']=res.data.id
-                this.origenes.push(this.editedItem)
-                this.snack = true
-                this.snackColor = 'success'
-                this.snackText = 'Creado'
-              }else{
-                this.snack = true
-                this.snackColor = 'error'
-                this.snackText = 'Hubo un error al crear. Refresque el navegador.'+res.error
+        if (this.$refs.form.validate() ){
+            if (this.editedIndex > -1) {
+              this.editedItem.proyecto = this.idProyecto
+              try{
+                  let res = await this.$axios.put(`/Origen/${this.editedItem.id}/`,this.editedItem)
+                  if(res.status == 200){
+                    Object.assign(this.origenes[this.editedIndex], this.editedItem)
+                    this.snack = true
+                    this.snackColor = 'success'
+                    this.snackText = 'Actualizado'
+                  }else{
+                    this.snack = true
+                    this.snackColor = 'error'
+                    this.snackText = 'Hubo un error al actualizar. Refresque el navegador.'+res.error
+                  }
+              }catch(error){
+                    this.snack = true
+                    this.snackColor = 'error'
+                    this.snackText = error
               }
-        }catch(error){
-            this.snack = true
-            this.snackColor = 'error'
-            this.snackText = error
+            } else {
+              this.editedItem.proyecto = this.idProyecto
+              try{
+                    let res = await this.$axios.post(`/Origen/`,this.editedItem)
+                    if(res.status == 201){
+                      this.editedItem['id']=res.data.id
+                      this.origenes.push(this.editedItem)
+                      this.snack = true
+                      this.snackColor = 'success'
+                      this.snackText = 'Creado'
+                    }else{
+                      this.snack = true
+                      this.snackColor = 'error'
+                      this.snackText = 'Hubo un error al crear. Refresque el navegador.'+res.error
+                    }
+              }catch(error){
+                  this.snack = true
+                  this.snackColor = 'error'
+                  this.snackText = error
+              }
+            }
+            this.close()
         }
-      }
-      this.close()
     },
   },
 

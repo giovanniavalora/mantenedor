@@ -77,13 +77,13 @@
                                 </v-row>
                               </v-container>
                             </v-card-text>
-                          </v-form>
+                          
                             <v-card-actions>
                               <v-spacer></v-spacer>
-                              <v-btn color="blue darken-1" :disabled="!valid" text @click="close">Cancel</v-btn>
-                              <v-btn color="blue darken-1" :disabled="!valid" text @click="save">Save</v-btn>
+                              <v-btn color="blue darken-1" text @click="close">Cancelar</v-btn>
+                              <v-btn color="blue darken-1" :disabled="!valid" text @click="save">Guardar</v-btn>
                             </v-card-actions>
-                        
+                          </v-form>
                       </v-card>
                     </v-dialog>
                   </v-toolbar>
@@ -162,7 +162,7 @@ export default {
       },
 
       /* Validación de formulario */
-      valid:true,
+      valid: false,
       rutRules:[
         v => !!v || 'Este campo es requerido',
         v => /^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test(v) || 'Ingrese Rut sin puntos y con guión',
@@ -177,15 +177,14 @@ export default {
       ],
       telefonoRules: [
         // v => !!v || 'Este campo es requerido',
-        v => (v.length <= 20) || 'Este campo debe tener menos de 20 caracteres',
+        v => {
+          if (v) return v.length <= 16 || 'Este campo debe tener menos de 16 caracteres';
+          else return true;
+        },
       ],
       passwordRules: [
         v => !!v || 'Este campo es requerido',
         v => (v && v.length > 7) || 'Debe tener a lo menos 8 caracteres',
-      ],
-      nro_impresiones_Rules: [
-        v => !!v || 'Es requerido',
-        v => v <= 5 || 'No puede ser superior a 5 impresiones',
       ],
     }
   },
@@ -245,51 +244,55 @@ export default {
 
 
     async save () {
-      /* Para editar un registro */
-      if (this.editedIndex > -1) {
-        this.editedItem.proyecto = this.idProyecto
-        try {
-          let res = await this.$axios.put(`/Despachador/${this.editedItem.id}/`,this.editedItem)
-          if(res.status == 200){
-              Object.assign(this.despachadores[this.editedIndex], this.editedItem)
-              this.snack = true
-              this.snackColor = 'success'
-              this.snackText = 'Guardado'
-          }else{
-              this.snack = true
-              this.snackColor = 'error'
-              this.snackText = 'Hubo un error al actualizar. Refresque el navegador.'
-          }
-        } catch (error) {
-          this.snack = true
-          this.snackColor = 'error'
-          this.snackText = error
+        /* Validación formulario */
+        if (this.$refs.form.validate() ){
+
+            /* Para editar un registro */
+            if (this.editedIndex > -1) {
+              this.editedItem.proyecto = this.idProyecto
+              try {
+                let res = await this.$axios.put(`/Despachador/${this.editedItem.id}/`,this.editedItem)
+                if(res.status == 200){
+                    Object.assign(this.despachadores[this.editedIndex], this.editedItem)
+                    this.snack = true
+                    this.snackColor = 'success'
+                    this.snackText = 'Guardado'
+                }else{
+                    this.snack = true
+                    this.snackColor = 'error'
+                    this.snackText = 'Hubo un error al actualizar. Refresque el navegador.'
+                }
+              } catch (error) {
+                this.snack = true
+                this.snackColor = 'error'
+                this.snackText = error
+              }
+            /*Para crear un nuevo registro*/
+            } else {
+              this.editedItem.proyecto = this.idProyecto
+              try {
+                let res = await this.$axios.post('/Despachador/',this.editedItem)
+                console.log("res",res)
+                if (res.status = 201) {
+                  this.editedItem['id']=res.data.data.id
+                  console.log("editedItem",this.editedItem)
+                  this.despachadores.push(this.editedItem)
+                  this.snack = true
+                  this.snackColor = 'success'
+                  this.snackText = 'Creado'
+                } else {
+                    this.snack = true
+                    this.snackColor = 'error'
+                    this.snackText = 'Hubo un error al crear. Refresque el navegador.'+res.error
+                }
+              } catch (error) {
+                  this.snack = true
+                  this.snackColor = 'error'
+                  this.snackText = error
+              }
+            }
+            this.close()
         }
-      /*Para crear un nuevo registro*/
-      } else {
-        this.editedItem.proyecto = this.idProyecto
-        try {
-          let res = await this.$axios.post('/Despachador/',this.editedItem)
-          console.log("res",res)
-          if (res.status = 201) {
-            this.editedItem['id']=res.data.data.id
-            console.log("editedItem",this.editedItem)
-            this.despachadores.push(this.editedItem)
-            this.snack = true
-            this.snackColor = 'success'
-            this.snackText = 'Creado'
-          } else {
-              this.snack = true
-              this.snackColor = 'error'
-              this.snackText = 'Hubo un error al crear. Refresque el navegador.'+res.error
-          }
-        } catch (error) {
-            this.snack = true
-            this.snackColor = 'error'
-            this.snackText = error
-        }
-      }
-      this.close()
     },
   },
 
