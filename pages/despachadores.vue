@@ -81,7 +81,7 @@
                             <v-card-actions>
                               <v-spacer></v-spacer>
                               <v-btn color="blue darken-1" text @click="close">Cancelar</v-btn>
-                              <v-btn color="blue darken-1" :disabled="!valid" text @click="save">Guardar</v-btn>
+                              <v-btn color="blue darken-1" text @click="save" :disabled="!valid">Guardar</v-btn>
                             </v-card-actions>
                           </v-form>
                       </v-card>

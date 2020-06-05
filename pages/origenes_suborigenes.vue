@@ -186,7 +186,7 @@
                             <v-card-actions>
                               <v-spacer></v-spacer>
                               <v-btn color="blue darken-1" text @click="close">Cancelar</v-btn>
-                              <v-btn color="blue darken-1" :disabled="!valid" text @click="save">Guardar</v-btn>
+                              <v-btn color="blue darken-1" text @click="save" :disabled="!valid">Guardar</v-btn>
                             </v-card-actions>
                         </v-form>
                       </v-card>
@@ -315,7 +315,6 @@ export default {
       // latitudlongitudRules: [
       //   v => !!v || 'Este campo es requerido',
       // ],
-
       
     }
   },
@@ -454,7 +453,9 @@ export default {
 
 
     async save () {
+        /* Validación formulario */
         if (this.$refs.form.validate() ){
+
             if (this.editedIndex > -1) {
               this.editedItem.proyecto = this.idProyecto
               try{

@@ -39,36 +39,42 @@
             
                         <v-card-text>
                           <v-container>
-                            <v-row>
-                              <v-col cols="12" sm="6" md="4">
-                                <v-text-field v-model="editedItem.rut" label="Rut"></v-text-field>
-                              </v-col>
-                              <v-col cols="12" sm="6" md="4">
-                                <v-text-field v-model="editedItem.razon_social" label="Razón social"></v-text-field>
-                              </v-col>
-                              <v-col cols="12" sm="6" md="4">
-                                <v-text-field v-model="editedItem.nombre_subcontratista" label="Nombre subcontratista"></v-text-field>
-                              </v-col>
-                              <v-col cols="12" sm="6" md="4">
-                                <v-text-field v-model="editedItem.nombre_contacto" label="Nombre contacto"></v-text-field>
-                              </v-col>
-                              <v-col cols="12" sm="6" md="4">
-                                <v-text-field v-model="editedItem.apellido_contacto" label="Apellido contacto"></v-text-field>
-                              </v-col>
-                              <v-col cols="12" sm="6" md="4">
-                                <v-text-field v-model="editedItem.telefono_contacto" label="Telefono contacto"></v-text-field>
-                              </v-col>
-                              <v-col cols="12" sm="6" md="4">
-                                <v-text-field v-model="editedItem.email_contacto" label="email contacto"></v-text-field>
-                              </v-col>
-                            </v-row>
+                            <v-form
+                              ref="form"
+                              v-model="valid"
+                              lazy-validation
+                            >
+                                <v-row>
+                                  <v-col cols="12" sm="6" md="4">
+                                    <v-text-field v-model="editedItem.rut" label="Rut" :rules="rutRules" required></v-text-field>
+                                  </v-col>
+                                  <v-col cols="12" sm="6" md="4">
+                                    <v-text-field v-model="editedItem.razon_social" label="Razón social" :rules="razonsocialRules" required></v-text-field>
+                                  </v-col>
+                                  <v-col cols="12" sm="6" md="4">
+                                    <v-text-field v-model="editedItem.nombre_subcontratista" label="Nombre subcontratista" :rules="nomsubcontratistaRules" required></v-text-field>
+                                  </v-col>
+                                  <v-col cols="12" sm="6" md="4">
+                                    <v-text-field v-model="editedItem.nombre_contacto" label="Nombre contacto" :rules="nombreapellidoRules" required></v-text-field>
+                                  </v-col>
+                                  <v-col cols="12" sm="6" md="4">
+                                    <v-text-field v-model="editedItem.apellido_contacto" label="Apellido contacto" :rules="nombreapellidoRules" required></v-text-field>
+                                  </v-col>
+                                  <v-col cols="12" sm="6" md="4">
+                                    <v-text-field v-model="editedItem.telefono_contacto" label="Telefono contacto" :rules="telefonoRules" required></v-text-field>
+                                  </v-col>
+                                  <v-col cols="12" sm="6" md="4">
+                                    <v-text-field v-model="editedItem.email_contacto" label="email contacto" :rules="emailRules"></v-text-field>
+                                  </v-col>
+                                </v-row>
+                            </v-form>
                           </v-container>
                         </v-card-text>
             
                         <v-card-actions>
                           <v-spacer></v-spacer>
-                          <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
-                          <v-btn color="blue darken-1" text @click="save">Save</v-btn>
+                          <v-btn color="blue darken-1" text @click="close">Cancelar</v-btn>
+                          <v-btn color="blue darken-1" text @click="save" :disabled="!valid">Guardar</v-btn>
                         </v-card-actions>
                       </v-card>
                     </v-dialog>
@@ -144,7 +150,41 @@ export default {
         telefono_contacto: '',
         email_contacto: '',
         proyecto: ''
-      }
+      },
+
+      /* Validación de formulario */
+      valid: false,
+      rutRules:[
+        v => !!v || 'Este campo es requerido',
+        v => /^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test(v) || 'Ingrese Rut sin puntos y con guión',
+      ],
+      razonsocialRules: [
+        v => !!v || 'Este campo es requerido',
+        v => (v && v.length <= 50) || 'Este campo debe tener menos de 50 caracteres',
+      ],
+      nomsubcontratistaRules: [
+        v => !!v || 'Este campo es requerido',
+        v => (v && v.length <= 50) || 'Este campo debe tener menos de 50 caracteres',
+      ],
+      nombreapellidoRules: [
+        v => !!v || 'Este campo es requerido',
+        v => (v && v.length <= 20) || 'Este campo debe tener menos de 20 caracteres',
+      ],
+      telefonoRules: [
+        v => !!v || 'Este campo es requerido',
+        v => (v && v.length <= 16) || 'Este campo debe tener menos de 16 caracteres',
+      ],
+      emailRules: [
+        v => {
+          if (v) return /.+@.+\..+/.test(v) || 'E-mail debe ser valido: ejemplo@dominio.ej';
+          else return true;
+        },
+      ],
+      // emailRules: [
+      //   v => !!v || 'E-mail es requerido',
+      //   v => /.+@.+\..+/.test(v) || 'E-mail debe ser valido',
+      // ],
+
     }
   },
   // fetch ({ store, redirect }) {
@@ -200,47 +240,51 @@ export default {
 
 
     async save () {
-      /* Para editar un registro */
-      if (this.editedIndex > -1) {
-        this.editedItem.proyecto = this.idProyecto
-        try {
-          let res = await this.$axios.put(`/Subcontratista/${this.editedItem.id}/`,this.editedItem)
-          if(res.status == 200){
-            Object.assign(this.subcontratistas[this.editedIndex], this.editedItem)
-            this.snack = true
-            this.snackColor = 'success'
-            this.snackText = 'Actualizado'
-          }else{
-              this.snack = true
-              this.snackColor = 'error'
-              this.snackText = 'Hubo un error al actualizar. Refresque el navegador.'
-          }
-        } catch (error) {
-            this.snack = true
-            this.snackColor = 'error'
-            this.snackText = error
+        /* Validación formulario */
+        if (this.$refs.form.validate() ){
+
+            /* Para editar un registro */
+            if (this.editedIndex > -1) {
+              this.editedItem.proyecto = this.idProyecto
+              try {
+                let res = await this.$axios.put(`/Subcontratista/${this.editedItem.id}/`,this.editedItem)
+                if(res.status == 200){
+                  Object.assign(this.subcontratistas[this.editedIndex], this.editedItem)
+                  this.snack = true
+                  this.snackColor = 'success'
+                  this.snackText = 'Actualizado'
+                }else{
+                    this.snack = true
+                    this.snackColor = 'error'
+                    this.snackText = 'Hubo un error al actualizar. Refresque el navegador.'
+                }
+              } catch (error) {
+                  this.snack = true
+                  this.snackColor = 'error'
+                  this.snackText = error
+              }
+            /*Para crear un nuevo registro*/
+            } else {
+              this.editedItem.proyecto = this.idProyecto
+              try {
+                let res = await this.$axios.post('/Subcontratista/',this.editedItem)
+                if (res.status == 201) {
+                  this.editedItem['id']=res.data['id']
+                  this.subcontratistas.push(this.editedItem)
+                  
+                } else {
+                  this.snack = true
+                  this.snackColor = 'error'
+                  this.snackText = 'Hubo un error al crear. Refresque el navegador.'+res.error
+                }
+              } catch (error) {
+                this.snack = true
+                this.snackColor = 'error'
+                this.snackText = error
+              }
+            }
+            this.close()
         }
-      /*Para crear un nuevo registro*/
-      } else {
-        this.editedItem.proyecto = this.idProyecto
-        try {
-          let res = await this.$axios.post('/Subcontratista/',this.editedItem)
-          if (res.status == 201) {
-            this.editedItem['id']=res.data['id']
-            this.subcontratistas.push(this.editedItem)
-            
-          } else {
-            this.snack = true
-            this.snackColor = 'error'
-            this.snackText = 'Hubo un error al crear. Refresque el navegador.'+res.error
-          }
-        } catch (error) {
-          this.snack = true
-          this.snackColor = 'error'
-          this.snackText = error
-        }
-      }
-      this.close()
     },
   },
 

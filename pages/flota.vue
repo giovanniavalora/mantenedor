@@ -39,74 +39,83 @@
             
                         <v-card-text>
                           <v-container>
-                            <v-row>
-                              <v-col cols="12" sm="6" md="4">
-                                <v-text-field v-model="editedItem.patente_camion" label="Patente" required></v-text-field>
-                              </v-col>
-                              <v-col cols="12" sm="6" md="4">
-                                <v-text-field v-model="editedItem.marca_camion" label="Marca" required></v-text-field>
-                              </v-col>
-                              <v-col cols="12" sm="6" md="4">
-                                <v-text-field v-model="editedItem.modelo_camion" label="Modelo" required></v-text-field>
-                              </v-col>
-                              <v-col cols="12" sm="6" md="4">
-                                <v-text-field v-model="editedItem.capacidad_camion" label="Capacidad" required></v-text-field>
-                              </v-col>
-                              <v-col cols="12" sm="6" md="4">
-                                <v-select
-                                  v-model="editedItem.unidad_medida"
-                                  :items="['m3', 'ton']"
-                                  label="Unidad de medida"
-                                  required
-                                ></v-select>
-                                <!-- <v-text-field v-model="editedItem.unidad_medida" label="Unidad de medida"></v-text-field> -->
-                              </v-col>
-                              <v-col cols="12" sm="6" md="4">
-                                <v-text-field v-model="editedItem.numero_ejes" label="Número de ejes"></v-text-field>
-                              </v-col>
-                              <v-col cols="12" sm="6" md="4">
-                                <v-text-field v-model="editedItem.color_camion" label="Color camión"></v-text-field>
-                              </v-col>
-                              <v-col cols="12" sm="6" md="4">
-                                <v-text-field v-model="editedItem.nombre_conductor_principal" label="Nombre conductor principal"></v-text-field>
-                              </v-col>
-                              <v-col cols="12" sm="6" md="4">
-                                <v-text-field v-model="editedItem.apellido_conductor_principal" label="Apellido conductor principal"></v-text-field>
-                              </v-col>
-                              <v-col cols="12" sm="6" md="4">
-                                <v-text-field v-model="editedItem.telefono_conductor_principal" label="Teléfono conductor principal"></v-text-field>
-                              </v-col>
-                              <v-col cols="12" sm="6" md="4">
-                                <v-select
-                                  v-model="editedItem.subcontratista"
-                                  :items= subcontratistas
-                                  item-text="nombre_subcontratista" 
-                                  item-value="id" 
-                                  single-line 
-                                  auto 
-                                  label="Subcontratista"
-                                  required
-                                ></v-select>
-                                <!-- <v-select
-                                  v-model="editedItem.nom_subcontratista"
-                                  :items= subcontratistas
-                                  item-text="nombre_subcontratista" 
-                                  item-value="id" 
-                                  single-line 
-                                  auto 
-                                  label="Subcontratista"
-                                  required
-                                ></v-select> -->
-                                <!-- <v-text-field v-model="editedItem.subcontratista" label="Subcontratista"></v-text-field> -->
-                              </v-col>
-                            </v-row>
+
+                            <v-form
+                              ref="form"
+                              v-model="valid"
+                              lazy-validation
+                            >
+                                  <v-row>
+                                    <v-col cols="12" sm="6" md="4">
+                                      <v-text-field v-model="editedItem.patente_camion" label="Patente" :rules="patenteRules" required></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12" sm="6" md="4">
+                                      <v-text-field v-model="editedItem.marca_camion" label="Marca" :rules="marcamodeloRules" required></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12" sm="6" md="4">
+                                      <v-text-field v-model="editedItem.modelo_camion" label="Modelo" :rules="marcamodeloRules" required></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12" sm="6" md="4">
+                                      <v-text-field v-model="editedItem.capacidad_camion" label="Capacidad" :rules="capacidadRules" required></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12" sm="6" md="4">
+                                      <v-select
+                                        v-model="editedItem.unidad_medida"
+                                        :items="['m3', 'ton']"
+                                        label="Unidad de medida"
+                                        :rules="unidadmedidaRules"
+                                        required
+                                      ></v-select>
+                                      <!-- <v-text-field v-model="editedItem.unidad_medida" label="Unidad de medida"></v-text-field> -->
+                                    </v-col>
+                                    <v-col cols="12" sm="6" md="4">
+                                      <v-text-field v-model="editedItem.numero_ejes" label="Número de ejes" :rules="nroejesRules"></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12" sm="6" md="4">
+                                      <v-text-field v-model="editedItem.color_camion" label="Color camión" :rules="colorRules"></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12" sm="6" md="4">
+                                      <v-text-field v-model="editedItem.nombre_conductor_principal" label="Nombre conductor principal" :rules="nombreapellidoRules"></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12" sm="6" md="4">
+                                      <v-text-field v-model="editedItem.apellido_conductor_principal" label="Apellido conductor principal" :rules="nombreapellidoRules"></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12" sm="6" md="4">
+                                      <v-text-field v-model="editedItem.telefono_conductor_principal" label="Teléfono conductor principal" :rules="telefonoRules"></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12" sm="6" md="4">
+                                      <v-select
+                                        v-model="editedItem.subcontratista"
+                                        :items= subcontratistas
+                                        item-text="nombre_subcontratista" 
+                                        item-value="id" 
+                                        single-line 
+                                        auto 
+                                        label="Subcontratista"
+                                        :rules="subcontratistaRules"
+                                        required
+                                      ></v-select>
+                                      <!-- <v-select
+                                        v-model="editedItem.nom_subcontratista"
+                                        :items= subcontratistas
+                                        item-text="nombre_subcontratista" 
+                                        item-value="id" 
+                                        single-line 
+                                        auto 
+                                        label="Subcontratista"
+                                        required
+                                      ></v-select> -->
+                                      <!-- <v-text-field v-model="editedItem.subcontratista" label="Subcontratista"></v-text-field> -->
+                                    </v-col>
+                                  </v-row>
+                            </v-form>
                           </v-container>
                         </v-card-text>
             
                         <v-card-actions>
                           <v-spacer></v-spacer>
                           <v-btn color="blue darken-1" text @click="close">Cancelar</v-btn>
-                          <v-btn color="blue darken-1" text @click="save">Guardar</v-btn>
+                          <v-btn color="blue darken-1" text @click="save" :disabled="!valid">Guardar</v-btn>
                         </v-card-actions>
                       </v-card>
                     </v-dialog>
@@ -300,7 +309,51 @@ export default {
         color_camion: "",
         subcontratista: "",
         nom_subcontratista: "", //no es propio del modelo, se agrega en el front
-      }
+      },
+
+      /* Validación de formulario */
+      valid: false,
+      patenteRules:[
+        v => !!v || 'Este campo es requerido',
+        v => (v && v.length == 6) || 'Este campo debe tener 6 caracteres',
+      ],
+      marcamodeloRules:[
+        v => !!v || 'Este campo es requerido',
+        v => (v && v.length <= 20) || 'Este campo debe tener menos de 20 caracteres',
+      ],
+      capacidadRules: [
+        v => !!v || 'Es requerido',
+        v => v <= 100 || 'Este valor no puede ser superior a 100',
+      ],
+      unidadmedidaRules: [
+        v => !!v || 'Este campo es requerido',
+        // v => (v && v.length <= 50) || 'Este campo debe tener menos de 50 caracteres',
+      ],
+      nroejesRules: [
+        v => {
+          if (v) return v.length <= 5 || 'Este campo debe tener menos de 6 caracteres';
+          else return true;
+        },
+      ],
+      colorRules: [
+        v => {
+          if (v) return v.length <= 20 || 'Este campo debe tener menos de 20 caracteres';
+          else return true;
+        },
+      ],
+      nombreapellidoRules: [
+        v => !!v || 'Este campo es requerido',
+        v => (v && v.length <= 20) || 'Este campo debe tener menos de 20 caracteres',
+      ],
+      telefonoRules: [
+        v => !!v || 'Este campo es requerido',
+        v => (v && v.length <= 16) || 'Este campo debe tener menos de 16 caracteres',
+      ],
+      subcontratistaRules: [
+        v => !!v || 'Este campo es requerido',
+        // v => (v && v.length <= 50) || 'Este campo debe tener menos de 50 caracteres',
+      ],
+
     }
   },
   components: {
@@ -433,50 +486,54 @@ export default {
 
 
     async save () {
-      /* Para editar un registro */
-      if (this.editedIndex > -1) {
-        try {
-          let res = await this.$axios.put(`/Camion/${this.editedItem['id']}/`,this.editedItem)
-          if(res.status == 200){
-            Object.assign(this.camiones[this.editedIndex], this.editedItem)
-            this.snack = true
-            this.snackColor = 'success'
-            this.snackText = 'Actualizado'
-          }else{
-            this.snack = true
-            this.snackColor = 'error'
-            this.snackText = 'Hubo un error al actualizar. Refresque el navegador.'
-          }
-        } catch (error) {
-          this.snack = true
-          this.snackColor = 'error'
-          this.snackText = error
-        }
-      /*Para crear un nuevo registro*/
-      } else {
-        try {
-            let res = await this.$axios.post('/Camion/',this.editedItem)
-            if(res.status == 201){
-                this.editedItem['id']=res.data['id']
-                this.editedItem.nom_subcontratista = this.subcontratistas.find(x => x.id === this.editedItem.subcontratista).nombre_subcontratista;
-                console.log("verification",this.editedItem)
-                this.camiones.push(this.editedItem)
-                this.snack = true
-                this.snackColor = 'success'
-                this.snackText = 'Creado'
-                this.$axios.post('/CodigoQR/',{'camion':res.data['id']})
-            }else{
+        /* Validación formulario */
+        if (this.$refs.form.validate() ){
+
+            /* Para editar un registro */
+            if (this.editedIndex > -1) {
+              try {
+                let res = await this.$axios.put(`/Camion/${this.editedItem['id']}/`,this.editedItem)
+                if(res.status == 200){
+                  Object.assign(this.camiones[this.editedIndex], this.editedItem)
+                  this.snack = true
+                  this.snackColor = 'success'
+                  this.snackText = 'Actualizado'
+                }else{
+                  this.snack = true
+                  this.snackColor = 'error'
+                  this.snackText = 'Hubo un error al actualizar. Refresque el navegador.'
+                }
+              } catch (error) {
                 this.snack = true
                 this.snackColor = 'error'
-                this.snackText = 'Hubo un error al crear. Refresque el navegador.'+res.error
+                this.snackText = error
+              }
+            /*Para crear un nuevo registro*/
+            } else {
+              try {
+                  let res = await this.$axios.post('/Camion/',this.editedItem)
+                  if(res.status == 201){
+                      this.editedItem['id']=res.data['id']
+                      this.editedItem.nom_subcontratista = this.subcontratistas.find(x => x.id === this.editedItem.subcontratista).nombre_subcontratista;
+                      console.log("verification",this.editedItem)
+                      this.camiones.push(this.editedItem)
+                      this.snack = true
+                      this.snackColor = 'success'
+                      this.snackText = 'Creado'
+                      this.$axios.post('/CodigoQR/',{'camion':res.data['id']})
+                  }else{
+                      this.snack = true
+                      this.snackColor = 'error'
+                      this.snackText = 'Hubo un error al crear. Refresque el navegador.'+res.error
+                  }
+              } catch (error) {
+                  this.snack = true
+                  this.snackColor = 'error'
+                  this.snackText = error
+              }
             }
-        } catch (error) {
-            this.snack = true
-            this.snackColor = 'error'
-            this.snackText = error
+            this.close()
         }
-      }
-      this.close()
     },
   },
 

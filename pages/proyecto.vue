@@ -283,48 +283,48 @@ export default {
   middleware: 'authenticated',
 
   data: () => ({
-    valid: true,
-    editedIndex: -1,
-    editedItem: {
-      id: '',
-      centro_de_coste: '',
-      nombre_proyecto: '',
-      ubicacion: '',
-      cliente: '',
-      rut_cliente: '',
-      mandante: '',
-      rut_mandante: '',
-      mandante_final: '',
-      cantidad_voucher_imprimir: '',
-    },
-    centro_de_coste_Rules: [
-      v => !!v || 'Este campo es requerido',
-      v => (v && v.length <= 20) || 'Este campo debe tener menos de 20 caracteres',
-    ],
-    nombre_proyecto_Rules: [
-      v => !!v || 'Este campo es requerido',
-      v => (v && v.length <= 100) || 'Este campo debe tener menos de 100 caracteres',
-    ],
-    emailRules: [
-      v => !!v || 'E-mail es requerido',
-      v => /.+@.+\..+/.test(v) || 'E-mail debe ser valido',
-    ],
-    nro_impresiones_Rules: [
-      v => !!v || 'Es requerido',
-      v => v <= 5 || 'No puede ser superior a 5 impresiones',
-    ],
-    rutRules:[
+      valid: true,
+      editedIndex: -1,
+      editedItem: {
+        id: '',
+        centro_de_coste: '',
+        nombre_proyecto: '',
+        ubicacion: '',
+        cliente: '',
+        rut_cliente: '',
+        mandante: '',
+        rut_mandante: '',
+        mandante_final: '',
+        cantidad_voucher_imprimir: '',
+      },
+      centro_de_coste_Rules: [
         v => !!v || 'Este campo es requerido',
-        v => /^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test(v) || 'Ingrese Rut sin puntos y con guión',
-    ],
-    select: null,
-    items: [
-      'Item 1',
-      'Item 2',
-      'Item 3',
-      'Item 4',
-    ],
-    checkbox: false,
+        v => (v && v.length <= 20) || 'Este campo debe tener menos de 20 caracteres',
+      ],
+      nombre_proyecto_Rules: [
+        v => !!v || 'Este campo es requerido',
+        v => (v && v.length <= 100) || 'Este campo debe tener menos de 100 caracteres',
+      ],
+      emailRules: [
+        v => !!v || 'E-mail es requerido',
+        v => /.+@.+\..+/.test(v) || 'E-mail debe ser valido',
+      ],
+      nro_impresiones_Rules: [
+        v => !!v || 'Es requerido',
+        v => v <= 5 || 'No puede ser superior a 5 impresiones',
+      ],
+      rutRules:[
+          v => !!v || 'Este campo es requerido',
+          v => /^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test(v) || 'Ingrese Rut sin puntos y con guión',
+      ],
+      select: null,
+      items: [
+        'Item 1',
+        'Item 2',
+        'Item 3',
+        'Item 4',
+      ],
+      checkbox: false,
 
 
 
