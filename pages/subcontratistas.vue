@@ -136,6 +136,7 @@ export default {
         { text: 'Nombre Contacto', value: 'nombre_contacto' },
         { text: 'Telefono', value: 'telefono_contacto' },
         { text: 'Email de contacto', value: 'email_contacto' },
+        { text: 'Numero flota', value: 'numero_flota' },
         { text: 'Actions', value: 'actions', sortable: false }
       ],
       subcontratistas: [],
@@ -149,7 +150,8 @@ export default {
         apellido_contacto: '',
         telefono_contacto: '',
         email_contacto: '',
-        proyecto: ''
+        proyecto: '',
+        numero_flota: "", //no es propio del modelo, se agrega en el front
       },
 
       /* Validación de formulario */
@@ -293,6 +295,20 @@ export default {
       const res = await this.$axios.get('/Subcontratista/')
       console.log("get all subcontratistas",res.data)
       this.subcontratistas = res.data;
+      
+
+      // const res = await this.$axios.get(`/FlotaSubcontratista/${id}`)
+      // this.subcontratistas = res.data;
+
+      for(var prop in this.subcontratistas){
+        let id = this.subcontratistas[prop].id
+        const res_fs= await this.$axios.get(`/FlotaSubcontratista/${id}`);
+        this.subcontratistas[prop].numero_flota = res_fs.data.data['cantidad_camiones']
+        this.editedItem = Object.assign({}, {}) //para actualizar la tabla
+      }
+      this.editedItem = Object.assign({}, {}) //para actualizar la tabla
+
+
     } catch (error) {
       console.log(error)
     }

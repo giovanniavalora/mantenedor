@@ -552,6 +552,7 @@ export default {
       for(var prop in this.camiones){
         this.camiones[prop].nom_subcontratista = this.subcontratistas.find(x => x.id === this.camiones[prop].subcontratista).nombre_subcontratista;
       }
+      this.editedItem = Object.assign({}, {}) //para actualizar la tabla (solo en caso si llegase a demorarse más que la carga de la misma tabla)
 
     } catch (error) {
       console.log(error)
