@@ -130,6 +130,7 @@
 const Cookie = process.client ? require('js-cookie') : undefined
 
 export default {
+  middleware: 'authenticated',
   data () {
     return {
       clipped: true,

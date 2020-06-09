@@ -74,11 +74,19 @@ export default {
                 Proyecto: proyecto.data,
                 Token: res.data.data.token
               }
-              // Reiniciamos los campos
+              /* se agrega el token para las request a las apis */
+              this.$axios.setToken(auth['Token'], 'Bearer')
+
               this.loginEmail = ''
               this.loginPassword = ''
               this.$store.commit('setAuth', auth) // mutating to store for client rendering
-              Cookie.set('auth', auth) // saving token in cookie for server rendering
+
+              /* Establecemos tiempo de caducidad de la cookie */
+              var date = new Date();
+              date.setTime(date.getTime() + (60 * 1000) ); //1 minuto
+
+              /* saving token in cookie for server rendering */
+              Cookie.set('auth', auth, {expires: date}) 
               this.$router.push('/')
               console.log("credenciales validadas correctamente")
               })

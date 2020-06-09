@@ -1,5 +1,5 @@
 export default function ({ store, redirect }) {
-    // If the user is authenticated redirect to home page
+    // Si el usuario está autenticado, redireccionar al home page
     if (store.state.auth) {
         return redirect('/')
     }

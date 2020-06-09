@@ -298,6 +298,8 @@ export default {
 
   async created(){
     try {
+      console.log("token: ", this.$store.state.auth['Token'])
+      // this.$axios.setToken(this.$store.state.auth['Token'], 'Bearer')
       const res = await this.$axios.get('/Despachador/')
       this.despachadores = res.data;
       this.despachadores = this.despachadores.filter(x => x.proyecto === this.idProyecto)
