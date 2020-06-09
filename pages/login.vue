@@ -86,7 +86,8 @@ export default {
               date.setTime(date.getTime() + (60 * 1000) ); //1 minuto
 
               /* saving token in cookie for server rendering */
-              Cookie.set('auth', auth, {expires: date}) 
+              // Cookie.set('auth', auth, {expires: date}) //tiempo espacificado en date
+              Cookie.set('auth', auth, {expires: 1}) //1 día
               this.$router.push('/')
               console.log("credenciales validadas correctamente")
               })
