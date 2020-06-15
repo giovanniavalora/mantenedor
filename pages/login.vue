@@ -58,14 +58,14 @@ export default {
   },
   methods: {
     login() {
-        return this.$axios.post("/login/",{
+        return this.$axios.post("/login",{
           email: this.loginEmail,
           password: this.loginPassword
         })
         .then(res => {
           if(res.data.data.token){
 
-            this.$axios.get(`/Proyecto/${res.data.data.info.proyecto}/`)
+            this.$axios.get(`/Proyecto/${res.data.data.info.proyecto}`)
             .then(proyecto => {
               // console.log("dataproyecto: ",proyecto.data)
               const auth = {
