@@ -363,7 +363,7 @@ export default {
 
     /*Métodos de Suborigen*/
     saveEditSuborigen (item) {
-      this.$axios.put(`/Suborigen/${item.id}/`,item)
+      this.$axios.put(`/backend/Suborigen/${item.id}/`,item)
       this.snack = true
       this.snackColor = 'success'
       this.snackText = 'Guardado'
@@ -371,7 +371,7 @@ export default {
     saveCreateSuborigen () {
       this.editedItemSuborigen.origen = this.editedItem.id
       this.editedItemSuborigen.activo = true
-      this.$axios.post(`/Suborigen/`,this.editedItemSuborigen)
+      this.$axios.post(`/backend/Suborigen/`,this.editedItemSuborigen)
         .then(res => {
           if(res.data){
             console.log("suborigen res.data:",res.data)
@@ -395,7 +395,7 @@ export default {
       const index = this.suborigenes.indexOf(item)
       var result = confirm('¿Desea eliminar item?') && this.suborigenes.splice(index, 1)
       if (result){
-        this.$axios.delete(`/Suborigen/${item.id}/`)
+        this.$axios.delete(`/backend/Suborigen/${item.id}/`)
         this.snack = true
         this.snackColor = 'success'
         this.snackText = 'Suborigen Eliminado'
@@ -434,7 +434,7 @@ export default {
       let id = item.id
       var result = confirm('¿Desea eliminar item?') && this.origenes.splice(index, 1)
       if (result)
-        this.$axios.delete(`/Origen/${id}/`)
+        this.$axios.delete(`/backend/Origen/${id}/`)
           .catch(error => {
               this.snack = true
               this.snackColor = 'error'
@@ -459,7 +459,7 @@ export default {
             if (this.editedIndex > -1) {
               this.editedItem.proyecto = this.idProyecto
               try{
-                  let res = await this.$axios.put(`/Origen/${this.editedItem.id}/`,this.editedItem)
+                  let res = await this.$axios.put(`/backend/Origen/${this.editedItem.id}/`,this.editedItem)
                   if(res.status == 200){
                     Object.assign(this.origenes[this.editedIndex], this.editedItem)
                     this.snack = true
@@ -478,7 +478,7 @@ export default {
             } else {
               this.editedItem.proyecto = this.idProyecto
               try{
-                    let res = await this.$axios.post(`/Origen/`,this.editedItem)
+                    let res = await this.$axios.post(`/backend/Origen/`,this.editedItem)
                     if(res.status == 201){
                       this.editedItem['id']=res.data.id
                       this.origenes.push(this.editedItem)
@@ -503,11 +503,11 @@ export default {
 
   async created(){
     try {
-      const res = await this.$axios.get('/Origen/')
+      const res = await this.$axios.get('/backend/Origen/')
       this.origenes = res.data;
 
       /** Para mostrar los nombres de los Suborigenes en el dropdown del modal **/
-      const resp_suborigenes = await this.$axios.get('/Suborigen/')
+      const resp_suborigenes = await this.$axios.get('/backend/Suborigen/')
       this.suborigenes = resp_suborigenes.data;
 
     } catch (error) {

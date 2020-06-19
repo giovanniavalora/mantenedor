@@ -385,7 +385,7 @@ export default {
       console.log("nqr.datosCamionQR: ",this.datosCamionQR)
       let result = confirm('Al crear un nuevo código QR se desactivará el anterior, ¿Desea continuar?')
       if (result){
-        this.$axios.post('/CodigoQR/',{"camion":this.datosCamionQR.id})
+        this.$axios.post('/backend/CodigoQR/',{"camion":this.datosCamionQR.id})
         .then(res => {
           console.log("nuevo qr:",res.data)
           this.datosqractivo=res.data
@@ -398,7 +398,7 @@ export default {
     },
     activacionqr(){
       console.log("dqr.datosCamionQR",this.datosqractivo)
-      this.$axios.put(`/CodigoQR/${this.datosqractivo.id}/`,this.datosqractivo)
+      this.$axios.put(`/backend/CodigoQR/${this.datosqractivo.id}/`,this.datosqractivo)
       .then(res => {
           if(res.status == 200){
             this.snack = true
@@ -438,7 +438,7 @@ export default {
       console.log("item:",item)
       var ns = this.subcontratistas.find(x => x.id === item.subcontratista).nombre_subcontratista;
       console.log("ns2: ",ns)
-      this.$axios.get(`/CodigoQRCamion/${item.id}`)
+      this.$axios.get(`/backend/CodigoQRCamion/${item.id}`)
       .then(res => {
         console.log("codigoqr_activo:",res.data.data.codigoqr_activo)
         this.datosqractivo=res.data.data.codigoqr_activo
@@ -466,7 +466,7 @@ export default {
       let id = item.id
       var result = confirm('¿Desea eliminar item?') && this.camiones.splice(index, 1)
       if (result){
-        this.$axios.delete(`/Camion/${id}/`)
+        this.$axios.delete(`/backend/Camion/${id}/`)
         .catch(error => {
             this.snack = true
             this.snackColor = 'error'
@@ -492,7 +492,7 @@ export default {
             /* Para editar un registro */
             if (this.editedIndex > -1) {
               try {
-                let res = await this.$axios.put(`/Camion/${this.editedItem['id']}/`,this.editedItem)
+                let res = await this.$axios.put(`/backend/Camion/${this.editedItem['id']}/`,this.editedItem)
                 if(res.status == 200){
                   Object.assign(this.camiones[this.editedIndex], this.editedItem)
                   this.snack = true
@@ -511,7 +511,7 @@ export default {
             /*Para crear un nuevo registro*/
             } else {
               try {
-                  let res = await this.$axios.post('/Camion/',this.editedItem)
+                  let res = await this.$axios.post('/backend/Camion/',this.editedItem)
                   if(res.status == 201){
                       this.editedItem['id']=res.data['id']
                       this.editedItem.nom_subcontratista = this.subcontratistas.find(x => x.id === this.editedItem.subcontratista).nombre_subcontratista;
@@ -520,7 +520,7 @@ export default {
                       this.snack = true
                       this.snackColor = 'success'
                       this.snackText = 'Creado'
-                      this.$axios.post('/CodigoQR/',{'camion':res.data['id']})
+                      this.$axios.post('/backend/CodigoQR/',{'camion':res.data['id']})
                   }else{
                       this.snack = true
                       this.snackColor = 'error'
@@ -540,11 +540,11 @@ export default {
   async created(){
     try {
       // const res = await axios.get('http://157.245.237.33:5000/api/v1/Camion/')
-      const rescamion = await this.$axios.get('/Camion/')
+      const rescamion = await this.$axios.get('/backend/Camion/')
       this.camiones = rescamion.data;
 
       /** Para mostrar los nombres de los Subcontratista en el dropdown del modal **/
-      const resp_subcontratistas = await this.$axios.get('/Subcontratista/') //Se obtienen todos, pero debieran ser solo los del proyecto
+      const resp_subcontratistas = await this.$axios.get('/backend/Subcontratista/') //Se obtienen todos, pero debieran ser solo los del proyecto
       this.subcontratistas = resp_subcontratistas.data;
 
       /* Lo siguiente debiera ocurrir en el backend, el cual debiera enviar el nombre del subcontratista al que pertenece */

@@ -363,7 +363,7 @@ export default {
 
     /*Métodos de Suborigen*/
     saveEditMaterial (item) {
-      this.$axios.put(`/Material/${item.id}/`,item)
+      this.$axios.put(`/backend/Material/${item.id}/`,item)
       this.snack = true
       this.snackColor = 'success'
       this.snackText = 'Guardado'
@@ -371,7 +371,7 @@ export default {
     saveCreateMaterial () {
       this.editedItemMaterial.destino = this.editedItem.id
       this.editedItemMaterial.activo = true
-      this.$axios.post(`/Material/`,this.editedItemMaterial)
+      this.$axios.post(`/backend/Material/`,this.editedItemMaterial)
         .then(res => {
           if(res.data){
             this.editedItemMaterial['id']=res.data['id']
@@ -394,7 +394,7 @@ export default {
       const index = this.materiales.indexOf(item)
       var result = confirm('¿Desea eliminar item?') && this.materiales.splice(index, 1)
       if (result){
-        this.$axios.delete(`/Material/${item.id}/`)
+        this.$axios.delete(`/backend/Material/${item.id}/`)
         this.snack = true
         this.snackColor = 'success'
         this.snackText = 'Material Eliminado'
@@ -433,7 +433,7 @@ export default {
       let id = item.id
       var result = confirm('¿Desea eliminar item?') && this.destinos.splice(index, 1)
       if (result)
-        this.$axios.delete(`/Destino/${id}/`)
+        this.$axios.delete(`/backend/Destino/${id}/`)
         .catch(error => {
             this.snack = true
             this.snackColor = 'error'
@@ -457,7 +457,7 @@ export default {
             if (this.editedIndex > -1) { 
               this.editedItem.proyecto = this.idProyecto
               try{
-                  let res = await this.$axios.put(`/Destino/${this.editedItem.id}/`,this.editedItem)
+                  let res = await this.$axios.put(`/backend/Destino/${this.editedItem.id}/`,this.editedItem)
                   if(res.status == 200){
                     Object.assign(this.destinos[this.editedIndex], this.editedItem)
                     this.snack = true
@@ -478,7 +478,7 @@ export default {
             } else {      
               this.editedItem.proyecto = this.idProyecto
               try{
-                  let res= await this.$axios.post('/Destino/',this.editedItem)
+                  let res= await this.$axios.post('/backend/Destino/',this.editedItem)
                   if(res.status == 201){
                       this.editedItem['id']=res.data['id']
                       this.destinos.push(this.editedItem)
@@ -503,11 +503,11 @@ export default {
 
   async created(){
     try {
-      const res = await this.$axios.get('/Destino/')
+      const res = await this.$axios.get('/backend/Destino/')
       this.destinos = res.data;
 
       /** Para mostrar los nombres de los Materiales en el dropdown del modal **/
-      const resp_materiales = await this.$axios.get('/Material/')
+      const resp_materiales = await this.$axios.get('/backend/Material/')
       this.materiales = resp_materiales.data;
 
     } catch (error) {
