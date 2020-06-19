@@ -17,6 +17,16 @@ export default {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
     ]
   },
+
+  // serverMiddleware: [
+  //   {
+  //     path: '/api/v1',
+  //     handler: '~/api/index.js'
+  //   }
+  // ],
+
+
+
   /*
   ** Customize the progress-bar color
   */
@@ -45,6 +55,7 @@ export default {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
+    '@nuxtjs/proxy',
     'nuxt-leaflet',
     'portal-vue/nuxt'
     // ['nuxt-leaflet', {ssr:false}],
@@ -55,15 +66,28 @@ export default {
   */
   axios: {
 
-    // proxy: true,
+    proxy: true,
     // baseURL: "http://127.0.0.1:5000/api/v1"
-    // baseURL: "http://192.168.0.11:5000/api/v1" 
-    baseURL: "http://157.245.237.33:5000/api/v1"
+    // baseURL: "http://192.168.0.8:5000/api/v1" 
+    // baseURL: "http://157.245.237.33:5000/api/v1"
     // baseURL:
     //   process.env.NODE_ENV !== "production"
     //     ? "http://localhost:5000/api/v1"
     //     : "http://157.245.237.33:5000/api/v1"
+    // baseURL: "http://apiman:5000/api/v1",
+    // browserBaseURL: "http://192.168.0.8:5000/api/v1" 
   },
+
+
+  proxy:{
+    '/backend/': {
+      target: 'http://apiman:5000',
+      pathRewrite:{
+        '^/backend/' : '/api/v1/',
+      },
+    },
+  },
+
   /*
   ** vuetify module configuration
   ** https://github.com/nuxt-community/vuetify-module

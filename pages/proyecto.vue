@@ -351,7 +351,7 @@ export default {
       this.$refs.form.validate()
       //actualización
       console.log("this.editedItem:",this.editedItem)
-      this.$axios.put(`/Proyecto/${this.editedItem.id}`,this.editedItem)
+      this.$axios.put(`/backend/Proyecto/${this.editedItem.id}/`,this.editedItem)
       .then(res => {
         console.log("res.data:",res.data)
         alert("Actualizado correctamente")
@@ -378,11 +378,11 @@ export default {
       // const res = await axios.get('http://157.245.237.33:5000/api/v1/Camion/')
       // console.log("token: ", this.$store.state.auth['Token'])
       const id = this.idProyecto
-      const res = await this.$axios.get(`/Proyecto/${id}`)
+      const res = await this.$axios.get(`/backend/Proyecto/${id}/`)
       this.editedItem = res.data;
       this.editedItem.cantidad_voucher_imprimir = String(this.editedItem.cantidad_voucher_imprimir);
 
-      const res_admin = await this.$axios.get('/Administrador')
+      const res_admin = await this.$axios.get('/backend/Administrador/')
       this.administradores = res_admin.data;
       this.administradores = this.administradores.filter(x => x.proyecto === this.idProyecto)
 

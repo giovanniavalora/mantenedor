@@ -58,14 +58,15 @@ export default {
   },
   methods: {
     login() {
-        return this.$axios.post("/login",{
+        return this.$axios.post("/backend/login/",{
           email: this.loginEmail,
           password: this.loginPassword
         })
         .then(res => {
+          console.log("res: ",res)
           if(res.data.data.token){
 
-            this.$axios.get(`/Proyecto/${res.data.data.info.proyecto}`)
+            this.$axios.get(`/backend/Proyecto/${res.data.data.info.proyecto}/`)
             .then(proyecto => {
               // console.log("dataproyecto: ",proyecto.data)
               const auth = {
@@ -94,11 +95,51 @@ export default {
           }
         })
         .catch(error => {
-          console.log(error.response.data)
+          console.log("error: ", error.response.data)
         });
     }
 
-  }
+  },
+  // asyncData(context){
+  //   if(process.server){
+  //     console.log("hi! iam in the server side");
+  //   }
+  //   if(process.client){
+  //     console.log("hi! iam in the client side");
+  //   }
+  // },
+
+
+  // async asyncData({params}){
+  //   if(process.server){
+  //     console.log("SERVER SIDE")
+  //     // const {data} = await axios.get(`http://apiman:5000/api/v1/Proyecto/1/`)
+  //     // console.log(data)
+  //   }
+  //   console.log("CLIENT SIDE")
+  //   // let {dato} = await axios.post(`api/v1`,{holi:'holi'})
+  //   let dato = {}; 
+  //   dato = await this.$axios.get(`/backend/api/v1/Proyecto/1/`);
+  //   console.log("dato", dato);
+  //   // return { algo: data}
+  // }
+
+
+
+  // async asyncData({params}){
+  //   if(process.server){
+  //     console.log("SERVER SIDE")
+  //     // const {data} = await axios.get(`http://apiman:5000/api/v1/Proyecto/1/`)
+  //     // console.log(data)
+  //   }
+  //   console.log("CLIENT SIDE")
+  //   // let {dato} = await axios.post(`api/v1`,{holi:'holi'})
+  //   let dato = {}; 
+  //   dato = await this.$axios.get(`/backend/api/v1/Proyecto/1/`);
+  //   console.log("dato", dato);
+  //   // return { algo: data}
+  // }
+
 }
 </script>
 

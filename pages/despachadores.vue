@@ -223,7 +223,7 @@ export default {
       let id = item.id
       var result = confirm('¿Desea eliminar item?') && this.despachadores.splice(index, 1)
       if (result)
-        this.$axios.delete(`/Despachador/${id}/`)
+        this.$axios.delete(`/backend/Despachador/${id}/`)
         .catch(error => {
             // alert(Object.values(error.response.data))
             // alert(Object.values(error.response))
@@ -251,7 +251,7 @@ export default {
             if (this.editedIndex > -1) {
               this.editedItem.proyecto = this.idProyecto
               try {
-                let res = await this.$axios.put(`/Despachador/${this.editedItem.id}/`,this.editedItem)
+                let res = await this.$axios.put(`/backend/Despachador/${this.editedItem.id}/`,this.editedItem)
                 if(res.status == 200){
                     Object.assign(this.despachadores[this.editedIndex], this.editedItem)
                     this.snack = true
@@ -271,7 +271,7 @@ export default {
             } else {
               this.editedItem.proyecto = this.idProyecto
               try {
-                let res = await this.$axios.post('/Despachador/',this.editedItem)
+                let res = await this.$axios.post('/backend/Despachador/',this.editedItem)
                 console.log("res",res)
                 if (res.status = 201) {
                   this.editedItem['id']=res.data.data.id
@@ -300,12 +300,12 @@ export default {
     try {
       console.log("token: ", this.$store.state.auth['Token'])
       // this.$axios.setToken(this.$store.state.auth['Token'], 'Bearer')
-      const res = await this.$axios.get('/Despachador/')
+      const res = await this.$axios.get('/backend/Despachador/')
       this.despachadores = res.data;
       this.despachadores = this.despachadores.filter(x => x.proyecto === this.idProyecto)
 
       /** Para mostrar los nombres de los Subcontratista en el dropdown del modal **/
-      const resp_origenes = await this.$axios.get('/Origen/') //Se obtienen todos, pero debieran ser solo los del proyecto?
+      const resp_origenes = await this.$axios.get('/backend/Origen/') //Se obtienen todos, pero debieran ser solo los del proyecto?
       this.origenes = resp_origenes.data;
       this.origenes = this.origenes.filter(x => x.proyecto === this.idProyecto)//Aquí se filtran los origenes pertenecientes al proyecto
     } catch (error) {
