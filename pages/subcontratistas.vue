@@ -305,12 +305,12 @@ export default {
         console.log(id)
         this.$axios.get(`/backend/FlotaSubcontratista/1`)
         .then(resp=>{
-          console.log(resp)
+          console.log("resp: ", resp)
         }).catch(e=>{
           console.log(e)
         })
 
-        const res_fs= await this.$axios.get(`/backend/FlotaSubcontratista/${id}`);
+        // const res_fs= await this.$axios.get(`/backend/FlotaSubcontratista/${id}`);
         this.subcontratistas[prop].numero_flota = res_fs.data.data['cantidad_camiones']
         this.editedItem = Object.assign({}, {}) //para actualizar la tabla
       }
