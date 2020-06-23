@@ -302,10 +302,18 @@ export default {
 
       for(var prop in this.subcontratistas){
         let id = this.subcontratistas[prop].id
-        console.log(id)
+        console.log("id:",id)
+
+        this.$axios.get('/backend/FlotaSubcontratista/1')
+        .then(resp=>{
+          console.log("resp1: ", resp)
+        }).catch(e=>{
+          console.log(e)
+        })
+
         this.$axios.get(`/backend/FlotaSubcontratista/1`)
         .then(resp=>{
-          console.log("resp: ", resp)
+          console.log("resp2: ", resp)
         }).catch(e=>{
           console.log(e)
         })
