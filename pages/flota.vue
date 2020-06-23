@@ -438,7 +438,7 @@ export default {
       console.log("item:",item)
       var ns = this.subcontratistas.find(x => x.id === item.subcontratista).nombre_subcontratista;
       console.log("ns2: ",ns)
-      this.$axios.get(`/backend/CodigoQRCamion/${item.id}`)
+      this.$axios.get(`/backend/CodigoQRCamion/${item.id}/`)
       .then(res => {
         console.log("codigoqr_activo:",res.data.data.codigoqr_activo)
         this.datosqractivo=res.data.data.codigoqr_activo

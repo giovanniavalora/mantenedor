@@ -318,8 +318,8 @@ export default {
           console.log(e)
         })
 
-        // const res_fs= await this.$axios.get(`/backend/FlotaSubcontratista/${id}`);
-        // this.subcontratistas[prop].numero_flota = res_fs.data.data['cantidad_camiones']
+        let res_fs= await this.$axios.get(`/backend/FlotaSubcontratista/${id}/`);
+        this.subcontratistas[prop].numero_flota = res_fs.data.data['cantidad_camiones']
         this.editedItem = Object.assign({}, {}) //para actualizar la tabla
       }
       this.editedItem = Object.assign({}, {}) //para actualizar la tabla
