@@ -540,6 +540,7 @@ export default {
   async created(){
     try {
       // const res = await axios.get('http://157.245.237.33:5000/api/v1/Camion/')
+      this.$axios.setToken(this.$store.state.auth['Token'], 'Bearer')
       const rescamion = await this.$axios.get('/backend/Camion/')
       this.camiones = rescamion.data;
 

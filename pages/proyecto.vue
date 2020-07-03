@@ -377,6 +377,7 @@ export default {
     try {
       // const res = await axios.get('http://157.245.237.33:5000/api/v1/Camion/')
       // console.log("token: ", this.$store.state.auth['Token'])
+      this.$axios.setToken(this.$store.state.auth['Token'], 'Bearer')
       const id = this.idProyecto
       const res = await this.$axios.get(`/backend/Proyecto/${id}/`)
       this.editedItem = res.data;

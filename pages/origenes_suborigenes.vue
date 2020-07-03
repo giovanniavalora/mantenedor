@@ -503,6 +503,7 @@ export default {
 
   async created(){
     try {
+      this.$axios.setToken(this.$store.state.auth['Token'], 'Bearer')
       const res = await this.$axios.get('/backend/Origen/')
       this.origenes = res.data;
 

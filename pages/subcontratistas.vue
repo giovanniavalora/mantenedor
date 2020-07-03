@@ -292,6 +292,7 @@ export default {
 
   async created(){
     try {
+      this.$axios.setToken(this.$store.state.auth['Token'], 'Bearer')
       const res = await this.$axios.get('/backend/Subcontratista/')
       console.log("get all subcontratistas",res.data)
       this.subcontratistas = res.data;

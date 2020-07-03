@@ -167,6 +167,7 @@ export default {
       this.fecha_actual()
   },
   async created(){
+    this.$axios.setToken(this.$store.state.auth['Token'], 'Bearer')
     // try {
     //   this.$axios({
     //     method: 'GET',

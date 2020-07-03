@@ -85,6 +85,7 @@ export default {
       pathRewrite:{
         '^/backend/' : '/api/v1/',
       },
+      changeOrigin: false,
     },
   },
 
