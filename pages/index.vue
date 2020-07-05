@@ -119,6 +119,7 @@ export default {
         
     },
     async reporte () {
+      this.$axios.setToken(this.$store.state.auth['Token'], 'Bearer')
       console.log("date1:",this.date1)
       console.log("date2:",this.date2)
       try {
@@ -164,6 +165,7 @@ export default {
     }
   },
   mounted (){
+      this.$axios.setToken(this.$store.state.auth['Token'], 'Bearer')
       this.fecha_actual()
   },
   async created(){
