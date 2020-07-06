@@ -143,7 +143,9 @@ export default {
               const contentDisposition = response.headers['content-disposition'];
               let fileName = this.fecha_actual()+'_Reporte.xlsx';
               if (contentDisposition) {
+                  console.log(contentDisposition)
                   const fileNameMatch = contentDisposition.match(/filename="(.+)"/);
+                  
                   if (fileNameMatch.length === 2)
                       fileName = fileNameMatch[1];
               }
