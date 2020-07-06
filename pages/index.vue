@@ -145,7 +145,7 @@ export default {
               if (contentDisposition) {
                   console.log(contentDisposition)
                   const fileNameMatch = contentDisposition.match(/filename="(.+)"/);
-                  
+                  console.log("fileNameMatch: ", fileNameMatch)
                   if (fileNameMatch.length === 2)
                       fileName = fileNameMatch[1];
               }
