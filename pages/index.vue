@@ -142,13 +142,13 @@ export default {
               link.href = url;
               const contentDisposition = response.headers['content-disposition'];
               let fileName = this.fecha_actual()+'_Reporte.xlsx';
-              if (contentDisposition) {
-                  console.log(contentDisposition)
-                  const fileNameMatch = contentDisposition.match(/filename="(.+)"/);
-                  console.log("fileNameMatch: ", fileNameMatch)
-                  if (fileNameMatch.length === 2)
-                      fileName = fileNameMatch[1];
-              }
+              // if (contentDisposition) {
+              //     console.log(contentDisposition)
+              //     const fileNameMatch = contentDisposition.match(/filename="(.*)"/);
+              //     console.log("fileNameMatch: ", fileNameMatch)
+              //     if (fileNameMatch.length === 2)
+              //         fileName = fileNameMatch[1];
+              // }
               link.setAttribute('download', fileName);
               document.body.appendChild(link);
               link.click();
