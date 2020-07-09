@@ -43,7 +43,7 @@
         <!-- <v-divider></v-divider> -->
 
         <v-card-actions >
-          <v-btn class="mb-2" color="#3c35a1" tile outlined block @click="login">Ingresar</v-btn>
+          <v-btn class="mb-5" color="#3c35a1" tile outlined block @click="login">Ingresar</v-btn>
           <!-- <v-btn class="mb-2" color="#52dbeb" tile outlined block @click="login">Ingresar</v-btn> -->
           
         </v-card-actions>
@@ -63,6 +63,11 @@
           >
       </div>
 
+      <v-snackbar v-model="snack" :timeout="3000" :color="snackColor" :top="snackTop">
+        {{ snackText }}
+        <v-btn text @click="snack = false">cerrar</v-btn>
+      </v-snackbar>
+
     </v-flex>
   </v-app>
 </template>
@@ -78,9 +83,14 @@ export default {
   data () {
     return {
       showPassword: false,
-
       loginEmail: '',
-      loginPassword: ''
+      loginPassword: '',
+
+      /* SnackBar */
+      snack: false,
+      snackColor: '',
+      snackText: '',
+      snackTop: true,
     }
   },
   methods: {
@@ -123,6 +133,9 @@ export default {
         })
         .catch(error => {
           console.log("error: ", error.response.data)
+          this.snack = true
+          this.snackColor = 'error'
+          this.snackText = 'El email o contraseña no son correctos'
         });
     }
 
@@ -174,12 +187,12 @@ export default {
 <style>
 
     .theme--light.v-application{
-      background-color: #f0f0f0;
+      background-color: #f4faff;
       /* background-color: #c5cffa; */
     }
-    h1{
+    /* h1{
       color:#3c35a1
-    }
+    } */
 
     #images{
       text-align: center;
