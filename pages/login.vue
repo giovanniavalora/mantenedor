@@ -50,41 +50,6 @@
         
       </v-card>
 
-      <!-- <div class="row">
-        <div class="column">
-          <img
-                src="/avalora.png"
-                alt="Avalora logo"
-                width="100%"
-                height="100%"
-          >
-        </div>
-        <div class="column">
-          <img
-                src="/OHL-svg.svg"
-                alt="OHL logo"
-                class="mt-2"
-                width="100%"
-                height="100%"
-          >
-        </div>
-      </div> -->
-
-      <!-- <div class="images">
-          <img
-                src="/avalora.png"
-                alt="Avalora logo"
-                width="15%"
-                height="15%"
-          >
-          <img
-                src="/OHL-svg.svg"
-                alt="OHL logo"
-                width="15%"
-                height="15%"
-          >
-      </div> -->
-
       <div id="images">
           <img
                 src="/avalora.png"
@@ -98,42 +63,6 @@
           >
       </div>
 
-
-      <!-- <v-container>
-        <v-row justify="center" align="center">
-          <v-col cols="12" xs="4" sm="3" md="2">
-              <div class="logo_avalora">
-                <img
-                      src="/avalora.png"
-                      alt="Avalora logo"
-                      width="100%"
-                      height="100%"
-                >
-              </div>
-          </v-col>
-          <v-col cols="12" xs="4" sm="3" md="2">
-              <div class="logo_ohl">
-                <img
-                      src="/OHL-svg.svg"
-                      alt="OHL logo"
-                      class="mt-2"
-                      width="100%"
-                      height="100%"
-                >
-              </div>
-          </v-col>
-        </v-row>
-      </v-container> -->
-      
-      
-      <!-- <v-footer>
-          <img
-              src="/avalora.png"
-              alt="Avalora logo"
-              width="50%"
-              height="50%"
-          >
-      </v-footer> -->
     </v-flex>
   </v-app>
 </template>
@@ -251,28 +180,6 @@ export default {
     h1{
       color:#3c35a1
     }
-    /* .logo_avalora{
-      top: 50%;
-    }
-    .logo_ohl{
-      top: 50%;
-    } */
-
-    /* .column{
-      float:left;
-      width: 33.33%;
-      padding: 5px;
-    }
-    .row::after{
-      content: "";
-      clear: both;
-      display: table;
-    } */
-
-    /* .images{
-      display: flex;
-      justify-content: center;
-    } */
 
     #images{
       text-align: center;
