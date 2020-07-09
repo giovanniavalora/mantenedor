@@ -3,42 +3,140 @@
     <!-- <a class="button is-primary" @click="logout">
       Bienvenido {{user}} 😄
     </a> -->
-    <v-card width="400" class="mx-auto mt-12">
-
-      <v-card-title class="pb-0 justify-center" >
-        Inicio de sesión
-      </v-card-title>
-
-      <v-card-text>
-        <v-form>
-          <v-text-field 
-            v-model="loginEmail" 
-            label="Email" 
-            prepend-icon="mdi-account-circle"
-          />
-          <v-text-field 
-            v-model="loginPassword"
-            :type="showPassword? 'text' : 'password'" 
-            label="Contraseña"
-            prepend-icon="mdi-lock"
-            :append-icon="showPassword? 'mdi-eye' : 'mdi-eye-off'"
-            @click:append="showPassword = !showPassword"
-          />
-        </v-form>
-      </v-card-text>
-
-      <v-divider></v-divider>
-
-      <v-card-actions class="justify-center">
-        <v-btn color="primary" @click="login">Ingresar</v-btn>
-      </v-card-actions>
+    <v-flex class="text-center">
       
-    </v-card>
+      <v-card width="400" class="mx-auto mt-12" elevation="24">
+
+        <!-- <v-card-title class="pb-0 mb-2 justify-center" >
+          <h1>Faena</h1>
+        </v-card-title> -->
+        
+        <v-card-title class="pb-0 justify-center" >
+          <img
+            src="/Faena-texto.png"
+            alt="Faena logo"
+            class="mb-4"
+            width="30%"
+            height="30%"
+          >
+        </v-card-title>
+        
+
+        <v-card-text>
+          <v-form>
+            <v-text-field 
+              v-model="loginEmail" 
+              label="Email" 
+              prepend-icon="mdi-account-circle"
+            />
+            <v-text-field 
+              v-model="loginPassword"
+              :type="showPassword? 'text' : 'password'" 
+              label="Contraseña"
+              prepend-icon="mdi-lock"
+              :append-icon="showPassword? 'mdi-eye' : 'mdi-eye-off'"
+              @click:append="showPassword = !showPassword"
+            />
+          </v-form>
+        </v-card-text>
+
+        <!-- <v-divider></v-divider> -->
+
+        <v-card-actions >
+          <v-btn class="mb-2" color="#3c35a1" tile outlined block @click="login">Ingresar</v-btn>
+          <!-- <v-btn class="mb-2" color="#52dbeb" tile outlined block @click="login">Ingresar</v-btn> -->
+          
+        </v-card-actions>
+        
+      </v-card>
+
+      <!-- <div class="row">
+        <div class="column">
+          <img
+                src="/avalora.png"
+                alt="Avalora logo"
+                width="100%"
+                height="100%"
+          >
+        </div>
+        <div class="column">
+          <img
+                src="/OHL-svg.svg"
+                alt="OHL logo"
+                class="mt-2"
+                width="100%"
+                height="100%"
+          >
+        </div>
+      </div> -->
+
+      <!-- <div class="images">
+          <img
+                src="/avalora.png"
+                alt="Avalora logo"
+                width="15%"
+                height="15%"
+          >
+          <img
+                src="/OHL-svg.svg"
+                alt="OHL logo"
+                width="15%"
+                height="15%"
+          >
+      </div> -->
+
+      <div id="images">
+          <img
+                src="/avalora.png"
+                class="logo"
+                alt="Avalora logo"
+          >
+          <img
+                src="/OHL-svg.svg"
+                class="logo"
+                alt="OHL logo"
+          >
+      </div>
+
+
+      <!-- <v-container>
+        <v-row justify="center" align="center">
+          <v-col cols="12" xs="4" sm="3" md="2">
+              <div class="logo_avalora">
+                <img
+                      src="/avalora.png"
+                      alt="Avalora logo"
+                      width="100%"
+                      height="100%"
+                >
+              </div>
+          </v-col>
+          <v-col cols="12" xs="4" sm="3" md="2">
+              <div class="logo_ohl">
+                <img
+                      src="/OHL-svg.svg"
+                      alt="OHL logo"
+                      class="mt-2"
+                      width="100%"
+                      height="100%"
+                >
+              </div>
+          </v-col>
+        </v-row>
+      </v-container> -->
+      
+      
+      <!-- <v-footer>
+          <img
+              src="/avalora.png"
+              alt="Avalora logo"
+              width="50%"
+              height="50%"
+          >
+      </v-footer> -->
+    </v-flex>
   </v-app>
 </template>
-
-
-
 
 
 
@@ -144,5 +242,49 @@ export default {
 </script>
 
 
+<style>
 
+    .theme--light.v-application{
+      background-color: #f0f0f0;
+      /* background-color: #c5cffa; */
+    }
+    h1{
+      color:#3c35a1
+    }
+    /* .logo_avalora{
+      top: 50%;
+    }
+    .logo_ohl{
+      top: 50%;
+    } */
+
+    /* .column{
+      float:left;
+      width: 33.33%;
+      padding: 5px;
+    }
+    .row::after{
+      content: "";
+      clear: both;
+      display: table;
+    } */
+
+    /* .images{
+      display: flex;
+      justify-content: center;
+    } */
+
+    #images{
+      text-align: center;
+    }
+    .logo{
+      display: inline-block;
+      margin-top: 50px;
+      margin-left: auto;
+      margin-right: auto;
+      height: 100px;
+    }
+
+
+</style>
 

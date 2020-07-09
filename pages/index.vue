@@ -142,6 +142,7 @@ export default {
               link.href = url;
               const contentDisposition = response.headers['content-disposition'];
               let fileName = this.fecha_actual()+'_Reporte.xlsx';
+              /** Para descargar archivo con el nombre que viene desde la API */
               // if (contentDisposition) {
               //     console.log(contentDisposition)
               //     const fileNameMatch = contentDisposition.match(/filename="(.*)"/);

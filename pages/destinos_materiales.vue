@@ -296,7 +296,7 @@ export default {
       valid: false,
       nombredestinoRules: [
         v => !!v || 'Este campo es requerido',
-        v => (v && v.length <= 20) || 'Este campo debe tener menos de 20 caracteres',
+        v => (v && v.length <= 50) || 'Este campo debe tener menos de 50 caracteres',
       ],
       comunacalleRules: [
         v => {
