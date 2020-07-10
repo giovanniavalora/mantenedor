@@ -137,7 +137,7 @@ export default {
         { text: 'Telefono', value: 'telefono_contacto' },
         { text: 'Email de contacto', value: 'email_contacto' },
         { text: 'Numero flota', value: 'numero_flota' },
-        { text: 'Actions', value: 'actions', sortable: false }
+        { text: 'Acciones', value: 'actions', sortable: false }
       ],
       subcontratistas: [],
       editedIndex: -1,

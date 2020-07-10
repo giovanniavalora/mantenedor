@@ -254,7 +254,7 @@ export default {
         { text: 'Número', value: 'numero' },
         // { text: 'Longitud', value: 'longitud' },
         // { text: 'Latitud', value: 'latitud' },
-        { text: 'Actions', value: 'actions', sortable: false }
+        { text: 'Acciones', value: 'actions', sortable: false }
       ],
       
       destinos: [],
@@ -282,7 +282,7 @@ export default {
           sortable: false,
           value: 'material',
         },
-        { text: 'Actions', value: 'actions', sortable: false }
+        { text: 'Acciones', value: 'actions', sortable: false }
       ],
       materiales: [],
       // editedIndexSuborigen: -1,
@@ -305,10 +305,13 @@ export default {
         },
       ],
       numeroRules: [
-        v => {
-          if (v) return v.length <= 6 || 'Este campo debe tener menos de 6 caracteres';
-          else return true;
-        },
+        v => String(v).length == 0 || Number.isInteger(Number(v)) || 'Este campo debe ser un número entero',
+        v => String(v).length == 0 || v > 0 || 'Este campo debe ser mayor que 0',
+        v => String(v).length == 0 || v < 9999999 || 'Este campo debe ser menor que 9 999 999',
+        // v => {
+        //   if (v) return v.length <= 6 || 'Este campo debe tener menos de 6 caracteres';
+        //   else return true;
+        // },
       ],
       rutRules:[
         v => !!v || 'Este campo es requerido',

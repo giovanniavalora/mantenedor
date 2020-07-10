@@ -13,7 +13,7 @@
         
         <v-card-title class="pb-0 justify-center" >
           <img
-            src="/Faena-texto.png"
+            src="/Faena-texto-centrado.png"
             alt="Faena logo"
             class="mb-4"
             width="30%"

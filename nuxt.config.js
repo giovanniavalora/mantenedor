@@ -14,7 +14,7 @@ export default {
       { hid: 'description', name: 'description', content: process.env.npm_package_description || '' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'icon', type: 'image/x-icon', href: '/Favicon.ico' },
     ]
   },
 
@@ -24,8 +24,6 @@ export default {
   //     handler: '~/api/index.js'
   //   }
   // ],
-
-
 
   /*
   ** Customize the progress-bar color

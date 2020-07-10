@@ -74,7 +74,7 @@
                 ></v-text-field>
 
                 <v-text-field
-                  v-model="editedItem.cantidad_voucher_imprimir"
+                  v-model.number="editedItem.cantidad_voucher_imprimir"
                   :counter="1"
                   :rules="nro_impresiones_Rules"
                   label="Cantidad de voucher a imprimir"
@@ -310,7 +310,11 @@ export default {
         v => /.+@.+\..+/.test(v) || 'E-mail debe ser valido',
       ],
       nro_impresiones_Rules: [
-        v => !!v || 'Es requerido',
+        // v => !!v || 'Es requerido',
+        // v => v <= 5 || 'No puede ser superior a 5 impresiones',
+        v => String(v).length > 0 || 'Este campo es requerido',
+        v => Number.isInteger(Number(v)) || 'Este campo debe ser un número entero',
+        v => v >= 0 || 'Este campo debe ser mayor o igual que 0',
         v => v <= 5 || 'No puede ser superior a 5 impresiones',
       ],
       rutRules:[
@@ -381,7 +385,7 @@ export default {
       const id = this.idProyecto
       const res = await this.$axios.get(`/backend/Proyecto/${id}/`)
       this.editedItem = res.data;
-      this.editedItem.cantidad_voucher_imprimir = String(this.editedItem.cantidad_voucher_imprimir);
+      // this.editedItem.cantidad_voucher_imprimir = String(this.editedItem.cantidad_voucher_imprimir);
 
       const res_admin = await this.$axios.get('/backend/Administrador/')
       this.administradores = res_admin.data;

@@ -143,11 +143,6 @@ export default {
           to: '/proyecto'
         },
         {
-          icon: 'mdi-cube-send',
-          title: 'Despachadores',
-          to: '/despachadores'
-        },
-        {
           icon: 'mdi-source-commit-start-next-local',
           title: 'Origenes',
           to: '/origenes_suborigenes'
@@ -168,6 +163,11 @@ export default {
           to: '/flota'
         },
         {
+          icon: 'mdi-cube-send',
+          title: 'Despachadores',
+          to: '/despachadores'
+        },
+        {
           icon: 'mdi-calendar',
           title: 'Reporte',
           to: '/'
@@ -181,7 +181,7 @@ export default {
       miniVariant: false,
       right: true,
       rightDrawer: false,
-      title: 'Plataforma Control Camiones'
+      title: 'Faena - control camiones'
     }
   },
   methods: {

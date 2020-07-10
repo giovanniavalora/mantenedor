@@ -290,7 +290,7 @@ export default {
         { text: 'Capacidad', value: 'capacidad_camion' },
         { text: 'Número de ejes', value: 'numero_ejes' },
         { text: 'Nombre conductor', value: 'nombre_conductor_principal' },
-        { text: 'Actions', value: 'actions', sortable: false }
+        { text: 'Acciones', value: 'actions', sortable: false }
       ],
       subcontratistas: [],
       camiones: [],

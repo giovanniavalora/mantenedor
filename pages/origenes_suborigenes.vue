@@ -58,7 +58,11 @@
                                     <v-text-field v-model="editedItem.calle" :rules="comunacalleRules" label="Calle"></v-text-field>
                                   </v-col>
                                   <v-col cols="12" sm="6" md="4">
-                                    <v-text-field v-model="editedItem.numero" :rules="numeroRules" label="Número"></v-text-field>
+                                    <v-text-field 
+                                      v-model.number="editedItem.numero" 
+                                      :rules="numeroRules" 
+                                      label="Número"
+                                    ></v-text-field>
                                   </v-col>
 
                                   <!-- <v-col cols="12" sm="12" md="8"> -->
@@ -297,7 +301,7 @@ export default {
       /* Validación de formulario */
       valid: false,
       nombreorigenRules: [
-        v => !!v || 'Este campo es requerido',
+        v => !!v || 'Campo requerido',
         v => (v && v.length <= 20) || 'Este campo debe tener menos de 20 caracteres',
       ],
       comunacalleRules: [
@@ -307,10 +311,13 @@ export default {
         },
       ],
       numeroRules: [
-        v => {
-          if (v) return v.length <= 6 || 'Este campo debe tener menos de 6 caracteres';
-          else return true;
-        },
+        v => String(v).length == 0 || Number.isInteger(Number(v)) || 'Este campo debe ser un número entero',
+        v => String(v).length == 0 || v > 0 || 'Este campo debe ser mayor que 0',
+        v => String(v).length == 0 || v < 9999999 || 'Este campo debe ser menor que 9 999 999',
+        // v => String(v).length > 0 || 'Campo requerido',
+        // v => Number.isInteger(Number(v)) || 'Este campo debe ser un número entero',
+        // v => v > 0 || 'Este campo debe ser mayor que 0',
+        // v => v < 9999999 || 'Este campo debe ser menor que 9 999 999',
       ],
       // latitudlongitudRules: [
       //   v => !!v || 'Este campo es requerido',
