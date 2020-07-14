@@ -354,14 +354,11 @@ export default {
       //validación
       this.$refs.form.validate()
       //actualización
-      console.log("this.editedItem:",this.editedItem)
       this.$axios.put(`/backend/Proyecto/${this.editedItem.id}/`,this.editedItem)
       .then(res => {
-        console.log("res.data:",res.data)
         alert("Actualizado correctamente")
       })
       .catch(error => {
-        console.error(error)
         alert("No se pudo actualizar")
       });
     },

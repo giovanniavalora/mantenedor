@@ -100,7 +100,7 @@ export default {
           password: this.loginPassword
         })
         .then(res => {
-          console.log("res: ",res)
+          // console.log("res: ",res)
           if(res.data.data.token){
 
             this.$axios.get(`/backend/Proyecto/${res.data.data.info.proyecto}/`)

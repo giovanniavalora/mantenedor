@@ -393,7 +393,6 @@ export default {
         });
     },
     deletematerial (item) {
-      console.log("Delete: ",item)
       const index = this.materiales.indexOf(item)
       var result = confirm('¿Desea eliminar item?') && this.materiales.splice(index, 1)
       if (result){
@@ -420,7 +419,6 @@ export default {
         // this.editedIndex = -1
       }, 300),
       this.dialog_material = false
-      console.log('Dialog closed')
     },
 
 

@@ -294,7 +294,7 @@ export default {
     try {
       this.$axios.setToken(this.$store.state.auth['Token'], 'Bearer')
       const res = await this.$axios.get('/backend/Subcontratista/')
-      console.log("get all subcontratistas",res.data)
+      // console.log("get all subcontratistas",res.data)
       this.subcontratistas = res.data;
       
 
@@ -303,7 +303,7 @@ export default {
 
       for(var prop in this.subcontratistas){
         let id = this.subcontratistas[prop].id
-        console.log("id:",id)
+        // console.log("id:",id)
 
         // this.$axios.get('/backend/FlotaSubcontratista/1/')
         // .then(resp=>{
@@ -312,12 +312,12 @@ export default {
         //   console.log(e)
         // })
 
-        this.$axios.get(`/backend/FlotaSubcontratista/${id}/`)
-        .then(resp=>{
-          console.log("resp2: ", resp)
-        }).catch(e=>{
-          console.log(e)
-        })
+        // this.$axios.get(`/backend/FlotaSubcontratista/${id}/`)
+        // .then(resp=>{
+        //   console.log("resp2: ", resp)
+        // }).catch(e=>{
+        //   console.log(e)
+        // })
 
         let res_fs= await this.$axios.get(`/backend/FlotaSubcontratista/${id}/`);
         this.subcontratistas[prop].numero_flota = res_fs.data.data['cantidad_camiones']

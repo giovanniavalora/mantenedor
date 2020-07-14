@@ -381,13 +381,13 @@ export default {
 
   methods: {
     nuevoqr() {
-      console.log("nqr.editedItem: ",this.editedItem)
-      console.log("nqr.datosCamionQR: ",this.datosCamionQR)
+      // console.log("nqr.editedItem: ",this.editedItem)
+      // console.log("nqr.datosCamionQR: ",this.datosCamionQR)
       let result = confirm('Al crear un nuevo código QR se desactivará el anterior, ¿Desea continuar?')
       if (result){
         this.$axios.post('/backend/CodigoQR/',{"camion":this.datosCamionQR.id})
         .then(res => {
-          console.log("nuevo qr:",res.data)
+          // console.log("nuevo qr:",res.data)
           this.datosqractivo=res.data
           this.qrvalue = '{\"id_qr\":'+String(res.data.id)+', \"id_camion\":'+String(res.data.camion)+'}'
           this.snack = true
@@ -397,7 +397,7 @@ export default {
       }
     },
     activacionqr(){
-      console.log("dqr.datosCamionQR",this.datosqractivo)
+      // console.log("dqr.datosCamionQR",this.datosqractivo)
       this.$axios.put(`/backend/CodigoQR/${this.datosqractivo.id}/`,this.datosqractivo)
       .then(res => {
           if(res.status == 200){
@@ -434,13 +434,13 @@ export default {
 
     getDatosCamionQR (item) {
       this.editedItem = Object.assign({}, item)
-      console.log("ns1:",item.nom_subcontratista)
-      console.log("item:",item)
+      // console.log("ns1:",item.nom_subcontratista)
+      // console.log("item:",item)
       var ns = this.subcontratistas.find(x => x.id === item.subcontratista).nombre_subcontratista;
-      console.log("ns2: ",ns)
+      // console.log("ns2: ",ns)
       this.$axios.get(`/backend/CodigoQRCamion/${item.id}/`)
       .then(res => {
-        console.log("codigoqr_activo:",res.data.data.codigoqr_activo)
+        // console.log("codigoqr_activo:",res.data.data.codigoqr_activo)
         this.datosqractivo=res.data.data.codigoqr_activo
         this.qrvalue = '{\"id_qr\":'+String(res.data.data.codigoqr_activo.id)+', \"id_camion\":'+String(res.data.data.codigoqr_activo.camion)+'}'
       })
@@ -515,7 +515,7 @@ export default {
                   if(res.status == 201){
                       this.editedItem['id']=res.data['id']
                       this.editedItem.nom_subcontratista = this.subcontratistas.find(x => x.id === this.editedItem.subcontratista).nombre_subcontratista;
-                      console.log("verification",this.editedItem)
+                      // console.log("verification",this.editedItem)
                       this.camiones.push(this.editedItem)
                       this.snack = true
                       this.snackColor = 'success'

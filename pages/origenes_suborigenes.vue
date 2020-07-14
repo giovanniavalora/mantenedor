@@ -381,7 +381,6 @@ export default {
       this.$axios.post(`/backend/Suborigen/`,this.editedItemSuborigen)
         .then(res => {
           if(res.data){
-            console.log("suborigen res.data:",res.data)
             this.editedItemSuborigen['id']=res.data['id']
             this.suborigenes.push(this.editedItemSuborigen) 
             this.snack = true
@@ -398,7 +397,6 @@ export default {
         });
     },
     deletesuborigen (item) {
-      console.log("Delete: ",item)
       const index = this.suborigenes.indexOf(item)
       var result = confirm('¿Desea eliminar item?') && this.suborigenes.splice(index, 1)
       if (result){
@@ -425,7 +423,6 @@ export default {
         // this.editedIndex = -1
       }, 300),
       this.dialog_suborigen = false
-      console.log('Dialog closed')
     },
 
 

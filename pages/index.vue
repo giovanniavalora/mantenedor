@@ -113,15 +113,12 @@ export default {
     fecha_actual: function () { // Otra forma de escribir una función, es equivalente a: hora_actual (){ }
         var currentDate = new Date();
         var currentDateWithFormat = new Date().toJSON().slice(0,10);
-        console.log("currentDateWithFormat",currentDateWithFormat);
         return currentDateWithFormat;
         // var currentDateWithFormat = new Date().toJSON().slice(0,10).replace(/-/g,'/');
         
     },
     async reporte () {
       this.$axios.setToken(this.$store.state.auth['Token'], 'Bearer')
-      console.log("date1:",this.date1)
-      console.log("date2:",this.date2)
       try {
         this.$axios({
           method: 'GET',

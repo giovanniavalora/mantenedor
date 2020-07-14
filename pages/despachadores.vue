@@ -45,7 +45,7 @@
                             <v-card-text>
                               <v-container>
                                 <v-row>
-                                  <v-col cols="12" sm="6" md="4">
+                                  <v-col cols="12" sm="6" md="4" v-if="formTitle === 'Agregar Nuevo Despachador'">
                                     <v-text-field v-model="editedItem.rut" :rules="rutRules" label="Rut" required></v-text-field>
                                   </v-col>
                                   <v-col cols="12" sm="6" md="4">
@@ -227,7 +227,7 @@ export default {
         .catch(error => {
             // alert(Object.values(error.response.data))
             // alert(Object.values(error.response))
-            console.log(error.response)
+            // console.log(error.response)
             alert(error.response)
         });
     },
@@ -272,10 +272,8 @@ export default {
               this.editedItem.proyecto = this.idProyecto
               try {
                 let res = await this.$axios.post('/backend/Despachador/',this.editedItem)
-                console.log("res",res)
                 if (res.status = 201) {
                   this.editedItem['id']=res.data.data.id
-                  console.log("editedItem",this.editedItem)
                   this.despachadores.push(this.editedItem)
                   this.snack = true
                   this.snackColor = 'success'
@@ -310,6 +308,9 @@ export default {
       this.origenes = this.origenes.filter(x => x.proyecto === this.idProyecto)//Aquí se filtran los origenes pertenecientes al proyecto
     } catch (error) {
       console.log(error)
+      // this.snack = true
+      // this.snackColor = 'error'
+      // this.snackText = error
     }
   }
 
