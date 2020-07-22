@@ -9,72 +9,73 @@
       sm8
       md6
     >
-      <div class="text-center">
+      <!-- <div class="text-center">
         <logo />
         <vuetify-logo />
+      </div> -->
+      <div class="text-center">
       </div>
       <v-card>
         <v-card-title class="headline">
-          Welcome to the Vuetify + Nuxt.js template
+            Generar Reporte Proyecto {{nombreProyecto}}
         </v-card-title>
         <v-card-text>
-          <p>Vuetify is a progressive Material Design component framework for Vue.js. It was designed to empower developers to create amazing applications.</p>
-          <p>
-            For more information on Vuetify, check out the <a
-              href="https://vuetifyjs.com"
-              target="_blank"
-            >
-              documentation
-            </a>.
-          </p>
-          <p>
-            If you have questions, please join the official <a
-              href="https://chat.vuetifyjs.com/"
-              target="_blank"
-              title="chat"
-            >
-              discord
-            </a>.
-          </p>
-          <p>
-            Find a bug? Report it on the github <a
-              href="https://github.com/vuetifyjs/vuetify/issues"
-              target="_blank"
-              title="contribute"
-            >
-              issue board
-            </a>.
-          </p>
-          <p>Thank you for developing with Vuetify and I look forward to bringing more exciting features in the future.</p>
-          <div class="text-xs-right">
-            <em><small>&mdash; John Leider</small></em>
-          </div>
-          <hr class="my-3">
-          <a
-            href="https://nuxtjs.org/"
-            target="_blank"
-          >
-            Nuxt Documentation
-          </a>
-          <br>
-          <a
-            href="https://github.com/nuxt/nuxt.js"
-            target="_blank"
-          >
-            Nuxt GitHub
-          </a>
+          <v-row justify="center">
+              <v-col cols="12">
+                <v-menu
+                  v-model="menu1"
+                  :close-on-content-click="false"
+                  :nudge-right="40"
+                  transition="scale-transition"
+                  offset-y
+                  max-width="290px"
+                >
+                  <template v-slot:activator="{ on }">
+                    <v-text-field
+                      v-model="date1"
+                      label="Desde"
+                      prepend-icon="mdi-calendar"
+                      readonly
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker v-model="date1" locale="es" first-day-of-week="1" @input="menu1=false"></v-date-picker>
+                </v-menu>
+              </v-col>
+              <v-col cols="12">
+                <v-menu
+                  v-model="menu2"
+                  :close-on-content-click="false"
+                  :nudge-right="40"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="290px"
+                >
+                  <template v-slot:activator="{ on }">
+                    <v-text-field
+                      v-model="date2"
+                      label="Hasta"
+                      prepend-icon="mdi-calendar"
+                      readonly
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker v-model="date2" locale="es" first-day-of-week="1" @input="menu2=false"></v-date-picker>
+                </v-menu>
+              </v-col>
+              <v-col cols="12">
+                <v-row justify="center">
+                  <v-btn color="primary" class="mb-2" @click="reporte">Generar</v-btn>
+                </v-row>
+              </v-col>
+
+            </v-row>
         </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn
-            color="primary"
-            nuxt
-            to="/inspire"
-          >
-            Continue
-          </v-btn>
-        </v-card-actions>
       </v-card>
+      <v-snackbar v-model="snack" :timeout="3000" :color="snackColor" :top="snackTop">
+        {{ snackText }}
+        <v-btn text @click="snack = false">cerrar</v-btn>
+      </v-snackbar>
     </v-flex>
   </v-layout>
 </template>
@@ -84,9 +85,107 @@ import Logo from '~/components/Logo.vue'
 import VuetifyLogo from '~/components/VuetifyLogo.vue'
 
 export default {
+  middleware: 'authenticated',
+  data(){
+    return {
+      date1: new Date().toISOString().substr(0, 10),
+      menu1: false,
+      date2: new Date().toISOString().substr(0, 10),
+      menu2: false,
+
+      /* SnackBar */
+      snack: false,
+      snackColor: '',
+      snackText: '',
+      snackTop: true,
+    }
+  },
   components: {
     Logo,
     VuetifyLogo
+  },
+  computed: {
+    nombreProyecto () {
+      return this.$store.state.auth['Proyecto'].nombre_proyecto;
+    }
+  },
+  methods:{
+    fecha_actual: function () { // Otra forma de escribir una función, es equivalente a: hora_actual (){ }
+        var currentDate = new Date();
+        var currentDateWithFormat = new Date().toJSON().slice(0,10);
+        return currentDateWithFormat;
+        // var currentDateWithFormat = new Date().toJSON().slice(0,10).replace(/-/g,'/');
+        
+    },
+    async reporte () {
+      this.$axios.setToken(this.$store.state.auth['Token'], 'Bearer')
+      try {
+        this.$axios({
+          method: 'GET',
+          url: `/backend/Reporte/${this.date1}/${this.date2}/`,
+          responseType: 'blob'
+        }).then((response) => {
+          // console.log("response.data.type",response.data.type)
+          // console.log("response.headers",response.headers)
+          if(response.status == 204){
+              this.snack = true
+              this.snackColor = 'error'
+              this.snackText = 'No se encontraron registros. Indique otro rango de fechas.'
+          }
+          if(response.status == 200){
+              const blob = new Blob([response.data], {type: response.data.type});
+              const url = window.URL.createObjectURL(blob);
+              const link = document.createElement('a');
+              link.href = url;
+              const contentDisposition = response.headers['content-disposition'];
+              let fileName = this.fecha_actual()+'_Reporte.xlsx';
+              /** Para descargar archivo con el nombre que viene desde la API */
+              // if (contentDisposition) {
+              //     console.log(contentDisposition)
+              //     const fileNameMatch = contentDisposition.match(/filename="(.*)"/);
+              //     console.log("fileNameMatch: ", fileNameMatch)
+              //     if (fileNameMatch.length === 2)
+              //         fileName = fileNameMatch[1];
+              // }
+              link.setAttribute('download', fileName);
+              document.body.appendChild(link);
+              link.click();
+              link.remove();
+              window.URL.revokeObjectURL(url);
+          }
+          
+          
+        }).catch((error) => {
+          console.log("error1",error)
+        });
+
+      } catch (error) {
+          console.log("error2",error)
+      }
+    }
+  },
+  mounted (){
+      this.$axios.setToken(this.$store.state.auth['Token'], 'Bearer')
+      this.fecha_actual()
+  },
+  async created(){
+    this.$axios.setToken(this.$store.state.auth['Token'], 'Bearer')
+    // try {
+    //   this.$axios({
+    //     method: 'GET',
+    //     url: '/Reporte/',
+    //     responseType: 'blob'
+    //   }).then(res=>{
+    //     let blob = new Blob([res.data], {type: "application/vnd.ms-excel"});
+    //     let url = window.URL.createObjectURL(blob);
+    //     window.location.href = url;
+    //   }).catch(err=>{
+    //     console.log(err)
+    //   })
+
+    // } catch (error) {
+    //   console.log(error)
+    // }
   }
 }
 </script>
