@@ -363,6 +363,9 @@ export default {
     formTitle () {
       return this.editedIndex === -1 ? 'Agregar Nuevo Camión' : 'Editar Camión'
     },
+    idProyecto () {
+      return this.$store.state.auth['Proyecto'].id;
+    },
     nombreProyecto () {
       return this.$store.state.auth['Proyecto'].nombre_proyecto;
     },
@@ -492,6 +495,7 @@ export default {
             /* Para editar un registro */
             if (this.editedIndex > -1) {
               try {
+                console.log("item a editar:",this.editedItem)
                 let res = await this.$axios.put(`/backend/Camion/${this.editedItem['id']}/`,this.editedItem)
                 if(res.status == 200){
                   Object.assign(this.camiones[this.editedIndex], this.editedItem)
@@ -507,6 +511,7 @@ export default {
                 this.snack = true
                 this.snackColor = 'error'
                 this.snackText = error
+                console.log(error)
               }
             /*Para crear un nuevo registro*/
             } else {
@@ -541,12 +546,15 @@ export default {
     try {
       // const res = await axios.get('http://157.245.237.33:5000/api/v1/Camion/')
       this.$axios.setToken(this.$store.state.auth['Token'], 'Bearer')
-      const rescamion = await this.$axios.get('/backend/Camion/')
+      const rescamion = await this.$axios.get(`/backend/Proyecto/${this.idProyecto}/Camion/`)
       this.camiones = rescamion.data;
+      console.log("rescamion", rescamion.data)
 
       /** Para mostrar los nombres de los Subcontratista en el dropdown del modal **/
       const resp_subcontratistas = await this.$axios.get('/backend/Subcontratista/') //Se obtienen todos, pero debieran ser solo los del proyecto
       this.subcontratistas = resp_subcontratistas.data;
+      console.log("subcontratistas", this.subcontratistas)
+      this.subcontratistas = this.subcontratistas.filter(x => x.proyecto === this.idProyecto)
 
       /* Lo siguiente debiera ocurrir en el backend, el cual debiera enviar el nombre del subcontratista al que pertenece */
       /* Asigna a 'camiones' el atributo del nombre del subcontratista al que pertenece */

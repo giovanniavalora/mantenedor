@@ -136,15 +136,15 @@
                                                   </v-edit-dialog>
                                               </template>
                                               <template v-slot:item.actions="{ item }">
-                                                <v-container fill-height fluid>
-                                                <v-row class="mr-2" justify="end">
-                                                  <v-icon
-                                                    small
-                                                    @click="deletematerial(item)"
-                                                  >
-                                                    mdi-delete
-                                                  </v-icon>
-                                                </v-row>
+                                                <v-container fluid>
+                                                  <v-row class="mr-2" justify="end">
+                                                    <v-icon
+                                                      small
+                                                      @click="deletematerial(item)"
+                                                    >
+                                                      mdi-delete
+                                                    </v-icon>
+                                                  </v-row>
                                                 </v-container>
                                               </template>
                                       </v-data-table> 
@@ -507,6 +507,7 @@ export default {
       this.$axios.setToken(this.$store.state.auth['Token'], 'Bearer')
       const res = await this.$axios.get('/backend/Destino/')
       this.destinos = res.data;
+      this.destinos = this.destinos.filter(x => x.proyecto === this.idProyecto)
 
       /** Para mostrar los nombres de los Materiales en el dropdown del modal **/
       const resp_materiales = await this.$axios.get('/backend/Material/')

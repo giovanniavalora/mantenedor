@@ -8,6 +8,9 @@ export const state = () => {
 export const mutations = {
   setAuth (state, auth) {
     state.auth = auth
+  },
+  setProject (state, project){
+    state.auth.Proyecto = project
   }
 }
 export const actions = {
