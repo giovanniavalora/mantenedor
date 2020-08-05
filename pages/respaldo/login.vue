@@ -28,8 +28,7 @@
               v-model="loginEmail" 
               label="Email" 
               prepend-icon="mdi-account-circle"
-              placeholder="nombre.apellido@avalora.com"
-            ></v-text-field>
+            />
             <v-text-field 
               v-model="loginPassword"
               :type="showPassword? 'text' : 'password'" 
@@ -37,8 +36,7 @@
               prepend-icon="mdi-lock"
               :append-icon="showPassword? 'mdi-eye' : 'mdi-eye-off'"
               @click:append="showPassword = !showPassword"
-              placeholder="1234"
-            ></v-text-field>
+            />
           </v-form>
         </v-card-text>
 
@@ -104,54 +102,33 @@ export default {
         .then(res => {
           // console.log("res: ",res)
           if(res.data.data.token){
-            const auth = {
+
+            this.$axios.get(`/backend/Proyecto/${res.data.data.info.proyecto}/`)
+            .then(proyecto => {
+              // console.log("dataproyecto: ",proyecto.data)
+              const auth = {
                 Email: this.loginEmail,
                 Info: res.data.data.info,
-                Proyecto: {},
+                Proyecto: proyecto.data,
                 Token: res.data.data.token
-            }
-            this.$axios.setToken(auth['Token'], 'Bearer')
+              }
+              /* se agrega el token para las request a las apis */
+              this.$axios.setToken(auth['Token'], 'Bearer')
 
-            this.loginEmail = ''
-            this.loginPassword = ''
-            this.$store.commit('setAuth', auth) // mutating to store for client rendering
+              this.loginEmail = ''
+              this.loginPassword = ''
+              this.$store.commit('setAuth', auth) // mutating to store for client rendering
 
-            /* Guardando token en cookie para server rendering */
-                /* Establecemos tiempo de caducidad de la cookie */
-                var date = new Date();
-                date.setTime(date.getTime() + (60 * 1000) ); //1 minuto
-                Cookie.set('auth', auth, {expires: date}) //tiempo espacificado en date
-                // Cookie.set('auth', auth, {expires: 1}) //1 día
-            this.$router.push('/seleccion_proyecto')
-            console.log("credenciales validadas correctamente")
-            console.info(res.data.data.info)
+              /* Establecemos tiempo de caducidad de la cookie */
+              var date = new Date();
+              date.setTime(date.getTime() + (60 * 1000) ); //1 minuto
 
-            // this.$axios.get(`/backend/Proyecto/${res.data.data.info.proyecto}/`)
-            // .then(proyecto => {
-            //   // console.log("dataproyecto: ",proyecto.data)
-            //   const auth = {
-            //     Email: this.loginEmail,
-            //     Info: res.data.data.info,
-            //     Proyecto: proyecto.data,
-            //     Token: res.data.data.token
-            //   }
-            //   /* se agrega el token para las request a las apis */
-            //   this.$axios.setToken(auth['Token'], 'Bearer')
-
-            //   this.loginEmail = ''
-            //   this.loginPassword = ''
-            //   this.$store.commit('setAuth', auth) // mutating to store for client rendering
-
-            //   /* Establecemos tiempo de caducidad de la cookie */
-            //   var date = new Date();
-            //   date.setTime(date.getTime() + (60 * 1000) ); //1 minuto
-
-            //   /* saving token in cookie for server rendering */
-            //   // Cookie.set('auth', auth, {expires: date}) //tiempo espacificado en date
-            //   Cookie.set('auth', auth, {expires: 1}) //1 día
-            //   this.$router.push('/seleccion_proyecto')
-            //   console.log("credenciales validadas correctamente")
-            //   })
+              /* saving token in cookie for server rendering */
+              // Cookie.set('auth', auth, {expires: date}) //tiempo espacificado en date
+              Cookie.set('auth', auth, {expires: 1}) //1 día
+              this.$router.push('/')
+              console.log("credenciales validadas correctamente")
+              })
           }
         })
         .catch(error => {

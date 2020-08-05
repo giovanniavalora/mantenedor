@@ -52,7 +52,11 @@ export default {
       return this.$store.state.auth['Info'].proyecto;
     },
   },
-  middleware: 'authenticated',
+  middleware({ store, redirect }){
+    if (!store.state.auth) {
+        return redirect('/login')
+    }
+  },
   data () {
     return {
       proyectos:[],
@@ -71,7 +75,8 @@ export default {
   methods: {
     SeleccionarProyecto(item){
       console.log("item seleccionado:", item)
-      this.$store.commit('setProject', item)
+      this.$store.commit('setProject', item) //Se almacena en el estado de vuex, pero se puede perder con refresh
+      Cookie.set('auth', this.$store.state.auth) //Se guarda en las cookie para no perder el estado en un refresh
       this.$router.push('/')
     }
   },
