@@ -1,6 +1,6 @@
-# mantenedor
+# Faena
 
-> My amazing Nuxt.js project
+> Faena - Control the invisible
 
 ## Build Setup
 

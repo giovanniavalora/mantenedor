@@ -1,8 +1,8 @@
 {
-  "name": "mantenedor",
+  "name": "Faena",
   "version": "1.0.0",
-  "description": "My amazing Nuxt.js project",
-  "author": "giova",
+  "description": "Faena - Control the invisible",
+  "author": "Avalora - giovanni aravena",
   "private": true,
   "scripts": {
     "dev": "nuxt",

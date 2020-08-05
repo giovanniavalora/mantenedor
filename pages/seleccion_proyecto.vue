@@ -46,7 +46,7 @@
 const Cookie = process.client ? require('js-cookie') : undefined
 import axios from 'axios';
 export default {
-  layout: 'login',
+  layout: 'projectSelection',
   computed: {
     idProyectos () {
       return this.$store.state.auth['Info'].proyecto;
