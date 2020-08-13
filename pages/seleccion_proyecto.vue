@@ -1,8 +1,6 @@
 <template>
   <v-app>
-    <!-- <a class="button is-primary" @click="logout">
-      Bienvenido {{user}} 😄
-    </a> -->
+
     <v-flex d-flex>
       <v-layout wrap>
           <v-flex md4 v-for="item in proyectos" :key="item.id" class="mx-auto px-6 py-6">
@@ -19,17 +17,6 @@
           </v-flex>
       </v-layout>
           
-
-
-
-      <!--       
-      <v-card width="400" class="mx-auto mt-12" elevation="24">
-        
-      </v-card> 
-      -->
-      
-
-
 
       <v-snackbar v-model="snack" :timeout="3000" :color="snackColor" :top="snackTop">
         {{ snackText }}

@@ -122,9 +122,22 @@ export default {
                 date.setTime(date.getTime() + (60 * 1000) ); //1 minuto
                 Cookie.set('auth', auth, {expires: date}) //tiempo espacificado en date
                 // Cookie.set('auth', auth, {expires: 1}) //1 día
-            this.$router.push('/seleccion_proyecto')
+
+            if(res.data.data.info['proyecto'].length == 1){
+              console.log("1 proyecto!")
+              this.$axios.get(`/backend/Proyecto/${res.data.data.info.proyecto[0]}/`)
+              .then(resp => {
+                console.log(resp)
+                this.$store.commit('setProject', resp.data) //Se almacena en el estado de vuex, pero se puede perder con refresh
+                Cookie.set('auth', this.$store.state.auth) //Se guarda en las cookie para no perder el estado en un refresh
+                this.$router.push('/')
+              })
+              
+            }else{
+              this.$router.push('/seleccion_proyecto')
+            }
+            
             console.log("credenciales validadas correctamente")
-            console.info(res.data.data.info)
 
             // this.$axios.get(`/backend/Proyecto/${res.data.data.info.proyecto}/`)
             // .then(proyecto => {

@@ -68,9 +68,11 @@
         Bienvenido {{user}} 😄
       </a> -->
 
-      <div v-if="$store.state.auth">
-        
-        <v-btn color="Primary" dark text @click="logout">{{user}}<br>Cerrar Sesión</v-btn>
+      <div v-if="$store.state.auth" >
+          <v-btn color="Primary" dark text disabled @click="logout">{{user}}</v-btn>
+          <v-btn icon color="Primary" dark @click="logout">
+            <v-icon>mdi-exit-to-app</v-icon>
+          </v-btn>
       </div>
       <p v-else>
         Please
