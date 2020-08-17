@@ -14,6 +14,8 @@
                   :counter="20"
                   :rules="centro_de_coste_Rules"
                   label="Centro de coste"
+                  filled
+                  readonly
                   required
                 ></v-text-field>
 
@@ -22,6 +24,8 @@
                   :counter="100"
                   :rules="nombre_proyecto_Rules"
                   label="Nombre proyecto"
+                  filled
+                  readonly
                   required
                 ></v-text-field>
 
@@ -30,6 +34,8 @@
                   :counter="100"
                   :rules="nombre_proyecto_Rules"
                   label="Ubicación"
+                  filled
+                  readonly
                   required
                 ></v-text-field>
 
@@ -38,6 +44,8 @@
                   :counter="100"
                   :rules="nombre_proyecto_Rules"
                   label="Cliente"
+                  filled
+                  readonly
                   required
                 ></v-text-field>
 
@@ -46,6 +54,8 @@
                   :counter="100"
                   :rules="rutRules"
                   label="Rut cliente"
+                  filled
+                  readonly
                   required
                 ></v-text-field>
 
@@ -54,6 +64,8 @@
                   :counter="100"
                   :rules="nombre_proyecto_Rules"
                   label="Mandante"
+                  filled
+                  readonly
                   required
                 ></v-text-field>
 
@@ -62,6 +74,8 @@
                   :counter="100"
                   :rules="rutRules"
                   label="Rut mandante"
+                  filled
+                  readonly
                   required
                 ></v-text-field>
 
@@ -70,6 +84,8 @@
                   :counter="100"
                   :rules="nombre_proyecto_Rules"
                   label="Mandante Final"
+                  filled
+                  readonly
                   required
                 ></v-text-field>
 
@@ -93,157 +109,6 @@
                     </v-btn>
                 </v-row>
 
-
-            <!-- <v-row>
-              
-              <v-col cols="12" sm="12" >
-                <v-text-field
-                  v-model="centro_de_coste"
-                  :counter="20"
-                  :rules="centro_de_coste_Rules"
-                  label="Centro de coste"
-                  required
-                ></v-text-field>
-              </v-col>
-
-              <v-col cols="12" sm="12">
-                <v-text-field
-                  v-model="nombre_proyecto"
-                  :counter="100"
-                  :rules="nombre_proyecto_Rules"
-                  label="Nombre proyecto"
-                  required
-                ></v-text-field>
-              </v-col>
-
-              <v-col cols="12" sm="12">
-                <v-text-field
-                  v-model="ubicacion"
-                  :counter="100"
-                  :rules="nombre_proyecto_Rules"
-                  label="Ubicación"
-                  required
-                ></v-text-field>
-              </v-col>
-
-              <v-col cols="12" sm="12">
-                <v-text-field
-                  v-model="cliente"
-                  :counter="100"
-                  :rules="nombre_proyecto_Rules"
-                  label="Cliente"
-                  required
-                ></v-text-field>
-              </v-col>
-
-              <v-col cols="12" sm="12">
-                <v-text-field
-                  v-model="rut_cliente"
-                  :counter="100"
-                  :rules="nombre_proyecto_Rules"
-                  label="Rut cliente"
-                  required
-                ></v-text-field>
-              </v-col>
-
-              <v-col cols="12" sm="12">
-                <v-text-field
-                  v-model="mandante"
-                  :counter="100"
-                  :rules="nombre_proyecto_Rules"
-                  label="Mandante"
-                  required
-                ></v-text-field>
-              </v-col>
-
-              <v-col cols="12" sm="12">
-                <v-text-field
-                  v-model="rut_mandante"
-                  :counter="100"
-                  :rules="nombre_proyecto_Rules"
-                  label="Rut mandante"
-                  required
-                ></v-text-field>
-              </v-col>
-
-              <v-col cols="12" sm="12">
-                <v-text-field
-                  v-model="mandante_final"
-                  :counter="100"
-                  :rules="nombre_proyecto_Rules"
-                  label="Mandante Final"
-                  required
-                ></v-text-field>
-              </v-col>
-
-              <v-col cols="12" sm="12">
-                <v-text-field
-                  v-model="cantidad_voucher_imprimir"
-                  :counter="100"
-                  :rules="nombre_proyecto_Rules"
-                  label="Cantidad de voucher a imprimir"
-                  required
-                ></v-text-field>
-              </v-col>
-
-              <v-col cols="12" sm="12">
-                <v-select
-                  v-model="select"
-                  :items="items"
-                  :rules="[v => !!v || 'Item is required']"
-                  label="Item"
-                  required
-                ></v-select>
-              </v-col>
-
-              <v-col cols="12" sm="6" md="4">
-                <v-btn
-                  :disabled="!valid"
-                  color="primary"
-                  class="mr-4"
-                  @click="validate"
-                >
-                  Actualizar
-                </v-btn>
-              </v-col>
-
-              <v-col cols="12" sm="6" md="4">
-              </v-col>
-
-            </v-row> -->
-                
-              <!--             
-                <v-checkbox
-                  v-model="checkbox"
-                  :rules="[v => !!v || 'You must agree to continue!']"
-                  label="Do you agree?"
-                  required
-                ></v-checkbox>
-            
-                <v-btn
-                  :disabled="!valid"
-                  color="primary"
-                  class="mr-4"
-                  @click="validate"
-                >
-                  Validate
-                </v-btn>
-            
-                <v-btn
-                  color="error"
-                  class="mr-4"
-                  @click="reset"
-                >
-                  Reset Form
-                </v-btn>
-            
-                <v-btn
-                  color="warning"
-                  @click="resetValidation"
-                >
-                  Reset Validation
-                </v-btn> 
-              -->
           </v-form>
 
           <div class="container mt-5">
@@ -386,7 +251,8 @@ export default {
 
       const res_admin = await this.$axios.get('/backend/Administrador/')
       this.administradores = res_admin.data;
-      this.administradores = this.administradores.filter(x => x.proyecto === this.idProyecto)
+      // this.administradores = this.administradores.filter(x => x.proyecto === this.idProyecto)
+      this.administradores = this.administradores.filter(x => x.proyecto.find(element => element === this.idProyecto))
 
     } catch (error) {
       console.log(error)

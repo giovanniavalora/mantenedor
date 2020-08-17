@@ -144,7 +144,7 @@ export default {
         { text: 'Apellido', value: 'apellido' },
         { text: 'Numero entregado', value: 'telefono' },
         { text: 'Origen', value: 'origen_asignado' },
-        { text: 'Actions', value: 'actions', sortable: false }
+        { text: 'Acciones', value: 'actions', sortable: false }
       ],
       origenes: [],
       despachadores: [],
@@ -300,7 +300,9 @@ export default {
       this.$axios.setToken(this.$store.state.auth['Token'], 'Bearer')
       const res = await this.$axios.get('/backend/Despachador/')
       this.despachadores = res.data;
+      console.log(this.despachadores)
       this.despachadores = this.despachadores.filter(x => x.proyecto === this.idProyecto)
+      console.log(this.despachadores)
 
       /** Para mostrar los nombres de los Subcontratista en el dropdown del modal **/
       const resp_origenes = await this.$axios.get('/backend/Origen/') //Se obtienen todos, pero debieran ser solo los del proyecto?

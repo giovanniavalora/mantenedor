@@ -510,10 +510,15 @@ export default {
       this.$axios.setToken(this.$store.state.auth['Token'], 'Bearer')
       const res = await this.$axios.get('/backend/Origen/')
       this.origenes = res.data;
+      console.log("origenes:",this.origenes)
+      console.log("this.idProyecto:",this.idProyecto)
+      
+      this.origenes = this.origenes.filter(x => x.proyecto === this.idProyecto)
 
       /** Para mostrar los nombres de los Suborigenes en el dropdown del modal **/
       const resp_suborigenes = await this.$axios.get('/backend/Suborigen/')
       this.suborigenes = resp_suborigenes.data;
+      console.log("this.suborigenes:",this.suborigenes)
 
     } catch (error) {
         this.snack = true
