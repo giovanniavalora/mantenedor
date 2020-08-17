@@ -28,7 +28,7 @@
               v-model="loginEmail" 
               label="Email" 
               prepend-icon="mdi-account-circle"
-              placeholder="nombre.apellido@avalora.com"
+              placeholder=""
             ></v-text-field>
             <v-text-field 
               v-model="loginPassword"
@@ -37,7 +37,7 @@
               prepend-icon="mdi-lock"
               :append-icon="showPassword? 'mdi-eye' : 'mdi-eye-off'"
               @click:append="showPassword = !showPassword"
-              placeholder="1234"
+              placeholder=""
             ></v-text-field>
           </v-form>
         </v-card-text>
