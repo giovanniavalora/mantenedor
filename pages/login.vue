@@ -116,12 +116,11 @@ export default {
             this.loginPassword = ''
             this.$store.commit('setAuth', auth) // mutating to store for client rendering
 
-            /* Guardando token en cookie para server rendering */
-                /* Establecemos tiempo de caducidad de la cookie */
-                var date = new Date();
-                date.setTime(date.getTime() + (60 * 1000) ); //1 minuto
-                Cookie.set('auth', auth, {expires: date}) //tiempo espacificado en date
-                // Cookie.set('auth', auth, {expires: 1}) //1 día
+            // var date = new Date();
+            // date.setTime(date.getTime() + (2*60*1000) ); //2 minutos
+            // console.log("date:",date)
+            // Cookie.set('auth', auth, {expires: date}) //tiempo espacificado en date
+            Cookie.set('auth', auth, {expires: 15}) //15 días
 
             if(res.data.data.info['proyecto'].length == 1){
               console.log("1 proyecto!")
