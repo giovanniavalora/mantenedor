@@ -74,12 +74,6 @@
             <v-icon>mdi-exit-to-app</v-icon>
           </v-btn>
       </div>
-      <p v-else>
-        Please
-        <NuxtLink to="/login">
-          login
-        </NuxtLink>.
-      </p>
 
       <!--       
       <v-btn

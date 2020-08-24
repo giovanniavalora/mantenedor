@@ -38,8 +38,7 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    // '@plugins/vuetify.js'
-    // {src: '~/plugins/vue-leaflet', ssr: false },
+    '~/plugins/axios'
   ],
   /*
   ** Nuxt.js dev-modules
@@ -54,26 +53,20 @@ export default {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/proxy',
+    // '@nuxtjs/auth',
     'nuxt-leaflet',
     'portal-vue/nuxt'
     // ['nuxt-leaflet', {ssr:false}],
   ],
+  // auth:{
+  //   plugins:[ '~/plugins/auth.js']
+  // },
   /*
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
-
     proxy: true,
-    // baseURL: "http://127.0.0.1:5000/api/v1"
-    // baseURL: "http://192.168.0.8:5000/api/v1" 
-    // baseURL: "http://157.245.237.33:5000/api/v1"
-    // baseURL:
-    //   process.env.NODE_ENV !== "production"
-    //     ? "http://localhost:5000/api/v1"
-    //     : "http://157.245.237.33:5000/api/v1"
-    // baseURL: "http://apiman:5000/api/v1",
-    // browserBaseURL: "http://192.168.0.8:5000/api/v1" 
   },
 
 
