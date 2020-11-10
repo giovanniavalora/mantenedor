@@ -252,7 +252,7 @@ export default {
       const res_admin = await this.$axios.get('/backend/Administrador/')
       this.administradores = res_admin.data;
       // this.administradores = this.administradores.filter(x => x.proyecto === this.idProyecto)
-      this.administradores = this.administradores.filter(x => x.proyecto.find(element => element === this.idProyecto))
+      this.administradores = this.administradores.filter(x => x.proyecto_admin.find(element => element === this.idProyecto))
 
     } catch (error) {
       console.log(error)

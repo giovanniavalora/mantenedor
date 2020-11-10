@@ -301,7 +301,8 @@ export default {
       const res = await this.$axios.get('/backend/Despachador/')
       this.despachadores = res.data;
       console.log(this.despachadores)
-      this.despachadores = this.despachadores.filter(x => x.proyecto === this.idProyecto)
+      /*logica podría cambiar, el proyecto activo será el de mayor id*/
+      this.despachadores = this.despachadores.filter(x => x.proyecto_desp[0] === this.idProyecto)
       console.log(this.despachadores)
 
       /** Para mostrar los nombres de los Subcontratista en el dropdown del modal **/

@@ -74,15 +74,7 @@
                                     <v-col cols="12" sm="6" md="4">
                                       <v-text-field v-model="editedItem.color_camion" label="Color camión" :rules="colorRules"></v-text-field>
                                     </v-col>
-                                    <v-col cols="12" sm="6" md="4">
-                                      <v-text-field v-model="editedItem.nombre_conductor_principal" label="Nombre conductor principal" :rules="nombreapellidoRules"></v-text-field>
-                                    </v-col>
-                                    <v-col cols="12" sm="6" md="4">
-                                      <v-text-field v-model="editedItem.apellido_conductor_principal" label="Apellido conductor principal" :rules="nombreapellidoRules"></v-text-field>
-                                    </v-col>
-                                    <v-col cols="12" sm="6" md="4">
-                                      <v-text-field v-model="editedItem.telefono_conductor_principal" label="Teléfono conductor principal" :rules="telefonoRules"></v-text-field>
-                                    </v-col>
+                                    
                                     <v-col cols="12" sm="6" md="4">
                                       <v-select
                                         v-model="editedItem.subcontratista"
@@ -289,7 +281,6 @@ export default {
         { text: 'Modelo', value: 'modelo_camion' },
         { text: 'Capacidad', value: 'capacidad_camion' },
         { text: 'Número de ejes', value: 'numero_ejes' },
-        { text: 'Nombre conductor', value: 'nombre_conductor_principal' },
         { text: 'Acciones', value: 'actions', sortable: false }
       ],
       subcontratistas: [],
@@ -301,9 +292,6 @@ export default {
         marca_camion: "",
         modelo_camion: "",
         capacidad_camion: "",
-        nombre_conductor_principal: "",
-        apellido_conductor_principal: "",
-        telefono_conductor_principal: "",
         numero_ejes: "",
         unidad_medida: "",
         color_camion: "",
@@ -340,14 +328,6 @@ export default {
           if (v) return v.length <= 20 || 'Este campo debe tener menos de 20 caracteres';
           else return true;
         },
-      ],
-      nombreapellidoRules: [
-        v => !!v || 'Este campo es requerido',
-        v => (v && v.length <= 20) || 'Este campo debe tener menos de 20 caracteres',
-      ],
-      telefonoRules: [
-        v => !!v || 'Este campo es requerido',
-        v => (v && v.length <= 16) || 'Este campo debe tener menos de 16 caracteres',
       ],
       subcontratistaRules: [
         v => !!v || 'Este campo es requerido',
