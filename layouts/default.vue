@@ -159,6 +159,11 @@ export default {
           to: '/flota'
         },
         {
+          icon: 'mdi-account-group',
+          title: 'Conductores',
+          to: '/conductores'
+        },
+        {
           icon: 'mdi-cube-send',
           title: 'Despachadores',
           to: '/despachadores'

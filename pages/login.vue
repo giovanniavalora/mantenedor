@@ -102,7 +102,7 @@ export default {
           password: this.loginPassword
         })
         .then(res => {
-          // console.log("res: ",res)
+          console.log("res: ",res)
           if(res.data.data.token){
             const auth = {
                 Email: this.loginEmail,
@@ -120,11 +120,10 @@ export default {
             // date.setTime(date.getTime() + (2*60*1000) ); //2 minutos
             // console.log("date:",date)
             // Cookie.set('auth', auth, {expires: date}) //tiempo espacificado en date
+            
             Cookie.set('auth', auth, {expires: 15}) //15 días
-
-            if(res.data.data.info['proyecto'].length == 1){
-              console.log("1 proyecto!")
-              this.$axios.get(`/backend/Proyecto/${res.data.data.info.proyecto[0]}/`)
+            if(res.data.data.info['proyecto_admin'].length == 1){
+              this.$axios.get(`/backend/Proyecto/${res.data.data.info.proyecto_admin[0]}/`)
               .then(resp => {
                 console.log(resp)
                 this.$store.commit('setProject', resp.data) //Se almacena en el estado de vuex, pero se puede perder con refresh
