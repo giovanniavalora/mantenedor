@@ -83,7 +83,7 @@
                                       >
                                             <template v-slot:top>
                                               <v-toolbar class="grey lighten-5" flat short dense>
-                                                    Suborigenes
+                                                    Puntos de acopio
                                                 <v-divider
                                                   class="mx-4"
                                                   inset
@@ -103,7 +103,7 @@
                                                       <v-container>
                                                         <v-row justify="center">
                                                           <v-col>
-                                                            <v-text-field v-model="editedItemSuborigen.nombre_suborigen" label="Nombre Suborigen"></v-text-field>
+                                                            <v-text-field v-model="editedItemSuborigen.nombre_suborigen" label="Punto de acopio"></v-text-field>
                                                           </v-col>
                                                         </v-row>
                                                       </v-container>
