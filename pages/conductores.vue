@@ -19,152 +19,162 @@
               >
                 <template v-slot:top>
                   <v-toolbar flat>
-                    <v-toolbar-title>Conductores</v-toolbar-title>
-                    <v-divider
-                      class="mx-4"
-                      inset
-                      vertical
-                    ></v-divider>
-                    <v-spacer></v-spacer>
+                      <v-toolbar-title>Conductores</v-toolbar-title>
+                      <v-divider
+                        class="mx-4"
+                        inset
+                        vertical
+                      ></v-divider>
+                      <v-spacer></v-spacer>
 
-                    
+                      
 
-                    <v-dialog v-model="dialog" persistent max-width="900px">
-                      <template v-slot:activator="{ on }">
-                        <v-btn color="primary" dark class="mb-2" v-on="on">Agregar Nuevo</v-btn>
-                      </template>
+                      <v-dialog v-model="dialog" persistent max-width="900px">
+                        <template v-slot:activator="{ on }">
+                          <v-btn color="primary" dark class="mb-2" v-on="on">Agregar Nuevo</v-btn>
+                        </template>
 
-                      <v-card>
-                        <v-card-title>
-                          <span class="headline">{{ formTitle }}</span>
-                        </v-card-title>
-            
-                        <v-card-text>
-                          <v-container>
+                        <v-card>
+                          <v-card-title>
+                            <span class="headline">{{ formTitle }}</span>
+                          </v-card-title>
+              
+                          <v-card-text>
+                            <v-container>
 
-                            <v-form
-                              ref="form"
-                              v-model="valid"
-                              lazy-validation
-                            >
-                                  <v-row>
-                                    <v-col cols="12" sm="6" md="4">
-                                      <v-text-field v-model="editedItem.nombre" label="Nombre" :rules="nombreapellidoRules" required></v-text-field>
-                                    </v-col>
-                                    <v-col cols="12" sm="6" md="4">
-                                      <v-text-field v-model="editedItem.apellido" label="Apellido" :rules="nombreapellidoRules" required></v-text-field>
-                                    </v-col>
-                                    <v-col cols="12" sm="6" md="4">
-                                      <v-text-field v-model="editedItem.rut" label="Rut" :rules="rutRules" required></v-text-field>
-                                    </v-col>
-                                    <v-col cols="12" sm="6" md="4">
-                                      <v-text-field v-model="editedItem.telefono" label="Telefono" :rules="telefonoRules" required></v-text-field>
-                                    </v-col>
-                                    <v-col cols="12" sm="6" md="4">
-                                      <v-text-field v-model="editedItem.email" label="Email" :rules="emailRules"></v-text-field>
-                                    </v-col>
-                                    
-                                    <v-col cols="12" sm="6" md="4">
-                                      <v-select
-                                        v-model="editedItem.subcontratista"
-                                        :items= subcontratistas
-                                        item-text="nombre_subcontratista" 
-                                        item-value="id" 
-                                        single-line 
-                                        auto 
-                                        label="Subcontratista"
-                                        :rules="subcontratistaRules"
-                                        required
-                                      ></v-select>
-                                    </v-col>
-                                  </v-row>
-                            </v-form>
-                          </v-container>
-                        </v-card-text>
-            
-                        <v-card-actions>
-                          <v-spacer></v-spacer>
-                          <v-btn color="blue darken-1" text @click="close">Cancelar</v-btn>
-                          <v-btn color="blue darken-1" text @click="save" :disabled="!valid">Guardar</v-btn>
-                        </v-card-actions>
-                      </v-card>
-                    </v-dialog>
+                              <v-form
+                                ref="form"
+                                v-model="valid"
+                                lazy-validation
+                              >
+                                    <v-row>
+                                      <v-col cols="12" sm="6" md="4">
+                                        <v-text-field v-model="editedItem.nombre" label="Nombre" :rules="nombreapellidoRules" required></v-text-field>
+                                      </v-col>
+                                      <v-col cols="12" sm="6" md="4">
+                                        <v-text-field v-model="editedItem.apellido" label="Apellido" :rules="nombreapellidoRules" required></v-text-field>
+                                      </v-col>
+                                      <v-col cols="12" sm="6" md="4">
+                                        <v-text-field v-model="editedItem.rut" label="Rut" :rules="rutRules" required></v-text-field>
+                                      </v-col>
+                                      <v-col cols="12" sm="6" md="4">
+                                        <v-text-field v-model="editedItem.telefono" label="Telefono" :rules="telefonoRules" required></v-text-field>
+                                      </v-col>
+                                      <v-col cols="12" sm="6" md="4">
+                                        <v-text-field v-model="editedItem.email" label="Email" :rules="emailRules"></v-text-field>
+                                      </v-col>
+                                      
+                                      <v-col cols="12" sm="6" md="4">
+                                        <v-select
+                                          v-model="editedItem.subcontratista"
+                                          :items= subcontratistas
+                                          item-text="nombre_subcontratista" 
+                                          item-value="id" 
+                                          single-line 
+                                          auto 
+                                          label="Subcontratista"
+                                          :rules="subcontratistaRules"
+                                          required
+                                        ></v-select>
+                                      </v-col>
+                                    </v-row>
+                              </v-form>
+                            </v-container>
+                          </v-card-text>
+              
+                          <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="blue darken-1" text @click="close">Cancelar</v-btn>
+                            <v-btn color="blue darken-1" text @click="save" :disabled="!valid">Guardar</v-btn>
+                          </v-card-actions>
+                        </v-card>
+                      </v-dialog>
 
 
-                    <v-dialog v-model="dialogCamiones" persistent max-width="500px">
-                      <v-card>
-                        <v-container fluid>
-                          <v-data-iterator
-                            :items="camiones"
-                            item-key="patente_camion"
-                            :single-expand="singleExpand"
-                            hide-default-footer
-                          >
-                              <template v-slot:default="{ items, isExpanded, expand }">
-                                  <v-row>
-                                    <v-col
-                                      v-for="item in items"
-                                      :key="item.patente_camion"
-                                      cols="12"
-                                      sm="12"
-                                      md="12"
-                                      lg="12"
+                      <v-dialog v-model="dialogCamiones" persistent max-width="500px">
+                          <v-card>
+                              <v-card-title>
+                                <span class="headline">Asignar Camiones</span>
+                              </v-card-title>
+                              <v-card-text>
+                                  <v-container fluid>
+                                    <v-data-iterator
+                                      :items="camiones"
+                                      item-key="patente_camion"
+                                      :single-expand="singleExpand"
+                                      hide-default-footer
                                     >
-                                        <v-row align="center">
-                                            <v-col>
-                                                <v-checkbox
-                                                  v-model="camionesAsignados.camiones"
-                                                  v-bind:label=item.patente_camion
-                                                  v-bind:value=item.id
-                                                ></v-checkbox>
-                                            </v-col>
-                                            <v-col>
-                                                <v-switch
-                                                  :input-value="isExpanded(item)"
-                                                  :label="isExpanded(item) ? 'Ocultar' : 'Mostrar más'"
-                                                  dense
-                                                  @change="(v) => expand(item, v)"
-                                                ></v-switch>
-                                            </v-col>
-                                        </v-row>
+                                        <template v-slot:default="{ items, isExpanded, expand }">
+                                            <v-row>
+                                              <v-col
+                                                v-for="item in items"
+                                                :key="item.patente_camion"
+                                                cols="12"
+                                                sm="12"
+                                                md="12"
+                                                lg="12"
+                                              >
+                                                  <v-row align="center">
+                                                      <v-col>
+                                                          <v-checkbox
+                                                            v-model="camionesAsignados.camiones"
+                                                            v-bind:label=item.patente_camion
+                                                            v-bind:value=item.id
+                                                          ></v-checkbox>
+                                                      </v-col>
+                                                      <v-col>
+                                                          <v-switch
+                                                            :input-value="isExpanded(item)"
+                                                            :label="isExpanded(item) ? 'Ocultar' : 'Mostrar más'"
+                                                            dense
+                                                            @change="(v) => expand(item, v)"
+                                                          ></v-switch>
+                                                      </v-col>
+                                                  </v-row>
+                                                  
+                                                  <v-list
+                                                    v-if="isExpanded(item)"
+                                                    dense
+                                                  >
+                                                    <v-list-item>
+                                                      <v-list-item-content>Marca:</v-list-item-content>
+                                                      <v-list-item-content class="align-end">
+                                                        {{ item.marca_camion }}
+                                                      </v-list-item-content>
+                                                    </v-list-item>
+                                                    <v-list-item>
+                                                      <v-list-item-content>Modelo:</v-list-item-content>
+                                                      <v-list-item-content class="align-end">
+                                                        {{ item.modelo_camion }}
+                                                      </v-list-item-content>
+                                                    </v-list-item>
+                                                    
+                                                  </v-list>
+                                                  <v-divider></v-divider>
+                                              </v-col>
+                                            </v-row>
+                                            
+                                        </template>
+                                        <!-- <template v-slot:footer>
+                                            <v-card-actions>
+                                                <v-spacer></v-spacer>
+                                                    <v-btn color="blue darken-1" text @click="close">Cancelar</v-btn>
+                                                    <v-btn color="blue darken-1" text @click="saveAsignacionCamiones">Guardar</v-btn>
+                                            </v-card-actions>
+                                        </template> -->
                                         
-                                        <v-list
-                                          v-if="isExpanded(item)"
-                                          dense
-                                        >
-                                          <v-list-item>
-                                            <v-list-item-content>Marca:</v-list-item-content>
-                                            <v-list-item-content class="align-end">
-                                              {{ item.marca_camion }}
-                                            </v-list-item-content>
-                                          </v-list-item>
-                                          <v-list-item>
-                                            <v-list-item-content>Modelo:</v-list-item-content>
-                                            <v-list-item-content class="align-end">
-                                              {{ item.modelo_camion }}
-                                            </v-list-item-content>
-                                          </v-list-item>
-                                          
-                                        </v-list>
-                                        <v-divider></v-divider>
-                                    </v-col>
-                                  </v-row>
-                                  
-                              </template>
-                              <template v-slot:footer>
-                                <v-card-actions>
-                                    <v-btn color="blue darken-1" text @click="dialogCamiones = false">Cancelar</v-btn>
-                                    <v-btn color="blue darken-1" text @click="saveAsignacionCamiones">Guardar</v-btn>
-                                </v-card-actions>
-                              </template>
-                              
-                          </v-data-iterator>
+                                    </v-data-iterator>
+                                  </v-container>
+                              </v-card-text>
 
-                        </v-container>
-            
-                        
-                      </v-card>
-                    </v-dialog>
+                              <v-card-actions>
+                                  <v-spacer></v-spacer>
+                                      <v-btn color="blue darken-1" text @click="close">Cancelar</v-btn>
+                                      <v-btn color="blue darken-1" text @click="saveAsignacionCamiones">Guardar</v-btn>
+                              </v-card-actions>
+
+                          </v-card>
+                      </v-dialog>
 
                   </v-toolbar>
                 </template>
@@ -328,6 +338,7 @@ export default {
 
   methods: {
     getCamiones(item) {
+      this.editedIndex = this.conductores.indexOf(item)
       this.editedItem = Object.assign({}, item)
       // console.log("ns1:",item.nom_subcontratista)
       console.log("itemgetCamiones:",this.editedItem)
@@ -351,6 +362,8 @@ export default {
       console.log("camiones: ",this.camiones)
       console.log("ID conductor: ",this.camionesAsignados.id_conductor)
       console.log("ID camiones: ",this.camionesAsignados.camiones)
+      console.log("editedIndex: ",this.editedIndex)
+      console.log("editedItem: ",this.editedItem)
       this.$axios.patch(`/backend/Conductor/${this.camionesAsignados.id_conductor}/`,{'camion':this.camionesAsignados.camiones})
       .then(res => {
         console.log("res:",res)
@@ -362,8 +375,9 @@ export default {
       });
       // falta asignar a la lista de objetos conductores los nuevos camiones asignados:
       //algo así Object.assign(conductores[index].camion, camionesAsignados.camiones)
+      Object.assign(this.conductores[this.editedIndex].camion, this.camionesAsignados.camiones)
       //pero falta el index
-      this.dialogCamiones=false
+      this.close()
 
     },
 
@@ -395,6 +409,7 @@ export default {
         this.editedIndex = -1
       }, 300),
       this.dialog = false
+      this.dialogCamiones=false
     },
 
 

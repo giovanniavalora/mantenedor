@@ -122,7 +122,7 @@
                               <v-toolbar-title>Codigo QR</v-toolbar-title>
                               <v-spacer></v-spacer>
                               <v-toolbar-items>
-                                  <v-btn dark text  @click="nuevoqr">Nuevo QR</v-btn>
+                                  <!-- <v-btn dark text  @click="nuevoqr">Nuevo QR</v-btn> blockeado por orden de felipin -->
                                   <v-btn dark text @click="imprimirqr">Imprimir</v-btn>
                               </v-toolbar-items>
                         </v-toolbar>
@@ -135,7 +135,10 @@
                             <v-col cols="12" sm="10" md="9">
                                   <v-col cols="12">
                                         <v-row justify="center">
-                                        <h1>{{editedItem.nom_subcontratista}}</h1>
+                                        <h1>{{nombreProyecto}}</h1>
+                                        </v-row>
+                                        <v-row justify="center">
+                                        <h2>{{editedItem.nom_subcontratista}}</h2>
                                         </v-row>
                                   </v-col>
                                   <v-col cols="12">
