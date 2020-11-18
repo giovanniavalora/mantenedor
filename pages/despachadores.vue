@@ -158,7 +158,7 @@ export default {
         telefono: '',
         origen_asignado: '',
         // nom_origen: "", //no es propio del modelo, se agrega en el front
-        proyecto: '',
+        proyecto: [],
       },
 
       /* Validación de formulario */
@@ -249,7 +249,7 @@ export default {
 
             /* Para editar un registro */
             if (this.editedIndex > -1) {
-              this.editedItem.proyecto = this.idProyecto
+              this.editedItem.proyecto.push(this.idProyecto)
               try {
                 let res = await this.$axios.put(`/backend/Despachador/${this.editedItem.id}/`,this.editedItem)
                 if(res.status == 200){
@@ -269,7 +269,7 @@ export default {
               }
             /*Para crear un nuevo registro*/
             } else {
-              this.editedItem.proyecto = this.idProyecto
+              this.editedItem.proyecto.push(this.idProyecto)
               try {
                 let res = await this.$axios.post('/backend/Despachador/',this.editedItem)
                 if (res.status = 201) {

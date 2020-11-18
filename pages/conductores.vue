@@ -285,9 +285,14 @@ export default {
         v => !!v || 'Este campo es requerido',
         v => (v && v.length <= 20) || 'Este campo debe tener menos de 20 caracteres',
       ],
+      // rutRules:[
+      //   v => /^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test(v) || 'Ingrese Rut sin puntos y con guión',
+      // ],
       rutRules:[
-        v => !!v || 'Este campo es requerido',
-        v => /^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test(v) || 'Ingrese Rut sin puntos y con guión',
+        v => {
+          if (v) return /^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test(v) || 'Ingrese Rut sin puntos y con guión';
+          else return true;
+        },
       ],
       telefonoRules: [
         // v => !!v || 'Este campo es requerido',
